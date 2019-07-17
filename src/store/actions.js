@@ -10,10 +10,12 @@ export const requestedStreamEvents = () => {
   }
 }
 
-export const requestedStreamEventsSuccess = payload => {
+export const requestedStreamEventsSuccess = data => {
   return {
     type: REQUESTED_STREAM_EVENTS_SUCCESS,
-    payload
+    payload: {
+      data
+    }
   }
 }
 

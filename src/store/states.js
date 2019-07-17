@@ -11,7 +11,7 @@ export const initialState = {
 export const requestedStreamEvents = state => {
   return {
     events: {
-      ...state,
+      ...state.events,
       loading: true,
       loaded: false,
       loadedSuccess: false
@@ -21,7 +21,7 @@ export const requestedStreamEvents = state => {
 export const requestedStreamEventsSuccess = (state, payload) => {
   return {
     events: {
-      ...state,
+      ...state.events,
       loading: false,
       loaded: true,
       loadedSuccess: true,
@@ -32,7 +32,7 @@ export const requestedStreamEventsSuccess = (state, payload) => {
 export const requestedStreamEventsError = (state, error) => {
   return {
     events: {
-      ...state,
+      ...state.events,
       loading: true,
       loaded: false,
       loadedSuccess: false,
