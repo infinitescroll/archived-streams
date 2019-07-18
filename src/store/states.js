@@ -3,7 +3,7 @@ export const initialState = {
     loading: false,
     loaded: false,
     loadedSuccess: false,
-    data: {},
+    data: [],
     error: {}
   }
 }
@@ -25,7 +25,7 @@ export const requestedStreamEventsSuccess = (state, payload) => {
       loading: false,
       loaded: true,
       loadedSuccess: true,
-      data: { ...state.data, ...payload.data }
+      data: [...state.events.data, ...payload.data]
     }
   }
 }
