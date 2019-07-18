@@ -17,9 +17,26 @@ export const Title = styled.h1`
   font-size: 16pt;
   margin-bottom: 60px;
   font-family: 'Avenir';
+  font-weight: 200;
+  letter-space: 0.5pt;
+  font-size 1.25rem
+`
+
+export const Link = styled.a`
+  color: #e85223;
+  text-decoration: none;
+  font-size: 12pt;
+  font-family: 'Avenir';
+  letter-spacing: 0.5pt;
+  cursor: pointer;
 `
 
 export const AlignItemsRow = styled.div`
   display: flex;
   flex-direction: row;
+`
+
+export const AlignItemsColumn = styled.div`
+  display: flex;
+  flex-direction: column;
 `

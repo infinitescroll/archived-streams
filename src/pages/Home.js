@@ -4,12 +4,17 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 // import axios from 'axios'
 import { OWL_LOGO } from '../assets'
-import { Title, Header } from '../styled/components'
+import { Title, Header, AlignItemsRow } from '../styled/components'
+import { EventList } from '../components/events'
 import {
   requestedStreamEvents,
   requestedStreamEventsSuccess,
   requestedStreamEventsError
 } from '../store/actions'
+
+const StreamContainer = styled(AlignItemsRow)`
+  width: 100vw;
+`
 
 const fakeAjaxReq = () =>
   new Promise(resolve => {
@@ -19,6 +24,7 @@ const fakeAjaxReq = () =>
   })
 
 const Home = ({
+  events,
   requestedStreamEvents,
   requestedStreamEventsSuccess,
   requestedStreamEventsError
@@ -43,19 +49,23 @@ const Home = ({
 
   return (
     <Header>
-      <FrontEndCenter>
-        <Title>Welcome to Streams!</Title>
-        <img
-          src={OWL_LOGO}
-          style={{ height: '200px', width: 'auto' }}
-          alt="logo"
-        />
-      </FrontEndCenter>
+      <StreamContainer>
+        <div style={{ marginLeft: '56px', marginRight: '28px' }}>
+          <Title>Welcome to Streams!</Title>
+          <img
+            src={OWL_LOGO}
+            style={{ height: '200px', width: 'auto' }}
+            alt="logo"
+          />
+        </div>
+        <EventList events={events} />
+      </StreamContainer>
     </Header>
   )
 }
 
 Home.propTypes = {
+  events: PropTypes.array.isRequired,
   requestedStreamEvents: PropTypes.func.isRequired,
   requestedStreamEventsSuccess: PropTypes.func.isRequired,
   requestedStreamEventsError: PropTypes.func.isRequired
@@ -63,7 +73,7 @@ Home.propTypes = {
 
 const mapStateToProps = ({ events }) => {
   return {
-    events
+    events: events.data
   }
 }
 
@@ -77,11 +87,6 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Home)
-
-const FrontEndCenter = styled.div`
-  position: fixed;
-  top: 18px;
-`
 
 /* until we get real data in */
 export const fakeData = [
