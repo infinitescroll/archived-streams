@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 // import axios from 'axios'
 import { OWL_LOGO } from '../assets'
+import { Title, Header } from '../styled/components'
 import {
   requestedStreamEvents,
   requestedStreamEventsSuccess,
@@ -22,6 +24,7 @@ const Home = ({
   requestedStreamEventsError
 }) => {
   useEffect(() => {
+    document.body.classList.add('background-light')
     const requestStreams = async () => {
       requestedStreamEvents()
       try {
@@ -39,9 +42,16 @@ const Home = ({
   ])
 
   return (
-    <div>
-      <img src={OWL_LOGO} className="App-logo" alt="logo" />
-    </div>
+    <Header>
+      <FrontEndCenter>
+        <Title>Welcome to Streams!</Title>
+        <img
+          src={OWL_LOGO}
+          style={{ height: '200px', width: 'auto' }}
+          alt="logo"
+        />
+      </FrontEndCenter>
+    </Header>
   )
 }
 
@@ -67,6 +77,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Home)
+
+const FrontEndCenter = styled.div`
+  position: fixed;
+  top: 18px;
+`
 
 /* until we get real data in */
 export const fakeData = [
