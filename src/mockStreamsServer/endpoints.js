@@ -5,3 +5,9 @@ export const ARENA_ENDPOINT_STREAMS_VISUAL =
 
 export const GITHUB_EVENTS_ENDPOINT =
   'https://api.github.com/orgs/openworklabs/events'
+
+export const TRELLO_ACTIONS_ENDPOINT =
+  'https://api.trello.com/1/boards/29nfgjiz/actions'
+
+export const SLACK_CHANNEL_HISTORY_ENDPOINT =
+  'https://slack.com/api/channels.history'
