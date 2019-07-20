@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import dayjs from 'dayjs'
 import { OWL_LOGO } from '../assets'
 import { Title, Header, AlignItemsRow } from '../styled/components'
 import { EventList } from '../components/events'
@@ -12,7 +11,6 @@ import {
   requestedStreamEventsError
 } from '../store/actions'
 import mockStreamServer from '../mockStreamsServer'
-import { DATE_FORMAT } from '../constants'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
@@ -56,19 +54,6 @@ const Home = ({
         </div>
         <EventList events={events} />
       </StreamContainer>
-      <button
-        onClick={() => {
-          console.log(
-            // dayjs('2019-01-19T17:48:44-05:00').isBefore(
-            //   dayjs('2019-07-19T05:28:15-04:00')
-            // )
-
-            dayjs().format(DATE_FORMAT)
-          )
-        }}
-      >
-        click
-      </button>
     </Header>
   )
 }

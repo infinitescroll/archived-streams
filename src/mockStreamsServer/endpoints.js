@@ -11,3 +11,6 @@ export const TRELLO_ACTIONS_ENDPOINT =
 
 export const SLACK_CHANNEL_HISTORY_ENDPOINT =
   'https://slack.com/api/channels.history'
+
+export const DROPBOX_TEAM_LOG_EVENTS_ENDPOINT =
+  'https://api.dropboxapi.com/2/team_log/get_events'

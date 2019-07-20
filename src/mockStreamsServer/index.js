@@ -5,14 +5,23 @@ import {
   ARENA_ENDPOINT_STREAMS,
   GITHUB_EVENTS_ENDPOINT,
   TRELLO_ACTIONS_ENDPOINT,
-  SLACK_CHANNEL_HISTORY_ENDPOINT
+  SLACK_CHANNEL_HISTORY_ENDPOINT,
+  DROPBOX_TEAM_LOG_EVENTS_ENDPOINT
 } from './endpoints'
-import { ARENA, GITHUB, SLACK, TRELLO, DATE_FORMAT } from '../constants'
+import {
+  ARENA,
+  DROPBOX,
+  GITHUB,
+  SLACK,
+  TRELLO,
+  DATE_FORMAT
+} from '../constants'
 import {
   TRELLO_TOKEN,
   TRELLO_KEY,
   SLACK_TOKEN,
-  SLACK_CHANNEL_GENERAL
+  SLACK_CHANNEL_GENERAL,
+  DROPBOX_TOKEN
 } from '../secrets'
 
 class MockStreamsServer {
@@ -32,7 +41,8 @@ class MockStreamsServer {
         ...(await this._fetchGithubEvents()),
         ...(await this._fetchArenaEvents()),
         ...(await this._fetchTrelloEvents()),
-        ...(await this._fetchSlackEvents())
+        ...(await this._fetchSlackEvents()),
+        ...(await this._fetchDropboxEvents())
       ])
       this.database.events = this._sortEvents(allEvents)
       return true
@@ -89,7 +99,31 @@ class MockStreamsServer {
     }
   }
 
-  _fetchDropboxEvents = async () => {}
+  _fetchDropboxEvents = async () => {
+    try {
+      const {
+        data: { events }
+      } = await axios.post(
+        DROPBOX_TEAM_LOG_EVENTS_ENDPOINT,
+        {
+          limit: 50,
+          category: 'paper'
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${DROPBOX_TOKEN}`
+          }
+        }
+      )
+      return events.map(event => ({
+        app: DROPBOX,
+        createdAt: dayjs(event.timestamp).format(DATE_FORMAT),
+        data: { ...event, id: event.details.event_uuid }
+      }))
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
 
   _fetchSlackEvents = async () => {
     try {
@@ -101,7 +135,7 @@ class MockStreamsServer {
       return messages.map(event => ({
         app: SLACK,
         createdAt: dayjs.unix(event.ts.split('.')[0]).format(DATE_FORMAT),
-        data: event
+        data: { ...event, id: event.ts }
       }))
     } catch (error) {
       throw new Error(error)
