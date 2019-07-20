@@ -20,7 +20,10 @@ const Home = ({
   events,
   requestedStreamEvents,
   requestedStreamEventsSuccess,
-  requestedStreamEventsError
+  requestedStreamEventsError,
+  loadingEvents,
+  loadedEvents,
+  loadedEventsSuccess
 }) => {
   useEffect(() => {
     document.body.classList.add('background-light')
@@ -52,7 +55,8 @@ const Home = ({
             alt="logo"
           />
         </div>
-        <EventList events={events} />
+        {loadingEvents && <p>Loading your events.....</p>}
+        {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
       </StreamContainer>
     </Header>
   )
@@ -62,12 +66,18 @@ Home.propTypes = {
   events: PropTypes.array.isRequired,
   requestedStreamEvents: PropTypes.func.isRequired,
   requestedStreamEventsSuccess: PropTypes.func.isRequired,
-  requestedStreamEventsError: PropTypes.func.isRequired
+  requestedStreamEventsError: PropTypes.func.isRequired,
+  loadingEvents: PropTypes.bool.isRequired,
+  loadedEvents: PropTypes.bool.isRequired,
+  loadedEventsSuccess: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = ({ events }) => {
   return {
-    events: events.data
+    events: events.data,
+    loadingEvents: events.loading,
+    loadedEvents: events.loaded,
+    loadedEventsSuccess: events.loadedSuccess
   }
 }
 
