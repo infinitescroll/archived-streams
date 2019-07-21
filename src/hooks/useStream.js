@@ -17,7 +17,7 @@ export default () => {
     document.body.classList.add('background-light')
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
-      // await mockStreamServer.fetchEvents()
+      await mockStreamServer.fetchEvents()
       try {
         dispatch(requestedStreamEventsSuccess(mockStreamServer.getEvents()))
       } catch (error) {
