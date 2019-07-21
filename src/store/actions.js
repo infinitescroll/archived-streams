@@ -3,7 +3,7 @@ import {
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
   APPLY_FILTERS,
-  REMOVE_FILTER
+  REMOVE_FILTERS
 } from './actionTypes'
 
 export const requestedStreamEvents = () => {
@@ -37,11 +37,11 @@ export const applyFilters = filters => {
   }
 }
 
-export const removeFilter = filter => {
+export const removeFilters = filters => {
   return {
-    type: REMOVE_FILTER,
+    type: REMOVE_FILTERS,
     payload: {
-      filter
+      filters
     }
   }
 }

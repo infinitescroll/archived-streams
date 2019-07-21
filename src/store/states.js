@@ -49,3 +49,13 @@ export const appliedFilters = (state, { filters }) => {
     }
   }
 }
+
+export const removedFilters = (state, { filters }) => {
+  filters.forEach(filter => state.events.filters.delete(filter))
+  return {
+    events: {
+      ...state.events,
+      filters: new Map([...state.events.filters])
+    }
+  }
+}

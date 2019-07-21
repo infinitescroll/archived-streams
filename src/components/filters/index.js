@@ -3,11 +3,16 @@ import { useFilters } from '../../hooks'
 import { GITHUB } from '../../constants'
 
 export default () => {
-  const { filterEventsByApp } = useFilters()
+  const { filterEventsByApp, unfilterEventsByApp } = useFilters()
   return (
     <div>
       <p>Filter Stuff</p>
-      <button onClick={() => filterEventsByApp(GITHUB)}>By github</button>
+      <button onClick={() => filterEventsByApp(GITHUB)}>
+        Filter by github
+      </button>
+      <button onClick={() => unfilterEventsByApp(GITHUB)}>
+        Unfilter by github
+      </button>
     </div>
   )
 }

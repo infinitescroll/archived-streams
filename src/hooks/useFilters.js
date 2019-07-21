@@ -1,8 +1,13 @@
 import { useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import useReactRouter from 'use-react-router'
-import { applyFilters } from '../store/actions'
-import { filterMap } from '../utils'
+import { applyFilters, removeFilters } from '../store/actions'
+import {
+  filterMap,
+  getListOfFiltersFromUrlBar,
+  addSearchParam,
+  removeSearchParam
+} from '../utils'
 
 export default () => {
   const filters = useSelector(({ events }) => events.filters)
@@ -14,8 +19,9 @@ export default () => {
   const filterEventsByApp = useCallback(
     app => {
       const params = new URLSearchParams(search)
-      params.append('filter', app)
-      history.replace(`${pathname}?${params}`)
+      const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
+      const newSearchParams = addSearchParam(filterListFromUrlBar, app)
+      history.replace(`${pathname}?${newSearchParams}`)
 
       const filter = filterMap.get(app)
       dispatch(applyFilters(new Map([[app, filter]])))
@@ -23,9 +29,21 @@ export default () => {
     [dispatch, history, pathname, search]
   )
 
+  const unfilterEventsByApp = useCallback(
+    app => {
+      const params = new URLSearchParams(search)
+      const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
+      const newSearchParams = removeSearchParam(filterListFromUrlBar, app)
+      history.replace(`${pathname}?${newSearchParams}`)
+
+      dispatch(removeFilters([app]))
+    },
+    [dispatch, history, pathname, search]
+  )
+
   useEffect(() => {
     const params = new URLSearchParams(search)
-    const filterListFromUrlBar = params.getAll('filter')
+    const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
     const filtersFromUrlBar = filterListFromUrlBar.reduce((accum, filter) => {
       if (filterMap.has(filter) && !filters.has(filter))
         accum.set(filter, filterMap.get(filter))
@@ -36,6 +54,7 @@ export default () => {
 
   return {
     filters,
-    filterEventsByApp
+    filterEventsByApp,
+    unfilterEventsByApp
   }
 }

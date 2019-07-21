@@ -22,3 +22,21 @@ export const filterMap = new Map([
 
 export const filterEvents = filters => event =>
   [...filters].every(([_, callback]) => callback(event))
+
+export const getListOfFiltersFromUrlBar = params => {
+  const filterListFromUrlBar = params.get('filters')
+  if (!filterListFromUrlBar) return []
+  return filterListFromUrlBar.split(' ')
+}
+
+export const addSearchParam = (filterListFromUrlBar, newFilter) => {
+  return `filters=${[...filterListFromUrlBar, newFilter].join('+')}`
+}
+
+export const removeSearchParam = (filterListFromUrlBar, filterToRemove) => {
+  const newFilterList = filterListFromUrlBar.filter(
+    filter => !(filter === filterToRemove)
+  )
+  if (newFilterList.length === 0) return 'filters=none'
+  return `filters=${[...newFilterList].join('+')}`
+}
