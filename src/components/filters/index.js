@@ -1,16 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { applyFilter } from '../../store/actions'
-import { GITHUB_FILTER } from '../../utils'
+import { useFilters } from '../../hooks'
 
 export default () => {
-  const dispatch = useDispatch()
+  const { filterEventsByGithub } = useFilters()
   return (
     <div>
       <p>Filter Stuff</p>
-      <button onClick={() => dispatch(applyFilter(GITHUB_FILTER))}>
-        By github
-      </button>
+      <button onClick={filterEventsByGithub}>By github</button>
     </div>
   )
 }

@@ -6,11 +6,19 @@ const dropboxFilterCallback = event => event.app === DROPBOX
 const slackFilterCallback = event => event.app === SLACK
 const arenaFilterCallback = event => event.app === ARENA
 
-export const GITHUB_FILTER = { type: GITHUB, callback: githubFilterCallback }
-export const TRELLO_FILTER = { type: TRELLO, callback: trelloFilterCallback }
-export const DROPBOX_FILTER = { type: DROPBOX, callback: dropboxFilterCallback }
-export const SLACK_FILTER = { type: SLACK, callback: slackFilterCallback }
-export const ARENA_FILTER = { type: ARENA, callback: arenaFilterCallback }
+export const GITHUB_FILTER = [GITHUB, githubFilterCallback]
+export const TRELLO_FILTER = [TRELLO, trelloFilterCallback]
+export const DROPBOX_FILTER = [DROPBOX, dropboxFilterCallback]
+export const SLACK_FILTER = [SLACK, slackFilterCallback]
+export const ARENA_FILTER = [ARENA, arenaFilterCallback]
+
+export const filterMap = new Map([
+  GITHUB_FILTER,
+  TRELLO_FILTER,
+  DROPBOX_FILTER,
+  SLACK_FILTER,
+  ARENA_FILTER
+])
 
 export const filterEvents = filters => event =>
-  filters.every(filter => filter.callback(event))
+  [...filters].every(([_, callback]) => callback(event))

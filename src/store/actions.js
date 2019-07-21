@@ -2,7 +2,7 @@ import {
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
-  APPLY_FILTER,
+  APPLY_FILTERS,
   REMOVE_FILTER
 } from './actionTypes'
 
@@ -28,11 +28,11 @@ export const requestedStreamEventsError = error => {
   }
 }
 
-export const applyFilter = filter => {
+export const applyFilters = filters => {
   return {
-    type: APPLY_FILTER,
+    type: APPLY_FILTERS,
     payload: {
-      filter
+      filters
     }
   }
 }

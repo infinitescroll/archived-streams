@@ -2,7 +2,7 @@ export const initialState = {
   events: {
     data: [],
     error: {},
-    filters: [],
+    filters: new Map(),
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -41,11 +41,11 @@ export const requestedStreamEventsError = (state, error) => {
     }
   }
 }
-export const appliedFilter = (state, { filter }) => {
+export const appliedFilters = (state, { filters }) => {
   return {
     events: {
       ...state.events,
-      filters: [...state.events.filters, filter]
+      filters: new Map([...state.events.filters, ...filters])
     }
   }
 }
