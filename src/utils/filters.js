@@ -26,7 +26,8 @@ export const filterEvents = filters => event =>
 export const getListOfFiltersFromUrlBar = params => {
   const filterListFromUrlBar = params.get('filters')
   if (!filterListFromUrlBar) return []
-  return filterListFromUrlBar.split(' ')
+
+  return filterListFromUrlBar.split(' ').filter(filter => filterMap.has(filter))
 }
 
 export const addSearchParam = (filterListFromUrlBar, newFilter) => {
@@ -37,6 +38,6 @@ export const removeSearchParam = (filterListFromUrlBar, filterToRemove) => {
   const newFilterList = filterListFromUrlBar.filter(
     filter => !(filter === filterToRemove)
   )
-  if (newFilterList.length === 0) return 'filters=none'
+  if (newFilterList.length === 0) return 'filters=null'
   return `filters=${[...newFilterList].join('+')}`
 }
