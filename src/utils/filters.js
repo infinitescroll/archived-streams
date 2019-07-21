@@ -59,18 +59,27 @@ export const filterMap = new Map([
   [STREAMS_USER, USER_FILTER]
 ])
 
+const includeEventAfterExecutingFilters = (event, ...filterLists) => {
+  let includeEvent = true
+  filterLists.forEach(filtersWithinCategory => {
+    if (filtersWithinCategory.length > 0)
+      includeEvent = filtersWithinCategory.some(([_, filter]) =>
+        filter.callback(event)
+      )
+  })
+  return includeEvent
+}
+
 export const filterEvents = filters => event => {
   const identityFilters = [...filters].filter(
     ([_, filter]) => filter.category === IDENTITY_FILTER
   )
+
   const appFilters = [...filters].filter(
     ([_, filter]) => filter.category === APPLICATION_FILTER
   )
 
-  return (
-    identityFilters.some(([_, filter]) => filter.callback(event)) &&
-    appFilters.some(([_, filter]) => filter.callback(event))
-  )
+  return includeEventAfterExecutingFilters(event, appFilters, identityFilters)
 }
 
 export const getListOfFiltersFromUrlBar = params => {
