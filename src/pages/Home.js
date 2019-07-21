@@ -1,48 +1,22 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React from 'react'
 import styled from 'styled-components'
 import { OWL_LOGO } from '../assets'
 import { Title, Header, AlignItemsRow } from '../styled/components'
 import { EventList } from '../components/events'
-import {
-  requestedStreamEvents,
-  requestedStreamEventsSuccess,
-  requestedStreamEventsError
-} from '../store/actions'
-import mockStreamServer from '../mockStreamsServer'
+import Filters from '../components/filters'
+import useStream from '../hooks/useStream'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
 `
 
-const Home = ({
-  events,
-  requestedStreamEvents,
-  requestedStreamEventsSuccess,
-  requestedStreamEventsError,
-  loadingEvents,
-  loadedEvents,
-  loadedEventsSuccess
-}) => {
-  useEffect(() => {
-    document.body.classList.add('background-light')
-    const requestStreams = async () => {
-      requestedStreamEvents()
-      await mockStreamServer.fetchEvents()
-      try {
-        requestedStreamEventsSuccess(mockStreamServer.getEvents())
-      } catch (error) {
-        requestedStreamEventsError(error)
-      }
-    }
-
-    requestStreams()
-  }, [
-    requestedStreamEvents,
-    requestedStreamEventsSuccess,
-    requestedStreamEventsError
-  ])
+const Home = () => {
+  const {
+    events,
+    loadingEvents,
+    loadedEvents,
+    loadedEventsSuccess
+  } = useStream()
 
   return (
     <Header>
@@ -57,37 +31,10 @@ const Home = ({
         </div>
         {loadingEvents && <p>Loading your events.....</p>}
         {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+        {loadedEvents && loadedEventsSuccess && <Filters />}
       </StreamContainer>
     </Header>
   )
 }
 
-Home.propTypes = {
-  events: PropTypes.array.isRequired,
-  requestedStreamEvents: PropTypes.func.isRequired,
-  requestedStreamEventsSuccess: PropTypes.func.isRequired,
-  requestedStreamEventsError: PropTypes.func.isRequired,
-  loadingEvents: PropTypes.bool.isRequired,
-  loadedEvents: PropTypes.bool.isRequired,
-  loadedEventsSuccess: PropTypes.bool.isRequired
-}
-
-const mapStateToProps = ({ events }) => {
-  return {
-    events: events.data,
-    loadingEvents: events.loading,
-    loadedEvents: events.loaded,
-    loadedEventsSuccess: events.loadedSuccess
-  }
-}
-
-const mapDispatchToProps = {
-  requestedStreamEvents,
-  requestedStreamEventsSuccess,
-  requestedStreamEventsError
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home)
+export default Home
