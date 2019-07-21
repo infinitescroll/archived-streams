@@ -1,10 +1,27 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Local development instructions
 
-## Available Scripts
+`git clone git@github.com:openworklabs/streams.git`<br />
+`cd streams`<br />
+`npm i`<br />
 
-In the project directory, you can run:
+You need to then create a `secrets.js` folder at the top level of the `/src` directory. The secrets file should export the following variables:
 
-### `npm start`
+```js
+export const SLACK_TOKEN = "XXXX";
+export const SLACK_CHANNEL_GENERAL = "YYYYY";
+export const SLACK_CHANNEL_DAY = "ZZZZZZ";
+export const SLACK_CHANNEL_DESIGN = "JJJJJJ";
+export const SLACK_CHANNEL_DEV = "MMMMMMM";
+export const SLACK_CHANNEL_RANDOM = "NNNNNNN";
+export const SLACK_CHANNEL_RESEARCH = "TTTTTTT";
+
+export const TRELLO_TOKEN = "UUUUUUUU";
+export const TRELLO_KEY = "IIIIIIIII";
+
+export const DROPBOX_TOKEN = "DDDDDDDD";
+```
+
+`npm start`
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,57 +29,26 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+### Adding Filters
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**IMPORTANT** - this will likely change.
 
-### `npm run build`
+Read this section if you want to add your own event filters.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+A Streams-filter is a simple object with the following three fields:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+`name` - the name of your filter<br />
+`callback`- a callback function that takes an event, and returns a boolean. True to include the event in the list, false to filter the event out of the list<br />
+`category`- the type (category) of filter to be applied<br />
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Right now, the following categories we support are:
 
-### `npm run eject`
+`identity` and `application`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+##### How are categories used?
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Filtering happens within and between categories. Within a category, we use an OR operation to determine event inclusion. For example, within the single `application` category, you may want to view github and trello events at the same time - in this case, we filter by github OR trello.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+However, bewteen categories we use an AND operation. For example, you may want to view github events triggered by "schwartz10". In this case, we filter by github AND schwartz10.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+So when you are adding a new filter, you can play with what category the filter belongs in to understand how it relates to other filters that are applied at the same time.
