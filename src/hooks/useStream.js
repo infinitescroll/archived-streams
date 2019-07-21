@@ -6,6 +6,7 @@ import {
   requestedStreamEventsError
 } from '../store/actions'
 import mockStreamServer from '../mockStreamsServer'
+import { filterEvents } from '../utils'
 
 export default () => {
   const dispatch = useDispatch()
@@ -27,18 +28,20 @@ export default () => {
 
   const {
     events,
+    filters,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess
   } = useSelector(({ events }) => ({
     events: events.data,
+    filters: events.filters,
     loadingEvents: events.loading,
     loadedEvents: events.loaded,
     loadedEventsSuccess: events.loadedSuccess
   }))
 
   return {
-    events,
+    events: events.filter(filterEvents(filters)),
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess

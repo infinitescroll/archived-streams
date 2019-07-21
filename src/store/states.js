@@ -1,10 +1,11 @@
 export const initialState = {
   events: {
+    data: [],
+    error: {},
+    filters: [],
     loading: false,
     loaded: false,
-    loadedSuccess: false,
-    data: [],
-    error: {}
+    loadedSuccess: false
   }
 }
 
@@ -37,6 +38,14 @@ export const requestedStreamEventsError = (state, error) => {
       loaded: false,
       loadedSuccess: false,
       error
+    }
+  }
+}
+export const appliedFilter = (state, { filter }) => {
+  return {
+    events: {
+      ...state.events,
+      filters: [...state.events.filters, filter]
     }
   }
 }

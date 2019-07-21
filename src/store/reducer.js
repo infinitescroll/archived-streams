@@ -3,14 +3,16 @@ import cloneDeep from 'lodash.clonedeep'
 import {
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
-  REQUESTED_STREAM_EVENTS_ERROR
+  REQUESTED_STREAM_EVENTS_ERROR,
+  APPLY_FILTER
 } from './actionTypes'
 
 import {
   initialState,
   requestedStreamEvents,
   requestedStreamEventsSuccess,
-  requestedStreamEventsError
+  requestedStreamEventsError,
+  appliedFilter
 } from './states'
 
 export const reducer = (state = initialState, action) => {
@@ -23,6 +25,9 @@ export const reducer = (state = initialState, action) => {
     }
     case REQUESTED_STREAM_EVENTS_ERROR: {
       return requestedStreamEventsError(cloneDeep(state), action.error)
+    }
+    case APPLY_FILTER: {
+      return appliedFilter(cloneDeep(state), action.payload)
     }
     default: {
       return cloneDeep(state)
