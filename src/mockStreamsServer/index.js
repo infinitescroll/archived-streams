@@ -38,11 +38,11 @@ class MockStreamsServer {
   fetchEvents = async () => {
     try {
       const allEvents = await Promise.all([
-        ...(await this._fetchGithubEvents()),
-        ...(await this._fetchArenaEvents()),
-        ...(await this._fetchTrelloEvents()),
-        ...(await this._fetchSlackEvents()),
-        ...(await this._fetchDropboxEvents())
+        ...(await this.fetchGithubEvents()),
+        ...(await this.fetchArenaEvents()),
+        ...(await this.fetchTrelloEvents()),
+        ...(await this.fetchSlackEvents()),
+        ...(await this.fetchDropboxEvents())
       ])
       this.database.events = this._sortEvents(allEvents)
       return true
@@ -56,7 +56,7 @@ class MockStreamsServer {
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
-  _fetchGithubEvents = async (page = '0') => {
+  fetchGithubEvents = async (page = '0') => {
     try {
       const { data } = await axios.get(`${GITHUB_EVENTS_ENDPOINT}?per_page=50`)
       return data.map(event => ({
@@ -69,7 +69,7 @@ class MockStreamsServer {
     }
   }
 
-  _fetchArenaEvents = async (page = '0') => {
+  fetchArenaEvents = async (page = '0') => {
     try {
       const {
         data: { contents }
@@ -84,7 +84,7 @@ class MockStreamsServer {
     }
   }
 
-  _fetchTrelloEvents = async () => {
+  fetchTrelloEvents = async () => {
     try {
       const { data } = await axios.get(
         `${TRELLO_ACTIONS_ENDPOINT}/?limit=560&key=${TRELLO_KEY}&token=${TRELLO_TOKEN}`
@@ -99,7 +99,7 @@ class MockStreamsServer {
     }
   }
 
-  _fetchDropboxEvents = async () => {
+  fetchDropboxEvents = async () => {
     try {
       const {
         data: { events }
@@ -125,7 +125,7 @@ class MockStreamsServer {
     }
   }
 
-  _fetchSlackEvents = async () => {
+  fetchSlackEvents = async () => {
     try {
       const {
         data: { messages }
