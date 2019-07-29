@@ -40,3 +40,11 @@ export const AlignItemsColumn = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+export const SubmitButton = styled.button`
+  background-color: BACKGROUND_LIGHT;
+  color: #270e8f;
+  border: 0.25rem solid #270e8f;
+  border-radius: 4px;
+  max-width: 16rem;
+`

@@ -6,6 +6,14 @@ export const initialState = {
     loading: false,
     loaded: false,
     loadedSuccess: false
+  },
+
+  user: {
+    email: '',
+    authedApps: {},
+    loading: false,
+    loaded: false,
+    loadedSuccess: false
   }
 }
 
