@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BACKGROUND_LIGHT } from '../themes'
+import { BACKGROUND_LIGHT, OWL_PURPLE, OWL_TEAL } from '../themes'
 
 export const Header = styled.div`
   background-color: ${BACKGROUND_LIGHT};
@@ -13,7 +13,7 @@ export const Header = styled.div`
 `
 
 export const Title = styled.h1`
-  color: #d677ed;
+  color: ${OWL_PURPLE};
   font-size: 16pt;
   margin-bottom: 60px;
   font-family: 'Avenir';
@@ -42,9 +42,44 @@ export const AlignItemsColumn = styled.div`
 `
 
 export const SubmitButton = styled.button`
-  background-color: BACKGROUND_LIGHT;
-  color: #270e8f;
-  border: 0.25rem solid #270e8f;
-  border-radius: 4px;
-  max-width: 16rem;
+  background-color: ${BACKGROUND_LIGHT};
+  color: #dfeaff;
+  font-size: 1.5rem;
+  border: 0.12rem solid #dfe3ff;
+  border-radius: 2rem;
+  width: 100%;
+  max-width: 32rem;
+  padding: 1rem;
+  margin: 2rem;
+`
+
+export const TextField = styled.input`
+  background-color: #dfe3ff;
+  border: 0.12rem solid ${BACKGROUND_LIGHT};
+  font-size: 1.5rem;
+  border-radius: 2rem;
+  width: 100%;
+  max-width: 32rem;
+  text-align: center;
+  padding: 1rem;
+  margin: 2rem;
+`
+
+export const CenterXY = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+`
+
+export const SignUpAlert = styled.div`
+  text-align: center;
+  background-color: ${BACKGROUND_LIGHT};
+  color: ${OWL_TEAL};
+  border: 0.12rem solid ${OWL_PURPLE};
+  font-size: 1.5rem;
+  border-radius: 2rem;
+  font-family: sans-serif;
+  padding: 1rem;
 `
