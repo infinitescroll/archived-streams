@@ -14,16 +14,12 @@ export default () => {
   useEffect(() => {
     const loadUser = async () => {
       dispatch(requestedUser())
-      const {
-        data: { user }
-      } = await mockApiUserRequest()
-      if (user) {
-        // server returned user
-        console.log('user: ', user)
+      try {
+        const {
+          data: { user }
+        } = await mockApiUserRequest()
         dispatch(requestedUserSuccess(user))
-      } else {
-        // server returned error
-        console.log('user fetch error')
+      } catch (error) {
         dispatch(requestedUserError())
       }
     }
@@ -31,9 +27,6 @@ export default () => {
     const tokenPresentInStorage = getFromStorage(STREAMS_JWT)
     if (tokenPresentInStorage) {
       loadUser()
-    } else {
-      // TODO update some new piece of state to
-      // route user to a page where they can auth apps
     }
   }, [dispatch])
 
