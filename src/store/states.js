@@ -17,8 +17,52 @@ export const initialState = {
   }
 }
 
+export const requestedUser = state => {
+  return {
+    ...state,
+
+    user: {
+      ...state.user,
+      loading: true,
+      loaded: false,
+      loadedSuccess: false
+    }
+  }
+}
+
+export const requestedUserSuccess = (state, payload) => {
+  return {
+    ...state,
+
+    user: {
+      email: payload.user.email,
+      authedApps: {},
+      loading: false,
+      loaded: true,
+      loadedSuccess: true
+    }
+  }
+}
+
+export const requestedUserError = (state, error) => {
+  return {
+    ...state,
+
+    user: {
+      email: '',
+      authedApps: {},
+      loading: false,
+      loaded: false,
+      loadedSuccess: false,
+      error
+    }
+  }
+}
+
 export const requestedStreamEvents = state => {
   return {
+    ...state,
+
     events: {
       ...state.events,
       loading: true,
@@ -29,6 +73,8 @@ export const requestedStreamEvents = state => {
 }
 export const requestedStreamEventsSuccess = (state, payload) => {
   return {
+    ...state,
+
     events: {
       ...state.events,
       loading: false,
@@ -40,6 +86,8 @@ export const requestedStreamEventsSuccess = (state, payload) => {
 }
 export const requestedStreamEventsError = (state, error) => {
   return {
+    ...state,
+
     events: {
       ...state.events,
       loading: true,
@@ -51,6 +99,8 @@ export const requestedStreamEventsError = (state, error) => {
 }
 export const appliedFilters = (state, { filters }) => {
   return {
+    ...state,
+
     events: {
       ...state.events,
       filters: new Map([...state.events.filters, ...filters])
@@ -61,6 +111,8 @@ export const appliedFilters = (state, { filters }) => {
 export const removedFilters = (state, { filters }) => {
   filters.forEach(filter => state.events.filters.delete(filter))
   return {
+    ...state,
+
     events: {
       ...state.events,
       filters: new Map([...state.events.filters])
