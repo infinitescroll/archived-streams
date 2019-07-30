@@ -5,6 +5,7 @@ import { Title, Header, AlignItemsRow } from '../styled/components'
 import { EventList } from '../components/events'
 import Filters from '../components/filters'
 import useStream from '../hooks/useStream'
+import axios from 'axios'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
@@ -29,6 +30,23 @@ const Home = () => {
             alt="logo"
           />
         </div>
+        <button
+          onClick={async () => {
+            const jwt = ''
+            const data = await axios.get(
+              'http://localhost:3001/api/v0/auth/github',
+              {
+                headers: {
+                  Authorization: 'Bearer ' + jwt,
+                  'Access-Control-Allow-Origin': '*'
+                }
+              }
+            )
+            console.log(data)
+          }}
+        >
+          auth me bitch
+        </button>
         {loadingEvents && <p>Loading your events.....</p>}
         {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
         {loadedEvents && loadedEventsSuccess && <Filters />}

@@ -25,7 +25,7 @@ export default () => {
       }
     }
 
-    requestStreams()
+    // requestStreams()
   }, [dispatch])
 
   const {
