@@ -16,7 +16,7 @@ const mockApiUserRequest = () =>
           }
         }
       })
-    }, 500)
+    }, 1000)
   })
 
 export default mockApiUserRequest

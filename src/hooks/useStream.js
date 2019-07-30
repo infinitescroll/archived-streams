@@ -12,7 +12,9 @@ import { useFilters } from './'
 export default () => {
   const dispatch = useDispatch()
   const { filters } = useFilters()
-
+  const { loadedUser } = useSelector(({ user }) => ({
+    loadedUser: user.loaded
+  }))
   useEffect(() => {
     document.body.classList.add('background-light')
     const requestStreams = async () => {
@@ -24,9 +26,10 @@ export default () => {
         dispatch(requestedStreamEventsError(error))
       }
     }
-
-    requestStreams()
-  }, [dispatch])
+    if (loadedUser) {
+      requestStreams()
+    }
+  }, [dispatch, loadedUser])
 
   const {
     events,
