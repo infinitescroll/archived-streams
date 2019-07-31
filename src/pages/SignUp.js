@@ -18,7 +18,6 @@ function SignUp() {
     event.preventDefault()
 
     const postEmailUrl = `${SERVER_HOST}/${MAGIC_LINK_ENDPOINT}`
-    console.log(submitSuccess, submitError)
     axios
       .post(postEmailUrl, {
         email: email

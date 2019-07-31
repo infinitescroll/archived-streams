@@ -13,7 +13,7 @@ import axios from 'axios'
 export default () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    const loadUser = async () => {
+    const loadUser = async jwt => {
       dispatch(requestedUser())
       try {
         const { data } = await axios.get(
@@ -28,7 +28,7 @@ export default () => {
 
     const jwt = getFromStorage(STREAMS_JWT)
     if (jwt) {
-      loadUser()
+      loadUser(jwt)
     }
   }, [dispatch])
 

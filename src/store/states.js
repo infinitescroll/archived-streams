@@ -38,7 +38,7 @@ export const requestedUserSuccess = (state, payload) => {
     user: {
       email: payload.user.email,
       id: payload.user._id,
-      apps: {},
+      apps: { ...payload.user.apps },
       loading: false,
       loaded: true,
       loadedSuccess: true
@@ -51,8 +51,7 @@ export const requestedUserError = (state, error) => {
     ...state,
 
     user: {
-      email: '',
-      apps: {},
+      ...state.user,
       loading: false,
       loaded: false,
       loadedSuccess: false,
