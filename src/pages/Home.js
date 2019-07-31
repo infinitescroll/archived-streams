@@ -36,7 +36,7 @@ const Home = () => {
           style={{
             marginLeft: '56px',
             marginRight: '28px',
-            width: '100%'
+            maxWidth: '35vw'
           }}
         >
           <Title> Welcome to Streams! </Title>

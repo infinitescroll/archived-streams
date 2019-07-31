@@ -10,8 +10,9 @@ const ArenaTokenInput = () => {
   const handleSubmit = async event => {
     event.preventDefault()
     const jwt = localStorage.getItem(STREAMS_JWT)
-    await axios.get(
+    await axios.put(
       `${SERVER_HOST}/auth/${ARENA}?code=${code}`,
+      {},
       authHeader(jwt)
     )
   }
