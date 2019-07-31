@@ -1,3 +1,5 @@
+import { GITHUB, TRELLO, SLACK, ARENA, DROPBOX } from '../constants'
+
 export const initialState = {
   events: {
     data: [],
@@ -11,7 +13,13 @@ export const initialState = {
   user: {
     email: '',
     id: '',
-    apps: {},
+    apps: {
+      [GITHUB]: {},
+      [TRELLO]: {},
+      [SLACK]: {},
+      [ARENA]: {},
+      [DROPBOX]: {}
+    },
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -38,7 +46,13 @@ export const requestedUserSuccess = (state, payload) => {
     user: {
       email: payload.user.email,
       id: payload.user._id,
-      apps: { ...payload.user.apps },
+      apps: {
+        [GITHUB]: { ...payload.user.apps[GITHUB] },
+        [TRELLO]: { ...payload.user.apps[TRELLO] },
+        [SLACK]: { ...payload.user.apps[SLACK] },
+        [ARENA]: { ...payload.user.apps[ARENA] },
+        [DROPBOX]: { ...payload.user.apps[DROPBOX] }
+      },
       loading: false,
       loaded: true,
       loadedSuccess: true
