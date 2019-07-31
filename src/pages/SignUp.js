@@ -16,17 +16,18 @@ function SignUp() {
 
   const handleSubmit = event => {
     event.preventDefault()
+
     const postEmailUrl = `${SERVER_HOST}/${MAGIC_LINK_ENDPOINT}`
     console.log(submitSuccess, submitError)
     axios
       .post(postEmailUrl, {
         email: email
       })
-      .then(function(response) {
+      .then(() => {
         setSubmitError(false)
         setSubmitSuccess(true)
       })
-      .catch(function(_error) {
+      .catch(() => {
         setSubmitSuccess(false)
         setSubmitError(true)
       })
@@ -52,7 +53,7 @@ function SignUp() {
           <SignUpAlert>
             {' '}
             Ok that didn't work Either your email wasn't an email or our shit is
-            broken and you should pay more for streams so we have time to fix it
+            broken and you should pay more for Streams so we have time to fix it
           </SignUpAlert>
         )}
       </CenterXY>
