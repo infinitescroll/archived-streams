@@ -32,7 +32,7 @@ export const reducer = (state = initialState, action) => {
       return requestedUserSuccess(cloneDeep(state), action.payload)
     }
     case REQUESTED_USER_ERROR: {
-      return requestedUserError(cloneDeep(state))
+      return requestedUserError(cloneDeep(state), action.payload)
     }
     case REQUESTED_STREAM_EVENTS: {
       return requestedStreamEvents(cloneDeep(state))

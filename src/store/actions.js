@@ -24,9 +24,12 @@ export const requestedUserSuccess = user => {
   }
 }
 
-export const requestedUserError = () => {
+export const requestedUserError = err => {
   return {
-    type: REQUESTED_USER_ERROR
+    type: REQUESTED_USER_ERROR,
+    payload: {
+      err
+    }
   }
 }
 

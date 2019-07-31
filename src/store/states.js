@@ -10,7 +10,8 @@ export const initialState = {
 
   user: {
     email: '',
-    authedApps: {},
+    id: '',
+    apps: {},
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -36,7 +37,8 @@ export const requestedUserSuccess = (state, payload) => {
 
     user: {
       email: payload.user.email,
-      authedApps: {},
+      id: payload.user._id,
+      apps: {},
       loading: false,
       loaded: true,
       loadedSuccess: true
@@ -50,7 +52,7 @@ export const requestedUserError = (state, error) => {
 
     user: {
       email: '',
-      authedApps: {},
+      apps: {},
       loading: false,
       loaded: false,
       loadedSuccess: false,

@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { getFromStorage } from '../utils'
-import { STREAMS_JWT } from '../constants'
-import mockApiUserRequest from '../mockApi'
+import { getFromStorage, authHeader } from '../utils'
+import { STREAMS_JWT, SERVER_HOST, MY_USER_ENDPOINT } from '../constants'
+
 import {
   requestedUser,
   requestedUserError,
   requestedUserSuccess
 } from '../store/actions'
+import axios from 'axios'
 
 export default () => {
   const dispatch = useDispatch()
@@ -15,17 +16,18 @@ export default () => {
     const loadUser = async () => {
       dispatch(requestedUser())
       try {
-        const {
-          data: { user }
-        } = await mockApiUserRequest()
-        dispatch(requestedUserSuccess(user))
-      } catch (error) {
-        dispatch(requestedUserError())
+        const { data } = await axios.get(
+          `${SERVER_HOST}/${MY_USER_ENDPOINT}`,
+          authHeader(jwt)
+        )
+        dispatch(requestedUserSuccess(data))
+      } catch (err) {
+        dispatch(requestedUserError(err))
       }
     }
 
-    const tokenPresentInStorage = getFromStorage(STREAMS_JWT)
-    if (tokenPresentInStorage) {
+    const jwt = getFromStorage(STREAMS_JWT)
+    if (jwt) {
       loadUser()
     }
   }, [dispatch])
