@@ -34,8 +34,8 @@ const AppButton = ({ app: { appName, userHasAuthenticated } }) => {
     <MyButton>
       <a href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}>
         {userHasAuthenticated
-          ? `Already authenticated\n${appName}!`
-          : `Authenticate\n${appName}!`}
+          ? `Already integrated\n${appName}!`
+          : `Integrate\n${appName}!`}
       </a>
       {appName === ARENA && !userHasAuthenticated && <ArenaTokenInput />}
     </MyButton>
