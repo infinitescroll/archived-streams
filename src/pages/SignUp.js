@@ -14,22 +14,21 @@ function SignUp() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState(false)
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault()
 
     const postEmailUrl = `${SERVER_HOST}/${MAGIC_LINK_ENDPOINT}`
-    axios
-      .post(postEmailUrl, {
+
+    try {
+      await axios.post(postEmailUrl, {
         email: email
       })
-      .then(() => {
-        setSubmitError(false)
-        setSubmitSuccess(true)
-      })
-      .catch(() => {
-        setSubmitSuccess(false)
-        setSubmitError(true)
-      })
+      setSubmitError(false)
+      setSubmitSuccess(true)
+    } catch (_) {
+      setSubmitSuccess(false)
+      setSubmitError(true)
+    }
   }
 
   return (
