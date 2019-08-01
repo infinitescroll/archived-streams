@@ -5,3 +5,7 @@ export const authHeader = jwt => {
     }
   }
 }
+
+export const generateAuthQueryParams = (queryParam, value) => {
+  return `${queryParam}=${value}`
+}

@@ -40,6 +40,7 @@ export const requestedUser = state => {
 }
 
 export const requestedUserSuccess = (state, payload) => {
+  if (!payload.user.apps) payload.user.apps = {}
   return {
     ...state,
 

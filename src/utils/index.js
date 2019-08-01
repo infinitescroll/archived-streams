@@ -1,3 +1,3 @@
 export * from './filters'
 export * from './storage'
-export * from './authHeader'
+export * from './authHelpers'

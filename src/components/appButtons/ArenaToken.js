@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
-import axios from 'axios'
-
-import { SERVER_HOST, ARENA, STREAMS_JWT } from '../../constants'
-import { authHeader } from '../../utils'
+import useReactRouter from 'use-react-router'
+import { ARENA } from '../../constants'
 
 const ArenaTokenInput = () => {
   const [code, setCode] = useState('')
+  const { history } = useReactRouter()
 
   const handleSubmit = async event => {
     event.preventDefault()
-    const jwt = localStorage.getItem(STREAMS_JWT)
-    await axios.put(
-      `${SERVER_HOST}/auth/${ARENA}?code=${code}`,
-      {},
-      authHeader(jwt)
-    )
+    const arenaAuthUrl = `/authorize/app/${ARENA}?code=${code}`
+    history.replace(arenaAuthUrl)
   }
 
   return (
