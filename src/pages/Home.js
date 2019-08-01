@@ -2,9 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { OWL_LOGO } from '../assets'
-import { Title, Header, AlignItemsRow } from '../styled/components'
+import {
+  Title,
+  Header,
+  AlignItemsRow,
+  CenterXY,
+  AlignItemsColumn
+} from '../styled/components'
 import { EventList } from '../components/events'
 import Filters from '../components/filters'
+import { AppButtonList } from '../components/appButtons'
 import useStream from '../hooks/useStream'
 import useUser from '../hooks/useUser'
 
@@ -28,10 +35,11 @@ const Home = () => {
         <div
           style={{
             marginLeft: '56px',
-            marginRight: '28px'
+            marginRight: '28px',
+            maxWidth: '35vw'
           }}
         >
-          <Title> Welcome to Streams! </Title>{' '}
+          <Title> Welcome to Streams! </Title>
           <img
             src={OWL_LOGO}
             style={{
@@ -40,14 +48,19 @@ const Home = () => {
             }}
             alt="logo"
           />
-        </div>{' '}
-        {loadingUser && <p> Loading user... </p>}{' '}
-        {loadedUser && loadingEvents && <p> Loading your events..... </p>}{' '}
-        {loadedUser && loadedEvents && loadedEventsSuccess && (
-          <EventList events={events} />
-        )}{' '}
-        {loadedUser && loadedEvents && loadedEventsSuccess && <Filters />}{' '}
-      </StreamContainer>{' '}
+        </div>
+        <AlignItemsColumn>
+          <CenterXY>
+            <AppButtonList />
+          </CenterXY>
+          {loadingUser && <p> Loading user... </p>}
+          {loadedUser && loadingEvents && <p> Loading your events..... </p>}
+          {loadedUser && loadedEvents && loadedEventsSuccess && (
+            <EventList events={events} />
+          )}
+          {loadedUser && loadedEvents && loadedEventsSuccess && <Filters />}
+        </AlignItemsColumn>
+      </StreamContainer>
     </Header>
   )
 }
