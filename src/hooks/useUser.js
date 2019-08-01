@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import useReactRouter from 'use-react-router'
+
 import { getFromStorage, authHeader } from '../utils'
 import { STREAMS_JWT, SERVER_HOST, MY_USER_ENDPOINT } from '../constants'
 
@@ -12,6 +14,7 @@ import axios from 'axios'
 
 export default () => {
   const dispatch = useDispatch()
+  const { history } = useReactRouter()
   useEffect(() => {
     const loadUser = async jwt => {
       dispatch(requestedUser())
@@ -29,8 +32,10 @@ export default () => {
     const jwt = getFromStorage(STREAMS_JWT)
     if (jwt) {
       loadUser(jwt)
+    } else {
+      history.replace('/start')
     }
-  }, [dispatch])
+  }, [dispatch, history])
 
   const { loadingUser, loadedUser } = useSelector(({ user }) => ({
     loadingUser: user.loading,
