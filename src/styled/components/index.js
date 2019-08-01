@@ -51,6 +51,7 @@ export const SubmitButton = styled.button`
   max-width: 32rem;
   padding: 1rem;
   margin: 2rem;
+  cursor: pointer;
 `
 
 export const TextField = styled.input`
