@@ -8,7 +8,8 @@ import {
   REMOVE_FILTERS,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
-  REQUESTED_USER_ERROR
+  REQUESTED_USER_ERROR,
+  RETRIEVED_GITHUB_REPOS
 } from './actionTypes'
 
 import {
@@ -20,7 +21,8 @@ import {
   requestedStreamEventsSuccess,
   requestedStreamEventsError,
   appliedFilters,
-  removedFilters
+  removedFilters,
+  retrievedGithubRepos
 } from './states'
 
 export const reducer = (state = initialState, action) => {
@@ -33,6 +35,9 @@ export const reducer = (state = initialState, action) => {
     }
     case REQUESTED_USER_ERROR: {
       return requestedUserError(cloneDeep(state), action.payload)
+    }
+    case RETRIEVED_GITHUB_REPOS: {
+      return retrievedGithubRepos(cloneDeep(state), action.payload)
     }
     case REQUESTED_STREAM_EVENTS: {
       return requestedStreamEvents(cloneDeep(state))

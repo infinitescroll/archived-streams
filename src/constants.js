@@ -6,6 +6,7 @@ import {
 } from './secrets'
 
 export const GITHUB = 'github'
+export const GITHUB_REPOS_ENDPOINT = 'https://api.github.com/user/repos'
 export const TRELLO = 'trello'
 export const ARENA = 'arena'
 export const DROPBOX = 'dropbox'

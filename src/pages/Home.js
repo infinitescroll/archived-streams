@@ -14,6 +14,7 @@ import Filters from '../components/filters'
 import { AppButtonList } from '../components/appButtons'
 import useStream from '../hooks/useStream'
 import useUser from '../hooks/useUser'
+import { useGithubRepos } from '../hooks'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
@@ -29,6 +30,7 @@ const Home = () => {
     loadedEventsSuccess
   } = useStream()
 
+  useGithubRepos()
   return (
     <Header>
       <StreamContainer>

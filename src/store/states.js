@@ -74,7 +74,22 @@ export const requestedUserError = (state, error) => {
     }
   }
 }
+export const retrievedGithubRepos = (state, payload) => {
+  return {
+    ...state,
 
+    user: {
+      ...state.user,
+      apps: {
+        ...state.user.apps,
+        [GITHUB]: {
+          ...state.user.apps[GITHUB],
+          repos: payload.repos
+        }
+      }
+    }
+  }
+}
 export const requestedStreamEvents = state => {
   return {
     ...state,

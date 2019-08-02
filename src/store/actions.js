@@ -6,7 +6,8 @@ import {
   REMOVE_FILTERS,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
-  REQUESTED_USER_ERROR
+  REQUESTED_USER_ERROR,
+  RETRIEVED_GITHUB_REPOS
 } from './actionTypes'
 
 export const requestedUser = () => {
@@ -33,6 +34,14 @@ export const requestedUserError = err => {
   }
 }
 
+export const retrievedGithubRepos = repos => {
+  return {
+    type: RETRIEVED_GITHUB_REPOS,
+    payload: {
+      repos
+    }
+  }
+}
 export const requestedStreamEvents = () => {
   return {
     type: REQUESTED_STREAM_EVENTS
