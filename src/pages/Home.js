@@ -12,9 +12,8 @@ import {
 import { EventList } from '../components/events'
 import Filters from '../components/filters'
 import { AppButtonList } from '../components/appButtons'
-import useStream from '../hooks/useStream'
-import useUser from '../hooks/useUser'
-import { useGithubRepos } from '../hooks'
+import { useAppData, useStream, useUser } from '../hooks'
+import { GITHUB, SLACK } from '../constants'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
@@ -30,7 +29,8 @@ const Home = () => {
     loadedEventsSuccess
   } = useStream()
 
-  useGithubRepos()
+  useAppData(GITHUB)
+  useAppData(SLACK)
   return (
     <Header>
       <StreamContainer>

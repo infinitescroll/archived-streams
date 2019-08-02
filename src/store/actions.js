@@ -7,7 +7,7 @@ import {
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
   REQUESTED_USER_ERROR,
-  RETRIEVED_GITHUB_REPOS
+  RETRIEVED_APP_DATA
 } from './actionTypes'
 
 export const requestedUser = () => {
@@ -34,14 +34,15 @@ export const requestedUserError = err => {
   }
 }
 
-export const retrievedGithubRepos = repos => {
+export const retrievedAppData = data => {
   return {
-    type: RETRIEVED_GITHUB_REPOS,
+    type: RETRIEVED_APP_DATA,
     payload: {
-      repos
+      data
     }
   }
 }
+
 export const requestedStreamEvents = () => {
   return {
     type: REQUESTED_STREAM_EVENTS

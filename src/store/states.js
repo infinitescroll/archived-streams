@@ -74,7 +74,7 @@ export const requestedUserError = (state, error) => {
     }
   }
 }
-export const retrievedGithubRepos = (state, payload) => {
+export const retrievedAppData = (state, payload) => {
   return {
     ...state,
 
@@ -82,14 +82,15 @@ export const retrievedGithubRepos = (state, payload) => {
       ...state.user,
       apps: {
         ...state.user.apps,
-        [GITHUB]: {
-          ...state.user.apps[GITHUB],
-          repos: payload.repos
+        [payload.data.app]: {
+          ...state.user.apps[payload.data.app],
+          data: payload.data.data
         }
       }
     }
   }
 }
+
 export const requestedStreamEvents = state => {
   return {
     ...state,

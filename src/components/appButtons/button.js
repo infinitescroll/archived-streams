@@ -32,11 +32,12 @@ const MyButton = styled.div`
 const AppButton = ({ app: { appName, userHasAuthenticated } }) => {
   return (
     <MyButton>
-      <a href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}>
+      {/* <a href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}>
         {userHasAuthenticated
           ? `Already integrated\n${appName}!`
           : `Integrate\n${appName}!`}
-      </a>
+      </a> */}
+      <a href={APP_AUTH_ENDPOINTS[appName]}>Add {appName}</a>
       {appName === ARENA && !userHasAuthenticated && <ArenaTokenInput />}
     </MyButton>
   )
