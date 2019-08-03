@@ -12,7 +12,7 @@ export default () => {
       <h3>Select which GitHub repos to add to this stream</h3>
       {repos.map(repo => {
         return repo.private ? (
-          <Fragment />
+          <Fragment key={repo.id} />
         ) : (
           <Selection
             name={repo.name}
