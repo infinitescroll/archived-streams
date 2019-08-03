@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { GITHUB } from '../../constants'
 import Selection from './Selection'
@@ -11,9 +11,7 @@ export default () => {
     <div>
       <h3>Select which GitHub repos to add to this stream</h3>
       {repos.map(repo => {
-        return repo.private ? (
-          <Fragment key={repo.id} />
-        ) : (
+        return (
           <Selection
             name={repo.name}
             type="repos"

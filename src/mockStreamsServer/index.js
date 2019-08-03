@@ -29,10 +29,10 @@ class MockStreamsServer {
     return this.database.events
   }
 
-  fetchEvents = async streamSettings => {
+  fetchEvents = async (streamSettings, { githubToken }) => {
     try {
       const allEvents = await Promise.all([
-        ...(await this.fetchGithubEvents(streamSettings.repos)),
+        ...(await this.fetchGithubEvents(streamSettings.repos, githubToken)),
         // ...(await this.fetchArenaEvents()),
         // ...(await this.fetchTrelloEvents()),
         ...(await this.fetchSlackEvents(streamSettings.channels))
@@ -50,11 +50,15 @@ class MockStreamsServer {
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
-  fetchGithubEvents = async repos => {
+  fetchGithubEvents = async (repos, token) => {
     const repoEvents = await Promise.all(
       repos.map(async repo => {
         try {
-          const { data } = await axios.get(`${repo.endpoint}?per_page=50`)
+          const { data } = await axios.get(`${repo.endpoint}?per_page=50`, {
+            headers: {
+              Authorization: `token ${token}`
+            }
+          })
           return data.map(event => ({
             app: GITHUB,
             createdAt: dayjs(event.created_at).format(DATE_FORMAT),
