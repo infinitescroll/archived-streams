@@ -6,7 +6,8 @@ import {
   REMOVE_FILTERS,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
-  REQUESTED_USER_ERROR
+  REQUESTED_USER_ERROR,
+  RETRIEVED_APP_DATA
 } from './actionTypes'
 
 export const requestedUser = () => {
@@ -29,6 +30,15 @@ export const requestedUserError = err => {
     type: REQUESTED_USER_ERROR,
     payload: {
       err
+    }
+  }
+}
+
+export const retrievedAppData = data => {
+  return {
+    type: RETRIEVED_APP_DATA,
+    payload: {
+      data
     }
   }
 }

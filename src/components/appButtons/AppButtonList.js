@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { AlignItemsRow } from '../../styled/components'
-import AppButton from './button'
+import AppButton from './AppButton'
 
 const AppButtonList = () => {
   const apps = useSelector(({ user }) => user.apps)

@@ -74,6 +74,34 @@ export const requestedUserError = (state, error) => {
     }
   }
 }
+export const retrievedAppData = (state, payload) => {
+  let newSingleAppState = {}
+  if (payload.data.app === SLACK) {
+    newSingleAppState = {
+      ...state.user.apps[payload.data.app],
+      channels: payload.data.data.channels
+    }
+  }
+
+  if (payload.data.app === GITHUB) {
+    newSingleAppState = {
+      ...state.user.apps[payload.data.app],
+      repos: payload.data.data
+    }
+  }
+
+  return {
+    ...state,
+
+    user: {
+      ...state.user,
+      apps: {
+        ...state.user.apps,
+        [payload.data.app]: newSingleAppState
+      }
+    }
+  }
+}
 
 export const requestedStreamEvents = state => {
   return {
