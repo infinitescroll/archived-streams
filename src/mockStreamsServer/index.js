@@ -3,7 +3,6 @@ import dayjs from 'dayjs'
 
 import {
   ARENA_ENDPOINT_STREAMS,
-  GITHUB_EVENTS_ENDPOINT,
   TRELLO_ACTIONS_ENDPOINT,
   SLACK_CHANNEL_HISTORY_ENDPOINT,
   DROPBOX_TEAM_LOG_EVENTS_ENDPOINT
@@ -16,13 +15,9 @@ import {
   TRELLO,
   DATE_FORMAT
 } from '../constants'
-import {
-  TRELLO_TOKEN,
-  TRELLO_KEY,
-  SLACK_TOKEN,
-  SLACK_CHANNEL_GENERAL,
-  DROPBOX_TOKEN
-} from '../secrets'
+import { TRELLO_TOKEN, TRELLO_KEY, DROPBOX_TOKEN } from '../secrets'
+
+import { flatten2DArray } from '../utils'
 
 class MockStreamsServer {
   constructor() {
@@ -35,15 +30,16 @@ class MockStreamsServer {
     return this.database.events
   }
 
-  fetchEvents = async () => {
+  fetchEvents = async (streamSettings, user) => {
     try {
       const allEvents = await Promise.all([
-        ...(await this.fetchGithubEvents()),
-        ...(await this.fetchArenaEvents()),
-        ...(await this.fetchTrelloEvents()),
-        ...(await this.fetchSlackEvents()),
-        ...(await this.fetchDropboxEvents())
+        ...(await this.fetchGithubEvents(streamSettings.repos)),
+        // ...(await this.fetchArenaEvents()),
+        // ...(await this.fetchTrelloEvents()),
+        ...(await this.fetchSlackEvents(streamSettings.channels, user))
+        // ...(await this.fetchDropboxEvents())
       ])
+      console.log(allEvents)
       this.database.events = this._sortEvents(allEvents)
       return true
     } catch (error) {
@@ -56,17 +52,24 @@ class MockStreamsServer {
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
-  fetchGithubEvents = async (page = '0') => {
-    try {
-      const { data } = await axios.get(`${GITHUB_EVENTS_ENDPOINT}?per_page=50`)
-      return data.map(event => ({
-        app: GITHUB,
-        createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-        data: event
-      }))
-    } catch (error) {
-      throw new Error(error)
-    }
+  fetchGithubEvents = async repos => {
+    const repoEvents = await Promise.all(
+      repos.map(async repo => {
+        try {
+          const { data } = await axios.get(`${repo.endpoint}?per_page=50`)
+          return data.map(event => ({
+            app: GITHUB,
+            createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+            data: event
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      })
+    )
+
+    return flatten2DArray(repoEvents)
   }
 
   fetchArenaEvents = async (page = '0') => {
@@ -125,21 +128,28 @@ class MockStreamsServer {
     }
   }
 
-  fetchSlackEvents = async () => {
-    try {
-      const {
-        data: { messages }
-      } = await axios.get(
-        `${SLACK_CHANNEL_HISTORY_ENDPOINT}?token=${SLACK_TOKEN}&channel=${SLACK_CHANNEL_GENERAL}&pretty=1&oldest=1563026112`
-      )
-      return messages.map(event => ({
-        app: SLACK,
-        createdAt: dayjs.unix(event.ts.split('.')[0]).format(DATE_FORMAT),
-        data: { ...event, id: event.ts }
-      }))
-    } catch (error) {
-      throw new Error(error)
-    }
+  fetchSlackEvents = async (channels, user) => {
+    const channelEvents = await Promise.all(
+      channels.map(async channel => {
+        try {
+          const {
+            data: { messages }
+          } = await axios.get(
+            `${SLACK_CHANNEL_HISTORY_ENDPOINT}?token=${user.apps[SLACK].accessToken}&channel=${channel.id}&pretty=1&oldest=1563026112`
+          )
+          return messages.map(event => ({
+            app: SLACK,
+            createdAt: dayjs.unix(event.ts.split('.')[0]).format(DATE_FORMAT),
+            data: { ...event, id: event.ts }
+          }))
+        } catch (error) {
+          console.error(error)
+          return []
+        }
+      })
+    )
+
+    return flatten2DArray(channelEvents)
   }
 }
 

@@ -6,8 +6,9 @@ import {
   requestedStreamEventsError
 } from '../store/actions'
 import mockStreamServer from '../mockStreamsServer'
-import { filterEvents } from '../utils'
+import { filterEvents, getFromStorage } from '../utils'
 import { useFilters } from './'
+import { STREAM_SETTINGS } from '../constants'
 
 export default () => {
   const dispatch = useDispatch()
@@ -30,7 +31,10 @@ export default () => {
     document.body.classList.add('background-light')
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
-      await mockStreamServer.fetchEvents()
+      const streamSettings = getFromStorage(STREAM_SETTINGS)
+        ? JSON.parse(getFromStorage(STREAM_SETTINGS))
+        : { repos: [], channels: [] }
+      await mockStreamServer.fetchEvents(streamSettings)
       try {
         dispatch(requestedStreamEventsSuccess(mockStreamServer.getEvents()))
       } catch (error) {
