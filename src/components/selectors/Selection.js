@@ -28,7 +28,7 @@ const Selection = ({ name, type, endpoint }) => {
       <button
         onClick={() => {
           if (!selectionActive) {
-            streamSettings.repos.push({ name, endpoint })
+            streamSettings[type].push({ name, endpoint })
             setInStorage(STREAM_SETTINGS, JSON.stringify(streamSettings))
             setSelectionActive(true)
           }

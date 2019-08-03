@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import {
   ARENA_ENDPOINT_STREAMS,
   TRELLO_ACTIONS_ENDPOINT,
-  SLACK_CHANNEL_HISTORY_ENDPOINT,
   DROPBOX_TEAM_LOG_EVENTS_ENDPOINT
 } from './endpoints'
 import {
@@ -30,16 +29,15 @@ class MockStreamsServer {
     return this.database.events
   }
 
-  fetchEvents = async (streamSettings, user) => {
+  fetchEvents = async streamSettings => {
     try {
       const allEvents = await Promise.all([
         ...(await this.fetchGithubEvents(streamSettings.repos)),
         // ...(await this.fetchArenaEvents()),
         // ...(await this.fetchTrelloEvents()),
-        ...(await this.fetchSlackEvents(streamSettings.channels, user))
+        ...(await this.fetchSlackEvents(streamSettings.channels))
         // ...(await this.fetchDropboxEvents())
       ])
-      console.log(allEvents)
       this.database.events = this._sortEvents(allEvents)
       return true
     } catch (error) {
@@ -128,15 +126,13 @@ class MockStreamsServer {
     }
   }
 
-  fetchSlackEvents = async (channels, user) => {
+  fetchSlackEvents = async channels => {
     const channelEvents = await Promise.all(
       channels.map(async channel => {
         try {
           const {
             data: { messages }
-          } = await axios.get(
-            `${SLACK_CHANNEL_HISTORY_ENDPOINT}?token=${user.apps[SLACK].accessToken}&channel=${channel.id}&pretty=1&oldest=1563026112`
-          )
+          } = await axios.get(channel.endpoint)
           return messages.map(event => ({
             app: SLACK,
             createdAt: dayjs.unix(event.ts.split('.')[0]).format(DATE_FORMAT),
