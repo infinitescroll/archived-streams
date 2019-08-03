@@ -75,6 +75,21 @@ export const requestedUserError = (state, error) => {
   }
 }
 export const retrievedAppData = (state, payload) => {
+  let newSingleAppState = {}
+  if (payload.data.app === SLACK) {
+    newSingleAppState = {
+      ...state.user.apps[payload.data.app],
+      channels: payload.data.data.channels
+    }
+  }
+
+  if (payload.data.app === GITHUB) {
+    newSingleAppState = {
+      ...state.user.apps[payload.data.app],
+      repos: payload.data.data
+    }
+  }
+
   return {
     ...state,
 
@@ -82,10 +97,7 @@ export const retrievedAppData = (state, payload) => {
       ...state.user,
       apps: {
         ...state.user.apps,
-        [payload.data.app]: {
-          ...state.user.apps[payload.data.app],
-          data: payload.data.data
-        }
+        [payload.data.app]: newSingleAppState
       }
     }
   }

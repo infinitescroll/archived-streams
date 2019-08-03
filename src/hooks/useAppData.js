@@ -20,7 +20,7 @@ export default app => {
           APP_DATA_ENDPOINTS[app],
           generateAppParams(app, token)
         )
-        dispatch(retrievedAppData({ app: app, data: data }))
+        dispatch(retrievedAppData({ app, data }))
       } catch (err) {
         throw new Error(err)
       }
