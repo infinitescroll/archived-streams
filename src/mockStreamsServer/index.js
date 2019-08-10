@@ -54,7 +54,7 @@ class MockStreamsServer {
     const repoEvents = await Promise.all(
       repos.map(async repo => {
         try {
-          const { data } = await axios.get(`${repo.endpoint}?per_page=50`)
+          const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
           return data.map(event => ({
             app: GITHUB,
             createdAt: dayjs(event.created_at).format(DATE_FORMAT),
