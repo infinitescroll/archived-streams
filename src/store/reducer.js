@@ -5,20 +5,40 @@ import {
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
   APPLY_FILTERS,
-  REMOVE_FILTERS
+  REMOVE_FILTERS,
+  REQUESTED_USER,
+  REQUESTED_USER_SUCCESS,
+  REQUESTED_USER_ERROR,
+  RETRIEVED_APP_DATA
 } from './actionTypes'
 
 import {
   initialState,
+  requestedUser,
+  requestedUserSuccess,
+  requestedUserError,
   requestedStreamEvents,
   requestedStreamEventsSuccess,
   requestedStreamEventsError,
   appliedFilters,
-  removedFilters
+  removedFilters,
+  retrievedAppData
 } from './states'
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case REQUESTED_USER: {
+      return requestedUser(cloneDeep(state))
+    }
+    case REQUESTED_USER_SUCCESS: {
+      return requestedUserSuccess(cloneDeep(state), action.payload)
+    }
+    case REQUESTED_USER_ERROR: {
+      return requestedUserError(cloneDeep(state), action.payload)
+    }
+    case RETRIEVED_APP_DATA: {
+      return retrievedAppData(cloneDeep(state), action.payload)
+    }
     case REQUESTED_STREAM_EVENTS: {
       return requestedStreamEvents(cloneDeep(state))
     }

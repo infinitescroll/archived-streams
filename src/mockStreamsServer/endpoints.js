@@ -10,7 +10,7 @@ export const TRELLO_ACTIONS_ENDPOINT =
   'https://api.trello.com/1/boards/29nfgjiz/actions'
 
 export const SLACK_CHANNEL_HISTORY_ENDPOINT =
-  'https://slack.com/api/channels.history'
+  'https://slack.com/api/conversations.history'
 
 export const DROPBOX_TEAM_LOG_EVENTS_ENDPOINT =
   'https://api.dropboxapi.com/2/team_log/get_events'

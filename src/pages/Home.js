@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-// import { OWL_LOGO } from '../assets'
-import { Title } from '../styled/components'
-// import { BACKGROUND_LIGHT } from '../styled/themes'
+
+import { AlignItemsRow, CenterXY, AlignItemsColumn } from '../styled/components'
 import { EventList } from '../components/events'
 import Filters from '../components/filters'
-import useStream from '../hooks/useStream'
+import { AppButtonList } from '../components/appButtons'
+import { useAppData, useStream, useUser } from '../hooks'
+import { GITHUB, SLACK } from '../constants'
+import { RepoSelector, SlackChannelSelector } from '../components/selectors'
 
 const StreamContainer = styled.section`
   display: grid;
@@ -13,7 +15,13 @@ const StreamContainer = styled.section`
   background: {BACKGROUND_LIGHT};
 `
 
+const Separator = styled.div`
+  margin: 5%;
+`
+
 const Home = () => {
+  const { loadingUser, loadedUser } = useUser()
+
   const {
     events,
     loadingEvents,
@@ -21,12 +29,26 @@ const Home = () => {
     loadedEventsSuccess
   } = useStream()
 
+  useAppData(GITHUB)
+  useAppData(SLACK)
   return (
     <StreamContainer>
-      <Title>Streams</Title>
-      {loadingEvents && <p>Loading your events.....</p>}
-      {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
-      {loadedEvents && loadedEventsSuccess && <Filters />}
+      <AlignItemsColumn>
+        <CenterXY>
+          <AppButtonList />
+          <AlignItemsRow>
+            <RepoSelector />
+            <Separator />
+            <SlackChannelSelector />
+          </AlignItemsRow>
+        </CenterXY>
+        {loadingUser && <p> Loading user... </p>}
+        {loadedUser && loadingEvents && <p> Loading your events..... </p>}
+        {loadedUser && loadedEvents && loadedEventsSuccess && (
+          <EventList events={events} />
+        )}
+        {loadedUser && loadedEvents && loadedEventsSuccess && <Filters />}
+      </AlignItemsColumn>
     </StreamContainer>
   )
 }
