@@ -2,28 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
-import { GITHUB, TRELLO } from '../../constants'
 
-const calculateUser = (app, data) => {
-  if (app === GITHUB) return data.actor.display_login
-  if (app === TRELLO) return data.memberCreator.fullName
-}
-
-const Event = ({ event: { app, data } }) => {
+const Event = ({ data, type, user }) => {
   return (
     <EventObjectContainer>
       <EventSourceIcon></EventSourceIcon>
-      <EventSource>{app}</EventSource>
-      <EventType>{data.type}</EventType>
+      <EventType>{type}</EventType>
       <EventAuthor>
-        <Link>User: {calculateUser(app, data)}</Link>
+        <Link>User: {user}</Link>
       </EventAuthor>
     </EventObjectContainer>
   )
 }
 
 Event.propTypes = {
-  event: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired
 }
 
 // Our erstwhile event object container! Wraps everything.
@@ -50,12 +45,6 @@ const EventSourceIcon = styled.div`
   height: 24px;
   background: #aaa;
   border-radius: 100px;
-`
-
-// The 3rd party service that's producing the event e.g. GitHub, Slack
-const EventSource = styled.div`
-  grid-area: eventsource;
-  text-transform: uppercase;
 `
 
 // Is it a bird? a plane? A commit message?

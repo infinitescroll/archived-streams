@@ -59,7 +59,8 @@ class MockStreamsServer {
             app: GITHUB,
             createdAt: dayjs(event.created_at).format(DATE_FORMAT),
             data: event,
-            type: event.type
+            type: event.type,
+            user: event.actor.display_login
           }))
         } catch (error) {
           console.error(error)
