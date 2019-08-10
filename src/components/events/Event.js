@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
+import { timeToEmoji } from '../../utils'
 
-const Event = ({ data, type, user }) => {
+const Event = ({ data, type, user, createdAt }) => {
   return (
     <EventObjectContainer>
       <EventSourceIcon></EventSourceIcon>
+      <EventTime>{timeToEmoji(createdAt)}</EventTime>
       <EventType>{type}</EventType>
       <EventAuthor>
         <Link>User: {user}</Link>
@@ -16,6 +18,7 @@ const Event = ({ data, type, user }) => {
 }
 
 Event.propTypes = {
+  createdAt: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired
@@ -33,7 +36,7 @@ const EventObjectContainer = styled.div`
   padding: 0.875rem;
   border-radius: 2px;
   box-shadow: 0px 0px 2px #999;
-  grid-template-areas: 'eventsourceicon eventsource eventtype eventtype eventtype eventtype eventtype eventauthor';
+  grid-template-areas: 'eventsourceicon eventtime eventsource eventtype eventtype eventtype eventtype eventtype eventauthor';
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 const EventSourceIcon = styled.div`
@@ -54,6 +57,10 @@ const EventType = styled.div`
 
 const EventAuthor = styled.div`
   grid-area: eventauthor;
+`
+
+const EventTime = styled.div`
+  grid-area: eventtime;
 `
 
 export default Event

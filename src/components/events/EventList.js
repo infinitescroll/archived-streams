@@ -10,6 +10,7 @@ const EventList = ({ events }) => {
         return (
           <Event
             key={event.data.id}
+            createdAt={event.createdAt}
             data={event.data}
             type={event.type}
             user={event.user}
