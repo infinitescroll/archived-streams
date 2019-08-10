@@ -12,6 +12,7 @@ export const DROPBOX = 'dropbox'
 export const SLACK = 'slack'
 export const STREAMS_USER = 'streams_user'
 export const STREAMS_JWT = 'streams_jwt'
+export const STREAM_SETTINGS = 'stream_settings'
 
 export const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ssZ'
 

@@ -9,7 +9,6 @@ import { generateAppParams } from '../utils'
 export default app => {
   const dispatch = useDispatch()
   const { token } = useSelector(({ user }) => ({
-    loadedUser: user.loaded,
     token: user.apps[app].accessToken
   }))
 

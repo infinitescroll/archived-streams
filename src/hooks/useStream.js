@@ -6,8 +6,9 @@ import {
   requestedStreamEventsError
 } from '../store/actions'
 import mockStreamServer from '../mockStreamsServer'
-import { filterEvents } from '../utils'
+import { filterEvents, getFromStorage } from '../utils'
 import { useFilters } from './'
+import { STREAM_SETTINGS, GITHUB } from '../constants'
 
 export default () => {
   const dispatch = useDispatch()
@@ -17,20 +18,25 @@ export default () => {
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
-    loadedUser
+    loadedUser,
+    githubToken
   } = useSelector(({ events, user }) => ({
     loadedUser: user.loaded,
     events: events.data,
     loadingEvents: events.loading,
     loadedEvents: events.loaded,
-    loadedEventsSuccess: events.loadedSuccess
+    loadedEventsSuccess: events.loadedSuccess,
+    githubToken: user.apps[GITHUB].accessToken || ''
   }))
 
   useEffect(() => {
     document.body.classList.add('background-light')
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
-      await mockStreamServer.fetchEvents()
+      const streamSettings = getFromStorage(STREAM_SETTINGS)
+        ? JSON.parse(getFromStorage(STREAM_SETTINGS))
+        : { repos: [], channels: [] }
+      await mockStreamServer.fetchEvents(streamSettings, { githubToken })
       try {
         dispatch(requestedStreamEventsSuccess(mockStreamServer.getEvents()))
       } catch (error) {
@@ -40,7 +46,7 @@ export default () => {
     if (loadedUser) {
       requestStreams()
     }
-  }, [dispatch, loadedUser])
+  }, [dispatch, githubToken, loadedUser])
 
   return {
     events: events.filter(filterEvents(filters)),

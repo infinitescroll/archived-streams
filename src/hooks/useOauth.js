@@ -38,7 +38,7 @@ const useOauth = () => {
         {},
         authHeader(jwt)
       )
-      history.replace('/')
+      history.push('/')
     }
 
     sendAppTokenToServer(params, app)

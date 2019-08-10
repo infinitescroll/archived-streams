@@ -14,9 +14,14 @@ import Filters from '../components/filters'
 import { AppButtonList } from '../components/appButtons'
 import { useAppData, useStream, useUser } from '../hooks'
 import { GITHUB, SLACK } from '../constants'
+import { RepoSelector, SlackChannelSelector } from '../components/selectors'
 
 const StreamContainer = styled(AlignItemsRow)`
   width: 100vw;
+`
+
+const Separator = styled.div`
+  margin: 5%;
 `
 
 const Home = () => {
@@ -54,6 +59,11 @@ const Home = () => {
         <AlignItemsColumn>
           <CenterXY>
             <AppButtonList />
+            <AlignItemsRow>
+              <RepoSelector />
+              <Separator />
+              <SlackChannelSelector />
+            </AlignItemsRow>
           </CenterXY>
           {loadingUser && <p> Loading user... </p>}
           {loadedUser && loadingEvents && <p> Loading your events..... </p>}
