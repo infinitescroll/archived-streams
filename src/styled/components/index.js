@@ -6,6 +6,7 @@ import {
   OWL_TEAL,
   BR_CREAM,
   DARK_BLUE,
+  BR_LILAC,
   BLUE,
   DARK_LILAC,
   BLUE_TRANSP
@@ -65,28 +66,36 @@ export const AlignItemsColumn = styled.div`
 `
 
 export const SubmitButton = styled.button`
-  background-color: ${BACKGROUND_LIGHT};
-  color: #dfeaff;
+  background-color: ${DARK_BLUE};
+  color: ${BR_LILAC};
   font-size: 1.5rem;
-  border: 0.12rem solid #dfe3ff;
-  border-radius: 2rem;
+  border-radius: 0.25rem;
   width: 100%;
   max-width: 32rem;
   padding: 1rem;
   margin: 2rem;
   cursor: pointer;
+  box-shadow: 0.5rem 0.5rem ${BLUE};
+  border: 1px solid ${BLUE_TRANSP};
+  &:focus {
+    outline: none;
+  }
 `
 
 export const TextField = styled.input`
-  background-color: #dfe3ff;
-  border: 0.12rem solid ${BACKGROUND_LIGHT};
+  background-color: ${BR_LILAC};
+  border: 1px solid ${BLUE_TRANSP};
   font-size: 1.5rem;
-  border-radius: 2rem;
+  border-radius: 0.25rem;
   width: 100%;
   max-width: 32rem;
   text-align: center;
   padding: 1rem;
   margin: 2rem;
+  box-shadow: 0.5rem 0.5rem ${BLUE};
+  &:focus {
+    outline: none;
+  }
 `
 
 export const CenterXY = styled.div`
