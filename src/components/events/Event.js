@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import {
   DARK_PURP,
   DARK_BLUE,
+  MID_BLUE,
   BR_LILAC,
   BLUE,
   BLUE_TRANSP
@@ -83,7 +84,7 @@ const EventType = styled.div`
   font-family: 'Lucida Console', Monaco, monospace;
   padding-right: 2rem;
   & a {
-    color: ${DARK_BLUE};
+    color: ${MID_BLUE};
     text-decoration: none;
     &:hover {
       color: ${BLUE};
