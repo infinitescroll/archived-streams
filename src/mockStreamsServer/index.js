@@ -38,31 +38,29 @@ class MockStreamsServer {
         ...(await this.fetchSlackEvents(streamSettings.channels))
         // ...(await this.fetchDropboxEvents())
       ])
-      this.database.events = this._sortEvents(allEvents)
+      this.database.events = this.sortEvents(allEvents)
       return true
     } catch (error) {
       throw new Error(error)
     }
   }
 
-  _sortEvents = events =>
+  sortEvents = events =>
     events.sort((eventA, eventB) =>
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
-  fetchGithubEvents = async (repos, token) => {
+  fetchGithubEvents = async repos => {
     const repoEvents = await Promise.all(
       repos.map(async repo => {
         try {
-          const { data } = await axios.get(`${repo.endpoint}?per_page=50`, {
-            headers: {
-              Authorization: `token ${token}`
-            }
-          })
+          const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
           return data.map(event => ({
             app: GITHUB,
             createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-            data: event
+            data: event,
+            type: event.type,
+            user: event.actor.display_login
           }))
         } catch (error) {
           console.error(error)

@@ -7,7 +7,15 @@ const EventList = ({ events }) => {
   return (
     <EventListWrapper>
       {events.map(event => {
-        return <Event key={event.data.id} event={event} />
+        return (
+          <Event
+            key={event.data.id}
+            createdAt={event.createdAt}
+            data={event.data}
+            type={event.type}
+            user={event.user}
+          />
+        )
       })}
     </EventListWrapper>
   )

@@ -43,3 +43,18 @@ export const APP_AUTH_PROTOCOL = {
   [ARENA]: OAUTH2,
   [DROPBOX]: OAUTH2
 }
+
+const MORNING = '🌝'
+const NIGHT = '🌚'
+
+const calculateHoursToEmojis = () => {
+  const hoursToEmoji = {}
+  for (let i = 0; i < 24; i++) {
+    const key = i < 10 ? `0${i}` : `${i}`
+    if (i >= 19 || i <= 6) hoursToEmoji[key] = NIGHT
+    else hoursToEmoji[key] = MORNING
+  }
+  return hoursToEmoji
+}
+
+export const hoursToEmoji = calculateHoursToEmojis()

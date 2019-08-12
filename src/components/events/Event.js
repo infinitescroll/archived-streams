@@ -2,28 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
-import { GITHUB, TRELLO } from '../../constants'
+import { timeToEmoji } from '../../utils'
 
-const calculateUser = (app, data) => {
-  if (app === GITHUB) return data.actor.display_login
-  if (app === TRELLO) return data.memberCreator.fullName
-}
-
-const Event = ({ event: { app, data } }) => {
+const Event = ({ data, type, user, createdAt }) => {
   return (
     <EventObjectContainer>
       <EventSourceIcon></EventSourceIcon>
-      <EventSource>{app}</EventSource>
-      <EventType>{data.type}</EventType>
+      <EventTime>{timeToEmoji(createdAt)}</EventTime>
+      <EventType>{type}</EventType>
       <EventAuthor>
-        <Link>User: {calculateUser(app, data)}</Link>
+        <Link>User: {user}</Link>
       </EventAuthor>
     </EventObjectContainer>
   )
 }
 
 Event.propTypes = {
-  event: PropTypes.object.isRequired
+  createdAt: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired
 }
 
 // Our erstwhile event object container! Wraps everything.
@@ -38,7 +36,7 @@ const EventObjectContainer = styled.div`
   padding: 0.875rem;
   border-radius: 2px;
   box-shadow: 0px 0px 2px #999;
-  grid-template-areas: 'eventsourceicon eventsource eventtype eventtype eventtype eventtype eventtype eventauthor';
+  grid-template-areas: 'eventsourceicon eventtime eventsource eventtype eventtype eventtype eventtype eventtype eventauthor';
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 const EventSourceIcon = styled.div`
@@ -52,12 +50,6 @@ const EventSourceIcon = styled.div`
   border-radius: 100px;
 `
 
-// The 3rd party service that's producing the event e.g. GitHub, Slack
-const EventSource = styled.div`
-  grid-area: eventsource;
-  text-transform: uppercase;
-`
-
 // Is it a bird? a plane? A commit message?
 const EventType = styled.div`
   grid-area: eventtype;
@@ -65,6 +57,10 @@ const EventType = styled.div`
 
 const EventAuthor = styled.div`
   grid-area: eventauthor;
+`
+
+const EventTime = styled.div`
+  grid-area: eventtime;
 `
 
 export default Event
