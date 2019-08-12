@@ -2,17 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
-import { timeToEmoji } from '../../utils'
+import { timeToEmoji, getEventMessage } from '../../utils'
+import ReactHtmlParser from 'react-html-parser'
 
 const Event = ({ data, type, user, createdAt }) => {
   return (
     <EventObjectContainer>
-      <EventSourceIcon></EventSourceIcon>
-      <EventTime>{timeToEmoji(createdAt)}</EventTime>
-      <EventType>{type}</EventType>
       <EventAuthor>
-        <Link>User: {user}</Link>
+        <Link>{user}</Link>
       </EventAuthor>
+      <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
+      <EventTime>{timeToEmoji(createdAt)}</EventTime>
     </EventObjectContainer>
   )
 }
@@ -36,19 +36,19 @@ const EventObjectContainer = styled.div`
   padding: 0.875rem;
   border-radius: 2px;
   box-shadow: 0px 0px 2px #999;
-  grid-template-areas: 'eventsourceicon eventtime eventsource eventtype eventtype eventtype eventtype eventtype eventauthor';
+  grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
-const EventSourceIcon = styled.div`
-  grid-area: eventsourceicon;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  background: #aaa;
-  border-radius: 100px;
-`
+// const EventSourceIcon = styled.div`
+//   grid-area: eventsourceicon;
+//   display: flex;
+//   justify-items: center;
+//   align-items: center;
+//   width: 24px;
+//   height: 24px;
+//   background: #aaa;
+//   border-radius: 100px;
+// `
 
 // Is it a bird? a plane? A commit message?
 const EventType = styled.div`
