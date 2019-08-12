@@ -1,6 +1,25 @@
-import styled from 'styled-components'
-import { BACKGROUND_LIGHT, OWL_PURPLE, OWL_TEAL } from '../themes'
+import styled, { createGlobalStyle } from 'styled-components'
 
+import {
+  BACKGROUND_LIGHT,
+  OWL_PURPLE,
+  OWL_TEAL,
+  BR_CREAM,
+  DARK_BLUE,
+  BLUE,
+  DARK_LILAC,
+  BLUE_TRANSP
+} from '../themes'
+
+export const GlobalStyle = createGlobalStyle`
+  html,body {
+    background-color: ${BR_CREAM};
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+`
 export const Header = styled.div`
   background-color: ${BACKGROUND_LIGHT};
   display: flex;
@@ -12,25 +31,26 @@ export const Header = styled.div`
 `
 
 export const Title = styled.h1`
-  color: ${OWL_PURPLE};
-  font-size: 16pt;
-  margin-bottom: 60px;
-  font-family: 'system-ui', Helvetica Neue, sans-serif;
-  font-weight: 900;
-  letter-space: 0.5pt;
-  font-size 1.5rem;
-  justify-self: center;
+  color: ${DARK_LILAC};
+  font-family: Futura, Segoe UI, 'system-ui', sans-serif;
+  font-size: 6rem;
+  letter-spacing: 1rem;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  width: 70%;
+  text-shadow: 0.75rem 0rem ${BLUE_TRANSP};
 `
 
 export const Link = styled.a`
-  color: #e85223;
+  color: ${DARK_BLUE};
   text-decoration: none;
-  font-family: 'system-ui', Helvetica Neue, sans-serif;
   letter-spacing: 0.5pt;
   cursor: pointer;
 
-  :hover {
-    color: #2659ff;
+  &:hover {
+    color: ${BLUE};
+    text-decoration: underline;
   }
 `
 
