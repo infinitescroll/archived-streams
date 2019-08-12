@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
+import dayjs from 'dayjs'
+
 import {
   DARK_PURP,
   DARK_BLUE,
@@ -13,13 +15,24 @@ import { timeToEmoji, getEventMessage } from '../../utils'
 import ReactHtmlParser from 'react-html-parser'
 
 const Event = ({ data, type, user, createdAt }) => {
+  const time = {
+    day: dayjs(createdAt).format('ddd'),
+    hour: dayjs(createdAt).format('H'),
+    minute: dayjs(createdAt).format('mm')
+  }
+
   return (
     <EventObjectContainer>
       <EventAuthor>
         <Link>{user}</Link>
       </EventAuthor>
       <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-      <EventTime>{timeToEmoji(createdAt)}</EventTime>
+      <EventTime>
+        {timeToEmoji(createdAt)}
+        <TimeHover>
+          {time.day} {time.hour}:{time.minute}
+        </TimeHover>
+      </EventTime>
     </EventObjectContainer>
   )
 }
@@ -97,6 +110,31 @@ const EventTime = styled.div`
   font-size: 0.875rem;
   top: 0.875rem;
   right: 0.875rem;
+
+  & span {
+    display: none;
+  }
+  &:hover span {
+    display: block;
+  }
+`
+
+const TimeHover = styled.span`
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  padding: 0.5rem;
+  z-index: 5;
+  text-align: center;
+
+  color: ${BR_LILAC};
+  background-color: ${DARK_PURP};
+  opacity: 0.8;
+  border-radius: 0.5rem;
+  box-shadow: 3px 3px ${BLUE};
+  font-family: 'Lucida Console', Monaco, monospace;
+
+  width: 5rem;
 `
 
 export default Event
