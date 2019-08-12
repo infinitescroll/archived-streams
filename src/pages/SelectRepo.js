@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import useReactRouter from 'use-react-router'
 
-import { SubmitButton, TextField, CenterXY } from '../styled/components'
+import {
+  SubmitButton,
+  TextField,
+  CenterXY,
+  GlobalStyle
+} from '../styled/components'
 
 export default () => {
   const [gitHubRepoUrl, setGitHubRepoUrl] = useState('')
@@ -13,10 +18,11 @@ export default () => {
   }
   return (
     <form>
+      <GlobalStyle />>
       <CenterXY>
         <TextField
           type="url"
-          placeholder="GitHub repo"
+          placeholder="GitHub repo URL"
           value={gitHubRepoUrl}
           onChange={e => setGitHubRepoUrl(e.target.value)}
         />

@@ -44,15 +44,22 @@ export const APP_AUTH_PROTOCOL = {
   [DROPBOX]: OAUTH2
 }
 
-const MORNING = '🌝'
-const NIGHT = '🌚'
+const MORNING = '⛅️'
+const MIDDAY = '🌤'
+const AFTERNOON = '🌞'
+const EVENING = '🌅'
+const NIGHT = '🌜'
 
 const calculateHoursToEmojis = () => {
   const hoursToEmoji = {}
   for (let i = 0; i < 24; i++) {
     const key = i < 10 ? `0${i}` : `${i}`
-    if (i >= 19 || i <= 6) hoursToEmoji[key] = NIGHT
-    else hoursToEmoji[key] = MORNING
+    if (i >= 21 || i <= 5) hoursToEmoji[key] = NIGHT
+    else if (i >= 6 && i <= 9) hoursToEmoji[key] = MORNING
+    else if (i >= 10 && i <= 13) hoursToEmoji[key] = MIDDAY
+    else if (i >= 14 && i <= 17) hoursToEmoji[key] = AFTERNOON
+    else if (i >= 18 && i <= 20) hoursToEmoji[key] = EVENING
+    else hoursToEmoji[key] = '🤷‍♀️'
   }
   return hoursToEmoji
 }

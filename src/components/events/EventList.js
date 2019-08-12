@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import Event from './Event'
+import { BLUE_TRANSP } from '../../styled/themes'
 
 const EventList = ({ events }) => {
   return (
@@ -26,9 +27,11 @@ EventList.propTypes = {
 }
 
 const EventListWrapper = styled.section`
-  display: grid;
-  grid-template-columns: minmax(320px, 1024px);
+  min-width: 320px;
+  max-width: 960px;
   justify-content: center;
+  justify-self: center;
+  border-left: 0.125rem dashed ${BLUE_TRANSP};
 `
 
 export default EventList

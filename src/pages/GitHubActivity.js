@@ -3,13 +3,14 @@ import useReactRouter from 'use-react-router'
 import styled from 'styled-components'
 import { useGitHubEvents } from '../hooks'
 
-import { Title } from '../styled/components'
+import { Title, GlobalStyle } from '../styled/components'
 import { EventList } from '../components/events'
 
 const StreamContainer = styled.section`
   display: grid;
   grid-column-templates: 1 / -1;
-  background: {BACKGROUND_LIGHT};
+  justify-items: center;
+  width: 100vw;
 `
 
 export default () => {
@@ -26,10 +27,15 @@ export default () => {
   } = useGitHubEvents(owner, repo)
 
   return (
-    <StreamContainer>
-      <Title>Streams</Title>
-      {loadingEvents && <p>Loading your events.....</p>}
-      {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
-    </StreamContainer>
+    <React.Fragment>
+      <GlobalStyle />
+      <StreamContainer>
+        <div>
+          <Title>Streams</Title>
+        </div>
+        {loadingEvents && <p>Loading your events.....</p>}
+        {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+      </StreamContainer>
+    </React.Fragment>
   )
 }

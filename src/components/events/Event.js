@@ -2,17 +2,37 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link } from '../../styled/components'
+import dayjs from 'dayjs'
+
+import {
+  DARK_PURP,
+  DARK_BLUE,
+  BR_LILAC,
+  BLUE,
+  BLUE_TRANSP
+} from '../../styled/themes'
 import { timeToEmoji, getEventMessage } from '../../utils'
 import ReactHtmlParser from 'react-html-parser'
 
 const Event = ({ data, type, user, createdAt }) => {
+  const time = {
+    day: dayjs(createdAt).format('ddd'),
+    hour: dayjs(createdAt).format('H'),
+    minute: dayjs(createdAt).format('mm')
+  }
+
   return (
     <EventObjectContainer>
       <EventAuthor>
         <Link>{user}</Link>
       </EventAuthor>
       <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-      <EventTime>{timeToEmoji(createdAt)}</EventTime>
+      <EventTime>
+        {timeToEmoji(createdAt)}
+        <TimeHover>
+          {time.day} {time.hour}:{time.minute}
+        </TimeHover>
+      </EventTime>
     </EventObjectContainer>
   )
 }
@@ -28,15 +48,21 @@ Event.propTypes = {
 const EventObjectContainer = styled.div`
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 48px 120px 1fr 200px;
+  grid-template-columns: 48px 0.25fr 1fr 10%;
   align-items: center;
   max-width: 1024px;
-  background: #eee;
-  margin: 0.875rem 0rem;
+  background: ${BR_LILAC};
+  margin: 0.875rem;
   padding: 0.875rem;
-  border-radius: 2px;
-  box-shadow: 0px 0px 2px #999;
+  border-radius: 4px;
+  border: solid 1px ${BLUE_TRANSP};
+  box-shadow: -3px 3px ${BLUE};
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
+  contain: paint;
+
+  &:first-child {
+    margin-top: 0;
+  }
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 // const EventSourceIcon = styled.div`
@@ -46,21 +72,69 @@ const EventObjectContainer = styled.div`
 //   align-items: center;
 //   width: 24px;
 //   height: 24px;
-//   background: #aaa;
+//   background: ${BR_LILAC};
 //   border-radius: 100px;
 // `
 
 // Is it a bird? a plane? A commit message?
 const EventType = styled.div`
   grid-area: eventtype;
+  color: ${DARK_PURP};
+  font-family: 'Lucida Console', Monaco, monospace;
+  padding-right: 2rem;
+  & a {
+    color: ${DARK_BLUE};
+    text-decoration: none;
+    &:hover {
+      color: ${BLUE};
+      text-decoration: underline;
+    }
+  }
 `
 
 const EventAuthor = styled.div`
   grid-area: eventauthor;
+  font-weight: bold;
+  font-family: Futura, Segoe UI, 'system-ui', sans-serif;
+  & a {
+    color: ${DARK_BLUE};
+    &:hover {
+      color: ${BLUE};
+      text-decoration: underline;
+    }
+  }
 `
 
 const EventTime = styled.div`
-  grid-area: eventtime;
+  position: absolute;
+  font-size: 0.875rem;
+  top: 0.875rem;
+  right: 0.875rem;
+
+  & span {
+    display: none;
+  }
+  &:hover span {
+    display: block;
+  }
+`
+
+const TimeHover = styled.span`
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  padding: 0.5rem;
+  z-index: 5;
+  text-align: center;
+
+  color: ${BR_LILAC};
+  background-color: ${DARK_PURP};
+  opacity: 0.8;
+  border-radius: 0.5rem;
+  box-shadow: 3px 3px ${BLUE};
+  font-family: 'Lucida Console', Monaco, monospace;
+
+  width: 5rem;
 `
 
 export default Event
