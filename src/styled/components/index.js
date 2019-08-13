@@ -37,8 +37,7 @@ export const Title = styled.h1`
   font-size: 6rem;
   letter-spacing: 1rem;
   text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin: 3rem;
   width: 70%;
   text-shadow: 0.75rem 0rem ${BLUE_TRANSP};
 `

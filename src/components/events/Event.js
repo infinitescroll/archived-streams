@@ -16,10 +16,11 @@ import { timeToEmoji, getEventMessage } from '../../utils'
 import ReactHtmlParser from 'react-html-parser'
 
 const Event = ({ data, type, user, createdAt }) => {
-  const time = {
-    day: dayjs(createdAt).format('ddd'),
-    hour: dayjs(createdAt).format('H'),
-    minute: dayjs(createdAt).format('mm')
+  const time = () => {
+    const day = dayjs(createdAt).format('ddd')
+    const hour = dayjs(createdAt).format('H')
+    const minute = dayjs(createdAt).format('mm')
+    return `${day} ${hour}:${minute}`
   }
 
   return (
@@ -30,9 +31,7 @@ const Event = ({ data, type, user, createdAt }) => {
       <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
       <EventTime>
         {timeToEmoji(createdAt)}
-        <TimeHover>
-          {time.day} {time.hour}:{time.minute}
-        </TimeHover>
+        <TimeHover>{time()}</TimeHover>
       </EventTime>
     </EventObjectContainer>
   )
@@ -49,7 +48,10 @@ Event.propTypes = {
 const EventObjectContainer = styled.div`
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 48px 0.25fr 1fr 10%;
+  grid-template-columns:
+    minmax(5rem, max-content) 3rem auto
+    10%;
+  grid-gap: 1.5rem;
   align-items: center;
   max-width: 1024px;
   background: ${BR_LILAC};
@@ -60,6 +62,7 @@ const EventObjectContainer = styled.div`
   box-shadow: -3px 3px ${BLUE};
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
   contain: paint;
+  font-size: 1.125rem;
 
   &:first-child {
     margin-top: 0;
@@ -108,7 +111,6 @@ const EventAuthor = styled.div`
 
 const EventTime = styled.div`
   position: absolute;
-  font-size: 0.875rem;
   top: 0.875rem;
   right: 0.875rem;
 
@@ -122,11 +124,12 @@ const EventTime = styled.div`
 
 const TimeHover = styled.span`
   position: absolute;
-  top: -50%;
-  right: -50%;
+  top: -40%;
+  right: -40%;
   padding: 0.5rem;
   z-index: 5;
   text-align: center;
+  white-space: nowrap;
 
   color: ${BR_LILAC};
   background-color: ${DARK_PURP};
@@ -135,7 +138,8 @@ const TimeHover = styled.span`
   box-shadow: 3px 3px ${BLUE};
   font-family: 'Lucida Console', Monaco, monospace;
 
-  width: 5rem;
+  min-width: 5rem;
+  width: auto;
 `
 
 export default Event

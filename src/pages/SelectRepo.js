@@ -21,7 +21,7 @@ export default () => {
   }
   return (
     <form>
-      <GlobalStyle />>
+      <GlobalStyle />
       <CenterXY>
         <TextField
           type="url"

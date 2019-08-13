@@ -29,6 +29,7 @@ EventList.propTypes = {
 const EventListWrapper = styled.section`
   min-width: 320px;
   max-width: 960px;
+  width: 100%;
   justify-content: center;
   justify-self: center;
   border-left: 0.125rem dashed ${BLUE_TRANSP};
