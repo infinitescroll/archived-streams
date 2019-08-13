@@ -17,7 +17,7 @@ export default () => {
   const { filters } = useFilters()
 
   const params = new URLSearchParams(location.search)
-  const repoPath = params.get('repo')
+  const repoPath = params.getAll('repo')
   const reconstructedUrl = new URL(
     `https://api.github.com/repos/${repoPath}/events`
   )

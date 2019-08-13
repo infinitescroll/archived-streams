@@ -1,5 +1,4 @@
 export const filterEvents = filters => event => {
-  console.log(filters)
   // if the event was triggered by at least one application in the filter list
   // and came from at least one user in the user list
   // and is of a type from at least one type in the types list
@@ -32,29 +31,9 @@ export const filterEvents = filters => event => {
 }
 
 export const getListOfFiltersFromUrlBar = params => {
-  let appFilters = params.get('applications')
-  let userFilters = params.get('users')
-  let typeFilters = params.get('types')
-
   return {
-    appFilters: appFilters ? appFilters.split(' ') : [],
-    typeFilters: typeFilters ? typeFilters.split(' ') : [],
-    userFilters: userFilters ? userFilters.split(' ') : []
+    appFilters: params.getAll('applications'),
+    typeFilters: params.getAll('type'),
+    userFilters: params.getAll('user')
   }
-}
-
-export const addSearchParam = (filterListFromUrlBar, newFilter, param) => {
-  return `${param}=${[...filterListFromUrlBar, newFilter].join('+')}`
-}
-
-export const removeSearchParam = (
-  filterListFromUrlBar,
-  filterToRemove,
-  param
-) => {
-  const newFilterList = filterListFromUrlBar.filter(
-    filter => !(filter === filterToRemove)
-  )
-  if (newFilterList.length === 0) return `${param}=null`
-  return `${param}=${[...newFilterList].join('+')}`
 }
