@@ -21,13 +21,19 @@ import { flatten2DArray } from '../utils'
 class MockStreamsServer {
   constructor() {
     this.database = {
-      events: []
+      events: [],
+      users: new Set([]),
+      types: new Set([])
     }
   }
 
   getEvents = () => {
     return this.database.events
   }
+
+  getUsers = () => [...this.database.users]
+
+  getTypes = () => [...this.database.types]
 
   fetchEvents = async (streamSettings, { githubToken }) => {
     try {
@@ -55,13 +61,17 @@ class MockStreamsServer {
       repos.map(async repo => {
         try {
           const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
-          return data.map(event => ({
-            app: GITHUB,
-            createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-            data: event,
-            type: event.type,
-            user: event.actor.display_login
-          }))
+          return data.map(event => {
+            this.database.users.add(event.actor.display_login)
+            this.database.types.add(event.type)
+            return {
+              app: GITHUB,
+              createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+              data: event,
+              type: event.type,
+              user: event.actor.display_login
+            }
+          })
         } catch (error) {
           console.error(error)
           return []

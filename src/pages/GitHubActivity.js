@@ -1,30 +1,28 @@
 import React from 'react'
-import useReactRouter from 'use-react-router'
 import styled from 'styled-components'
 import { useGitHubEvents } from '../hooks'
 
-import { Title, GlobalStyle } from '../styled/components'
+import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
 import { EventList } from '../components/events'
+import Filters from '../components/filters'
 
 const StreamContainer = styled.section`
   display: grid;
-  grid-column-templates: 1 / -1;
+  grid-template-columns: 1 / -1;
   justify-items: center;
   width: 100vw;
+  margin-bottom: 3rem;
 `
 
 export default () => {
   const {
-    match: {
-      params: { owner, repo }
-    }
-  } = useReactRouter()
-  const {
     events,
     loadingEvents,
     loadedEvents,
-    loadedEventsSuccess
-  } = useGitHubEvents(owner, repo)
+    loadedEventsSuccess,
+    users,
+    types
+  } = useGitHubEvents()
 
   return (
     <React.Fragment>
@@ -33,8 +31,13 @@ export default () => {
         <div>
           <Title>Streams</Title>
         </div>
-        {loadingEvents && <p>Loading your events.....</p>}
-        {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+        <ViewContainer>
+          {loadingEvents && <Link>Loading your events.....</Link>}
+          {loadedEvents && loadedEventsSuccess && (
+            <Filters users={users} types={types} />
+          )}
+          {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+        </ViewContainer>
       </StreamContainer>
     </React.Fragment>
   )

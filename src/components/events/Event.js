@@ -15,41 +15,15 @@ import {
 import { timeToEmoji, getEventMessage } from '../../utils'
 import ReactHtmlParser from 'react-html-parser'
 
-const Event = ({ data, type, user, createdAt }) => {
-  const time = {
-    day: dayjs(createdAt).format('ddd'),
-    hour: dayjs(createdAt).format('H'),
-    minute: dayjs(createdAt).format('mm')
-  }
-
-  return (
-    <EventObjectContainer>
-      <EventAuthor>
-        <Link>{user}</Link>
-      </EventAuthor>
-      <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-      <EventTime>
-        {timeToEmoji(createdAt)}
-        <TimeHover>
-          {time.day} {time.hour}:{time.minute}
-        </TimeHover>
-      </EventTime>
-    </EventObjectContainer>
-  )
-}
-
-Event.propTypes = {
-  createdAt: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
-  user: PropTypes.string.isRequired
-}
-
 // Our erstwhile event object container! Wraps everything.
-const EventObjectContainer = styled.div`
+export const EventObjectContainer = styled.div`
+  position: relative;
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 48px 0.25fr 1fr 10%;
+  grid-template-columns:
+    minmax(5rem, max-content) 3rem auto
+    10%;
+  grid-gap: 1.5rem;
   align-items: center;
   max-width: 1024px;
   background: ${BR_LILAC};
@@ -59,11 +33,7 @@ const EventObjectContainer = styled.div`
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
-  contain: paint;
-
-  &:first-child {
-    margin-top: 0;
-  }
+  font-size: 1.125rem;
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 // const EventSourceIcon = styled.div`
@@ -78,7 +48,7 @@ const EventObjectContainer = styled.div`
 // `
 
 // Is it a bird? a plane? A commit message?
-const EventType = styled.div`
+export const EventType = styled.div`
   grid-area: eventtype;
   color: ${DARK_PURP};
   font-family: 'Lucida Console', Monaco, monospace;
@@ -108,7 +78,6 @@ const EventAuthor = styled.div`
 
 const EventTime = styled.div`
   position: absolute;
-  font-size: 0.875rem;
   top: 0.875rem;
   right: 0.875rem;
 
@@ -122,11 +91,12 @@ const EventTime = styled.div`
 
 const TimeHover = styled.span`
   position: absolute;
-  top: -50%;
-  right: -50%;
+  top: -30%;
+  right: -30%;
   padding: 0.5rem;
   z-index: 5;
   text-align: center;
+  white-space: nowrap;
 
   color: ${BR_LILAC};
   background-color: ${DARK_PURP};
@@ -135,7 +105,55 @@ const TimeHover = styled.span`
   box-shadow: 3px 3px ${BLUE};
   font-family: 'Lucida Console', Monaco, monospace;
 
-  width: 5rem;
+  min-width: 5rem;
+  width: auto;
 `
+export const Event = ({ data, type, user, createdAt }) => {
+  const time = () => {
+    const day = dayjs(createdAt).format('ddd')
+    const hour = dayjs(createdAt).format('H')
+    const minute = dayjs(createdAt).format('mm')
+    return `${day} ${hour}:${minute}`
+  }
 
-export default Event
+  return (
+    <EventObjectContainer>
+      <EventAuthor>
+        <Link>{user}</Link>
+      </EventAuthor>
+      <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
+      <EventTime>
+        {timeToEmoji(createdAt)}
+        <TimeHover>{time()}</TimeHover>
+      </EventTime>
+    </EventObjectContainer>
+  )
+}
+
+Event.propTypes = {
+  createdAt: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired
+}
+
+const EventLabelContainer = styled(EventObjectContainer)`
+  margin-top: 3rem;
+  background: none;
+  border: none;
+  border: 2px dashed ${BLUE_TRANSP};
+  box-shadow: none;
+`
+export const EventColumns = () => {
+  return (
+    <EventLabelContainer>
+      <EventAuthor>
+        <Link>[ user ]</Link>
+      </EventAuthor>
+      <EventType>[ event type ]</EventType>
+      <EventTime>
+        ⏰<TimeHover>[ time ]</TimeHover>
+      </EventTime>
+    </EventLabelContainer>
+  )
+}

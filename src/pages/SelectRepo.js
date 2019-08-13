@@ -14,11 +14,14 @@ export default () => {
 
   const handleSubmit = async event => {
     event.preventDefault()
-    history.push(`/github${new URL(gitHubRepoUrl).pathname}`)
+    const path = new URL(gitHubRepoUrl).pathname.split('/')
+    const params = new URLSearchParams()
+    params.set('repo', `${path[1]}/${path[2]}`)
+    history.push(`/github?${params}`)
   }
   return (
     <form>
-      <GlobalStyle />>
+      <GlobalStyle />
       <CenterXY>
         <TextField
           type="url"

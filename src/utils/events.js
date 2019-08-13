@@ -1,6 +1,7 @@
 export const getEventMessage = data => {
   if (data.type === 'PushEvent') {
     const size = data.payload.size
+    if (size === 0) return 'Interesting git maneuver performed here.'
     let htmlUrl = data.payload.commits[0].url
     htmlUrl = htmlUrl.replace('api.', '')
     htmlUrl = htmlUrl.replace('/repos', '')

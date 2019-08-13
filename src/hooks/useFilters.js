@@ -1,13 +1,9 @@
 import { useEffect, useCallback } from 'react'
+import isequal from 'lodash.isequal'
 import { useSelector, useDispatch } from 'react-redux'
 import useReactRouter from 'use-react-router'
-import { applyFilters, removeFilters } from '../store/actions'
-import {
-  filterMap,
-  getListOfFiltersFromUrlBar,
-  addSearchParam,
-  removeSearchParam
-} from '../utils'
+import { applyFilterSet } from '../store/actions'
+import { getListOfFiltersFromUrlBar } from '../utils'
 
 export default () => {
   const filters = useSelector(({ events }) => events.filters)
@@ -16,45 +12,67 @@ export default () => {
 
   const dispatch = useDispatch()
 
-  const filterEventsByApp = useCallback(
-    app => {
-      const params = new URLSearchParams(search)
-      const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
-      const newSearchParams = addSearchParam(filterListFromUrlBar, app)
-      history.replace(`${pathname}?${newSearchParams}`)
+  const dispatchNewFilterSet = useCallback(
+    params => {
+      const {
+        appFilters,
+        userFilters,
+        typeFilters
+      } = getListOfFiltersFromUrlBar(params)
 
-      const filter = filterMap.get(app)
-      dispatch(applyFilters(new Map([[app, filter]])))
+      const filterSet = {
+        applications: appFilters,
+        users: userFilters,
+        types: typeFilters
+      }
+      dispatch(applyFilterSet(filterSet))
     },
-    [dispatch, history, pathname, search]
+    [dispatch]
   )
 
-  const unfilterEventsByApp = useCallback(
-    app => {
+  const filterEvents = useCallback(
+    (param, value) => {
       const params = new URLSearchParams(search)
-      const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
-      const newSearchParams = removeSearchParam(filterListFromUrlBar, app)
-      history.replace(`${pathname}?${newSearchParams}`)
-
-      dispatch(removeFilters([app]))
+      params.append(param, value)
+      history.replace(`${pathname}?${params}`)
+      dispatchNewFilterSet(params)
     },
-    [dispatch, history, pathname, search]
+    [dispatchNewFilterSet, history, pathname, search]
+  )
+
+  const unfilterEvents = useCallback(
+    (param, value) => {
+      const params = new URLSearchParams(search)
+      const prevFilters = params.getAll(param)
+      params.delete(param)
+      prevFilters.forEach(filter => {
+        if (filter !== value) params.append(param, filter)
+      })
+
+      history.replace(`${pathname}?${params}`)
+      dispatchNewFilterSet(params)
+    },
+    [dispatchNewFilterSet, history, pathname, search]
   )
 
   useEffect(() => {
     const params = new URLSearchParams(search)
-    const filterListFromUrlBar = getListOfFiltersFromUrlBar(params)
-    const filtersFromUrlBar = filterListFromUrlBar.reduce((accum, filter) => {
-      if (filterMap.has(filter) && !filters.has(filter))
-        accum.set(filter, filterMap.get(filter))
-      return accum
-    }, new Map())
-    if (filtersFromUrlBar.size > 0) dispatch(applyFilters(filtersFromUrlBar))
+    const { appFilters, userFilters, typeFilters } = getListOfFiltersFromUrlBar(
+      params
+    )
+
+    const filterSet = {
+      applications: appFilters,
+      users: userFilters,
+      types: typeFilters
+    }
+
+    if (!isequal(filterSet, filters)) dispatch(applyFilterSet(filterSet))
   }, [dispatch, filters, search])
 
   return {
     filters,
-    filterEventsByApp,
-    unfilterEventsByApp
+    filterEvents,
+    unfilterEvents
   }
 }

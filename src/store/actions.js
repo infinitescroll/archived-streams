@@ -2,8 +2,7 @@ import {
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
-  APPLY_FILTERS,
-  REMOVE_FILTERS,
+  APPLY_FILTER_SET,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
   REQUESTED_USER_ERROR,
@@ -65,18 +64,9 @@ export const requestedStreamEventsError = error => {
   }
 }
 
-export const applyFilters = filters => {
+export const applyFilterSet = filters => {
   return {
-    type: APPLY_FILTERS,
-    payload: {
-      filters
-    }
-  }
-}
-
-export const removeFilters = filters => {
-  return {
-    type: REMOVE_FILTERS,
+    type: APPLY_FILTER_SET,
     payload: {
       filters
     }

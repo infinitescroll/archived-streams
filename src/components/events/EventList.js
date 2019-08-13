@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import Event from './Event'
-import { BLUE_TRANSP } from '../../styled/themes'
+import { Event, EventColumns } from './Event'
 
 const EventList = ({ events }) => {
   return (
     <EventListWrapper>
+      <EventColumns />
       {events.map(event => {
         return (
           <Event
@@ -27,11 +27,13 @@ EventList.propTypes = {
 }
 
 const EventListWrapper = styled.section`
-  min-width: 320px;
-  max-width: 960px;
+  width: 100%;
   justify-content: center;
   justify-self: center;
-  border-left: 0.125rem dashed ${BLUE_TRANSP};
+
+  & > :last-of-type {
+    margin-bottom: 3px;
+  }
 `
 
 export default EventList

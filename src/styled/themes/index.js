@@ -6,6 +6,7 @@ export const OWL_PURPLE = '#D677ED'
 // zach colors
 export const BR_CREAM = '#FFFAF7'
 export const BR_LILAC = '#F8F7FF'
+export const BR_PINK = '#FFF7FC'
 export const DARK_LILAC = '#5964B7'
 export const DARK_PURP = '#1B005F'
 export const DARK_BLUE = '#001C9E'
