@@ -1,5 +1,4 @@
 import React from 'react'
-import useReactRouter from 'use-react-router'
 import styled from 'styled-components'
 import { useGitHubEvents } from '../hooks'
 
@@ -15,16 +14,11 @@ const StreamContainer = styled.section`
 
 export default () => {
   const {
-    match: {
-      params: { owner, repo }
-    }
-  } = useReactRouter()
-  const {
     events,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess
-  } = useGitHubEvents(owner, repo)
+  } = useGitHubEvents()
 
   return (
     <React.Fragment>

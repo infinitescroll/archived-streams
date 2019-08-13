@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import useReactRouter from 'use-react-router'
+
 import {
   requestedStreamEvents,
   requestedStreamEventsSuccess,
@@ -7,10 +9,14 @@ import {
 } from '../store/actions'
 import mockStreamServer from '../mockStreamsServer'
 
-export default (owner, repo) => {
+export default () => {
   const [fetched, setFetched] = useState(false)
+  const { location } = useReactRouter()
+
+  const params = new URLSearchParams(location.search)
+  const repoPath = params.get('repo')
   const reconstructedUrl = new URL(
-    `https://api.github.com/repos/${owner}/${repo}/events`
+    `https://api.github.com/repos/${repoPath}/events`
   )
   const dispatch = useDispatch()
 
