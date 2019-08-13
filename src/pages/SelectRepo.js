@@ -15,7 +15,9 @@ export default () => {
   const handleSubmit = async event => {
     event.preventDefault()
     const path = new URL(gitHubRepoUrl).pathname.split('/')
-    history.push(`/github?repo=${path[1]}/${path[2]}`)
+    const params = new URLSearchParams()
+    params.set('repo', `${path[1]}/${path[2]}`)
+    history.push(`/github?${params}`)
   }
   return (
     <form>
