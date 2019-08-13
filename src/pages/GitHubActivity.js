@@ -4,6 +4,7 @@ import { useGitHubEvents } from '../hooks'
 
 import { Title, GlobalStyle } from '../styled/components'
 import { EventList } from '../components/events'
+import Filters from '../components/filters'
 
 const StreamContainer = styled.section`
   display: grid;
@@ -17,7 +18,9 @@ export default () => {
     events,
     loadingEvents,
     loadedEvents,
-    loadedEventsSuccess
+    loadedEventsSuccess,
+    users,
+    types
   } = useGitHubEvents()
 
   return (
@@ -28,6 +31,9 @@ export default () => {
           <Title>Streams</Title>
         </div>
         {loadingEvents && <p>Loading your events.....</p>}
+        {loadedEvents && loadedEventsSuccess && (
+          <Filters users={users} types={types} />
+        )}
         {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
       </StreamContainer>
     </React.Fragment>
