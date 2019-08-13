@@ -1,102 +1,60 @@
-import {
-  GITHUB,
-  TRELLO,
-  SLACK,
-  ARENA,
-  DROPBOX,
-  STREAMS_USER
-} from '../constants'
-
-const APPLICATION_FILTER = 'application'
-const IDENTITY_FILTER = 'identity'
-
-const githubFilterCallback = event => event.app === GITHUB
-const trelloFilterCallback = event => event.app === TRELLO
-const dropboxFilterCallback = event => event.app === DROPBOX
-const slackFilterCallback = event => event.app === SLACK
-const arenaFilterCallback = event => event.app === ARENA
-
-const userFilterCallback = () => true
-
-export const GITHUB_FILTER = {
-  name: GITHUB,
-  callback: githubFilterCallback,
-  category: APPLICATION_FILTER
-}
-export const TRELLO_FILTER = {
-  name: TRELLO,
-  callback: trelloFilterCallback,
-  category: APPLICATION_FILTER
-}
-export const DROPBOX_FILTER = {
-  name: DROPBOX,
-  callback: dropboxFilterCallback,
-  category: APPLICATION_FILTER
-}
-export const SLACK_FILTER = {
-  name: SLACK,
-  callback: slackFilterCallback,
-  category: APPLICATION_FILTER
-}
-export const ARENA_FILTER = {
-  name: ARENA,
-  callback: arenaFilterCallback,
-  category: APPLICATION_FILTER
-}
-
-export const USER_FILTER = {
-  name: STREAMS_USER,
-  callback: userFilterCallback,
-  category: IDENTITY_FILTER
-}
-
-export const filterMap = new Map([
-  [GITHUB, GITHUB_FILTER],
-  [TRELLO, TRELLO_FILTER],
-  [DROPBOX, DROPBOX_FILTER],
-  [SLACK, SLACK_FILTER],
-  [ARENA, ARENA_FILTER],
-  [STREAMS_USER, USER_FILTER]
-])
-
-const includeEventAfterExecutingFilters = (event, ...filterLists) => {
-  let includeEvent = true
-  filterLists.forEach(filtersWithinCategory => {
-    if (filtersWithinCategory.length > 0)
-      includeEvent = filtersWithinCategory.some(([_, filter]) =>
-        filter.callback(event)
-      )
-  })
-  return includeEvent
-}
-
 export const filterEvents = filters => event => {
-  const identityFilters = [...filters].filter(
-    ([_, filter]) => filter.category === IDENTITY_FILTER
-  )
+  console.log(filters)
+  // if the event was triggered by at least one application in the filter list
+  // and came from at least one user in the user list
+  // and is of a type from at least one type in the types list
+  // include it
+  // this is messy and needs to be cleaned up... major
+  const eventTriggeredByFilteredApplication =
+    filters.applications.length > 0
+      ? filters.applications.some(
+          appFilter => event.app.toLowerCase() === appFilter.toLowerCase()
+        )
+      : true
+  const eventCameFromFilteredUser =
+    filters.users.length > 0
+      ? filters.users.some(
+          userFilter => event.user.toLowerCase() === userFilter.toLowerCase()
+        )
+      : true
+  const eventIsOfSpecificType =
+    filters.types.length > 0
+      ? filters.types.some(
+          typeFilter => event.type.toLowerCase() === typeFilter.toLowerCase()
+        )
+      : true
 
-  const appFilters = [...filters].filter(
-    ([_, filter]) => filter.category === APPLICATION_FILTER
+  return (
+    eventTriggeredByFilteredApplication &&
+    eventCameFromFilteredUser &&
+    eventIsOfSpecificType
   )
-
-  return includeEventAfterExecutingFilters(event, appFilters, identityFilters)
 }
 
 export const getListOfFiltersFromUrlBar = params => {
-  const filterListFromUrlBar = params.get('filters')
-  if (!filterListFromUrlBar) return []
+  let appFilters = params.get('applications')
+  let userFilters = params.get('users')
+  let typeFilters = params.get('types')
 
-  return filterListFromUrlBar.split(' ').filter(filter => filterMap.has(filter))
+  return {
+    appFilters: appFilters ? appFilters.split(' ') : [],
+    typeFilters: typeFilters ? typeFilters.split(' ') : [],
+    userFilters: userFilters ? userFilters.split(' ') : []
+  }
 }
 
-export const addSearchParam = (filterListFromUrlBar, newFilter) => {
-  return `filters=${[...filterListFromUrlBar, newFilter].join('+')}`
+export const addSearchParam = (filterListFromUrlBar, newFilter, param) => {
+  return `${param}=${[...filterListFromUrlBar, newFilter].join('+')}`
 }
 
-export const removeSearchParam = (filterListFromUrlBar, filterToRemove) => {
+export const removeSearchParam = (
+  filterListFromUrlBar,
+  filterToRemove,
+  param
+) => {
   const newFilterList = filterListFromUrlBar.filter(
     filter => !(filter === filterToRemove)
   )
-  if (newFilterList.length === 0) return 'filters=null'
-  return `filters=${[...newFilterList].join('+')}`
+  if (newFilterList.length === 0) return `${param}=null`
+  return `${param}=${[...newFilterList].join('+')}`
 }

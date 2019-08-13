@@ -4,7 +4,7 @@ export const initialState = {
   events: {
     data: [],
     error: {},
-    filters: new Map(),
+    filters: {},
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -147,7 +147,7 @@ export const appliedFilters = (state, { filters }) => {
 
     events: {
       ...state.events,
-      filters: new Map([...state.events.filters, ...filters])
+      filters
     }
   }
 }

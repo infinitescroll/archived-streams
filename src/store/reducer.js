@@ -4,8 +4,7 @@ import {
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
-  APPLY_FILTERS,
-  REMOVE_FILTERS,
+  APPLY_FILTER_SET,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
   REQUESTED_USER_ERROR,
@@ -21,7 +20,6 @@ import {
   requestedStreamEventsSuccess,
   requestedStreamEventsError,
   appliedFilters,
-  removedFilters,
   retrievedAppData
 } from './states'
 
@@ -48,11 +46,8 @@ export const reducer = (state = initialState, action) => {
     case REQUESTED_STREAM_EVENTS_ERROR: {
       return requestedStreamEventsError(cloneDeep(state), action.error)
     }
-    case APPLY_FILTERS: {
+    case APPLY_FILTER_SET: {
       return appliedFilters(cloneDeep(state), action.payload)
-    }
-    case REMOVE_FILTERS: {
-      return removedFilters(cloneDeep(state), action.payload)
     }
     default: {
       return cloneDeep(state)

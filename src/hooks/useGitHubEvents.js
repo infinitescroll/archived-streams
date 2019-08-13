@@ -7,11 +7,14 @@ import {
   requestedStreamEventsSuccess,
   requestedStreamEventsError
 } from '../store/actions'
+import { filterEvents } from '../utils'
+import { useFilters } from './'
 import mockStreamServer from '../mockStreamsServer'
 
 export default () => {
   const [fetched, setFetched] = useState(false)
   const { location } = useReactRouter()
+  const { filters } = useFilters()
 
   const params = new URLSearchParams(location.search)
   const repoPath = params.get('repo')
@@ -56,9 +59,11 @@ export default () => {
   }, [dispatch, reconstructedUrl, fetched])
 
   return {
-    events,
+    events: events.filter(filterEvents(filters)),
     loadingEvents,
     loadedEvents,
-    loadedEventsSuccess
+    loadedEventsSuccess,
+    types: mockStreamServer.getTypes(),
+    users: mockStreamServer.getUsers()
   }
 }
