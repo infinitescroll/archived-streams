@@ -15,37 +15,9 @@ import {
 import { timeToEmoji, getEventMessage } from '../../utils'
 import ReactHtmlParser from 'react-html-parser'
 
-const Event = ({ data, type, user, createdAt }) => {
-  const time = () => {
-    const day = dayjs(createdAt).format('ddd')
-    const hour = dayjs(createdAt).format('H')
-    const minute = dayjs(createdAt).format('mm')
-    return `${day} ${hour}:${minute}`
-  }
-
-  return (
-    <EventObjectContainer>
-      <EventAuthor>
-        <Link>{user}</Link>
-      </EventAuthor>
-      <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-      <EventTime>
-        {timeToEmoji(createdAt)}
-        <TimeHover>{time()}</TimeHover>
-      </EventTime>
-    </EventObjectContainer>
-  )
-}
-
-Event.propTypes = {
-  createdAt: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired,
-  user: PropTypes.string.isRequired
-}
-
 // Our erstwhile event object container! Wraps everything.
-const EventObjectContainer = styled.div`
+export const EventObjectContainer = styled.div`
+  position: relative;
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns:
@@ -61,12 +33,7 @@ const EventObjectContainer = styled.div`
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
-  contain: paint;
   font-size: 1.125rem;
-
-  &:first-child {
-    margin-top: 0;
-  }
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 // const EventSourceIcon = styled.div`
@@ -81,7 +48,7 @@ const EventObjectContainer = styled.div`
 // `
 
 // Is it a bird? a plane? A commit message?
-const EventType = styled.div`
+export const EventType = styled.div`
   grid-area: eventtype;
   color: ${DARK_PURP};
   font-family: 'Lucida Console', Monaco, monospace;
@@ -124,8 +91,8 @@ const EventTime = styled.div`
 
 const TimeHover = styled.span`
   position: absolute;
-  top: -40%;
-  right: -40%;
+  top: -30%;
+  right: -30%;
   padding: 0.5rem;
   z-index: 5;
   text-align: center;
@@ -141,5 +108,52 @@ const TimeHover = styled.span`
   min-width: 5rem;
   width: auto;
 `
+export const Event = ({ data, type, user, createdAt }) => {
+  const time = () => {
+    const day = dayjs(createdAt).format('ddd')
+    const hour = dayjs(createdAt).format('H')
+    const minute = dayjs(createdAt).format('mm')
+    return `${day} ${hour}:${minute}`
+  }
 
-export default Event
+  return (
+    <EventObjectContainer>
+      <EventAuthor>
+        <Link>{user}</Link>
+      </EventAuthor>
+      <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
+      <EventTime>
+        {timeToEmoji(createdAt)}
+        <TimeHover>{time()}</TimeHover>
+      </EventTime>
+    </EventObjectContainer>
+  )
+}
+
+Event.propTypes = {
+  createdAt: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  user: PropTypes.string.isRequired
+}
+
+const EventLabelContainer = styled(EventObjectContainer)`
+  margin-top: 3rem;
+  background: none;
+  border: none;
+  border: 2px dashed ${BLUE_TRANSP};
+  box-shadow: none;
+`
+export const EventColumns = () => {
+  return (
+    <EventLabelContainer>
+      <EventAuthor>
+        <Link>[ user ]</Link>
+      </EventAuthor>
+      <EventType>[ event type ]</EventType>
+      <EventTime>
+        ⏰<TimeHover>[ time ]</TimeHover>
+      </EventTime>
+    </EventLabelContainer>
+  )
+}

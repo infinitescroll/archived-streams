@@ -35,6 +35,7 @@ export const Title = styled.h1`
   color: ${DARK_LILAC};
   font-family: Futura, Segoe UI, 'system-ui', sans-serif;
   font-size: 6rem;
+  font-weight: bold;
   letter-spacing: 1rem;
   text-align: center;
   margin: 3rem;
@@ -62,6 +63,8 @@ export const AlignItemsRow = styled.div`
 export const AlignItemsColumn = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 1.5rem;
+  width: 100%;
 `
 
 export const SubmitButton = styled.button`
@@ -114,4 +117,13 @@ export const SignUpAlert = styled.div`
   border-radius: 2rem;
   font-family: sans-serif;
   padding: 1rem;
+`
+
+export const ViewContainer = styled.div`
+  border-left: 0.125rem dashed ${BLUE_TRANSP};
+  min-width: 320px;
+  max-width: 1024px;
+  width: 98%;
+  justify-content: center;
+  justify-self: center;
 `
