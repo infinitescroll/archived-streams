@@ -25,11 +25,13 @@ export default () => {
       <CenterXY>
         <TextField
           type="url"
-          placeholder="GitHub repo URL"
+          placeholder="Enter GitHub repo URL"
           value={gitHubRepoUrl}
           onChange={e => setGitHubRepoUrl(e.target.value)}
         />
-        <SubmitButton onClick={handleSubmit}>Do it</SubmitButton>
+        <SubmitButton disabled={!gitHubRepoUrl} onClick={handleSubmit}>
+          See events
+        </SubmitButton>
       </CenterXY>
     </form>
   )

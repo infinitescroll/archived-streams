@@ -21,7 +21,8 @@ export default () => {
     loadedEvents,
     loadedEventsSuccess,
     users,
-    types
+    types,
+    repoPath
   } = useGitHubEvents()
 
   return (
@@ -29,7 +30,7 @@ export default () => {
       <GlobalStyle />
       <StreamContainer>
         <div>
-          <Title>Streams</Title>
+          <Title>{repoPath}</Title>
         </div>
         <ViewContainer>
           {loadingEvents && <Link>Loading your events.....</Link>}

@@ -119,7 +119,7 @@ export const Event = ({ data, type, user, createdAt }) => {
   return (
     <EventObjectContainer>
       <EventAuthor>
-        <Link>{user}</Link>
+        <Link href={'https://github.com/' + user}>{user}</Link>
       </EventAuthor>
       <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
       <EventTime>

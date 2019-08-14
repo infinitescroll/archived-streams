@@ -34,13 +34,13 @@ export const Header = styled.div`
 export const Title = styled.h1`
   color: ${DARK_LILAC};
   font-family: Futura, Segoe UI, 'system-ui', sans-serif;
-  font-size: 6rem;
+  font-size: 3rem;
   font-weight: bold;
-  letter-spacing: 1rem;
+  letter-spacing: 0.5rem;
   text-align: center;
-  margin: 3rem;
-  width: 70%;
-  text-shadow: 0.75rem 0rem ${BLUE_TRANSP};
+  margin: 2em 0em;
+  width: 100%;
+  text-shadow: 0.3rem 0rem ${BLUE_TRANSP};
 `
 
 export const Link = styled.a`

@@ -63,6 +63,7 @@ export default () => {
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
+    repoPath,
     types: mockStreamServer.getTypes(),
     users: mockStreamServer.getUsers()
   }
