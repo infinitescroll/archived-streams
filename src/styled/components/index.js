@@ -41,6 +41,7 @@ export const Title = styled.h1`
   margin: 1.5em 0em;
   width: 100%;
   text-shadow: 0.3rem 0rem ${BLUE_TRANSP};
+  transform: scale(1, 1.125);
 `
 
 export const Link = styled.a`
