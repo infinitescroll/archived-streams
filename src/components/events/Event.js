@@ -84,10 +84,6 @@ export const EventObjectContainer = styled.div`
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
   font-size: 1rem;
   cursor: pointer;
-
-  &:active {
-    box-shadow: none;
-  }
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 // const EventSourceIcon = styled.div`

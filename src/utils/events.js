@@ -52,10 +52,9 @@ export const getEventData = data => {
     if (data.payload.commits.length > 1) {
       return (
         <ul style={{ padding: 0 }}>
-          commits:
           {data.payload.commits.map(commit => {
             return (
-              <EventType style={{ padding: '.25rem' }}>
+              <EventType style={{ padding: '.25rem 0' }}>
                 {commit.author.name}: <a href={commit.url}>{commit.message}</a>
               </EventType>
             )
@@ -65,9 +64,25 @@ export const getEventData = data => {
     } else {
       return ``
     }
-  } // else if (data.type === 'PullRequestEvent') {
-  //   return `Pull request ${data.payload.action}: <a href="${data.payload.pull_request.html_url}">${data.payload.pull_request.title}</a>`
-  // } else if (data.type === 'PullRequestReviewCommentEvent') {
+  } else if (data.type === 'PullRequestEvent') {
+    return (
+      <ul style={{ padding: 0 }}>
+        <EventType style={{ padding: '.25rem 0' }}>
+          branch: {data.payload.pull_request.head.ref}
+        </EventType>
+        <EventType style={{ padding: '.25rem 0' }}>
+          number of commits: {data.payload.pull_request.commits}
+        </EventType>
+        {data.payload.pull_request.requested_reviewers.map(reviewer => {
+          return (
+            <EventType style={{ padding: '.25rem 0' }}>
+              reviewer: <a href={reviewer.html_url}>{reviewer.login}</a>
+            </EventType>
+          )
+        })}
+      </ul>
+    )
+  } // else if (data.type === 'PullRequestReviewCommentEvent') {
   //   return `<a href=${data.payload.comment.html_url}>Comment</a> on pull request: ${data.payload.pull_request.title}`
   // } else if (data.type === 'IssuesEvent') {
   //   return `Issue ${data.payload.action}: <a href=${data.payload.issue.html_url}>${data.payload.issue.title}</a>`
