@@ -25,7 +25,7 @@ export const EventObjectContainer = styled.div`
     10%;
   grid-gap: 1.5rem;
   align-items: center;
-  max-width: 1024px;
+  max-width: 960px;
   background: ${BR_LILAC};
   margin: 0.875rem;
   padding: 0.875rem;
@@ -33,7 +33,7 @@ export const EventObjectContainer = styled.div`
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
   grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
-  font-size: 1.125rem;
+  font-size: 1rem;
 `
 // Icon for the EventSource e.g. GitHub, Slack, etc.
 // const EventSourceIcon = styled.div`

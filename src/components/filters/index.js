@@ -32,7 +32,7 @@ const Label = styled.summary`
   color: ${DARK_BLUE};
   font-weight: bold;
   font-family: Futura, Segoe UI, 'system-ui', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   letter-spacing: 0.5pt;
   min-width: max-content;
   white-space: nowrap;
@@ -53,7 +53,7 @@ const FilterDetails = styled.details`
   cursor: pointer;
 `
 const FilterList = styled.div`
-  max-height: 300px;
+  max-height: 15rem;
   overflow: scroll;
 `
 

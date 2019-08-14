@@ -38,7 +38,7 @@ export const Title = styled.h1`
   font-weight: bold;
   letter-spacing: 0.5rem;
   text-align: center;
-  margin: 2em 0em;
+  margin: 1.5em 0em;
   width: 100%;
   text-shadow: 0.3rem 0rem ${BLUE_TRANSP};
 `
@@ -124,7 +124,7 @@ export const SignUpAlert = styled.div`
 export const ViewContainer = styled.div`
   border-left: 0.125rem dashed ${BLUE_TRANSP};
   min-width: 320px;
-  max-width: 1024px;
+  max-width: 960px;
   width: 98%;
   justify-content: center;
   justify-self: center;
