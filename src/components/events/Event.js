@@ -31,7 +31,12 @@ export const Event = ({ data, type, user, createdAt }) => {
       </EventAuthor>
       <div>
         <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-        <EventData style={{ display: dataActive ? 'block' : 'none' }}>
+        <EventData
+          style={{
+            display: dataActive ? 'block' : 'none',
+            marginTop: '1.25rem'
+          }}
+        >
           {getEventData(data)}
         </EventData>
       </div>
