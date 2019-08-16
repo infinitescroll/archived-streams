@@ -38,9 +38,9 @@ export default () => {
           {loadingEvents && <Link>Loading your events.....</Link>}
           {loadedEvents && loadedEventsSuccess && (
             <FiltersContainer>
-              {/* <GroupButton onclick={setGroupType('user')}>
+              <GroupButton onclick={setGroupType('user')}>
                 Group by user
-              </GroupButton> */}
+              </GroupButton>
               <Filters types={types} />
             </FiltersContainer>
           )}
