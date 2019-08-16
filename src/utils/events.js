@@ -67,7 +67,7 @@ export const getEventData = data => {
     }
   } else if (data.type === 'PullRequestEvent') {
     return (
-      <ul style={{ padding: 0 }}>
+      <ul style={{ padding: 0, margin: 0 }}>
         <EventType style={{ padding: '.25rem 0' }}>
           {data.payload.pull_request.body}
         </EventType>

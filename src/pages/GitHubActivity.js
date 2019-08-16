@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useGitHubEvents } from '../hooks'
 
 import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
 import { EventList } from '../components/events'
-import Filters from '../components/filters'
+import Filters, { GroupButton } from '../components/filters'
+import { BR_PINK, DARK_LILAC } from '../styled/themes'
 
 const StreamContainer = styled.section`
   display: grid;
@@ -20,10 +21,11 @@ export default () => {
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
-    users,
     types,
     repoPath
   } = useGitHubEvents()
+
+  const [groupType, setGroupType] = useState('')
 
   return (
     <React.Fragment>
@@ -35,11 +37,31 @@ export default () => {
         <ViewContainer>
           {loadingEvents && <Link>Loading your events.....</Link>}
           {loadedEvents && loadedEventsSuccess && (
-            <Filters users={users} types={types} />
+            <FiltersContainer>
+              {/* <GroupButton onclick={setGroupType('user')}>
+                Group by user
+              </GroupButton> */}
+              <Filters types={types} />
+            </FiltersContainer>
           )}
-          {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+          {loadedEvents && loadedEventsSuccess && (
+            <EventList events={events} grouping={groupType} />
+          )}
         </ViewContainer>
       </StreamContainer>
     </React.Fragment>
   )
 }
+
+const FiltersContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  margin-left: 0.875rem;
+  margin-right: 0.875rem;
+
+  background: ${BR_PINK};
+  border: solid 2px ${DARK_LILAC};
+  border-radius: 4px;
+`
