@@ -8,8 +8,8 @@ import {
   DARK_BLUE,
   BR_LILAC,
   BLUE,
-  DARK_LILAC,
-  BLUE_TRANSP
+  BLUE_TRANSP,
+  DARK_PURP
 } from '../themes'
 
 export const GlobalStyle = createGlobalStyle`
@@ -32,15 +32,16 @@ export const Header = styled.div`
 `
 
 export const Title = styled.h1`
-  color: ${DARK_LILAC};
+  color: ${DARK_PURP};
   font-family: Futura, Segoe UI, 'system-ui', sans-serif;
   font-size: 3rem;
   font-weight: bold;
   letter-spacing: 0.5rem;
   text-align: center;
-  margin: 2em 0em;
+  margin: 1.5em 0em;
   width: 100%;
   text-shadow: 0.3rem 0rem ${BLUE_TRANSP};
+  transform: scale(1, 1.125);
 `
 
 export const Link = styled.a`
@@ -72,8 +73,9 @@ export const SubmitButton = styled.button`
   color: ${BR_LILAC};
   font-size: 1.5rem;
   border-radius: 0.25rem;
-  width: 100%;
-  max-width: 32rem;
+  width: 40%;
+  min-width: 10rem;
+  max-width: 25rem;
   padding: 1rem;
   margin: 2rem;
   cursor: pointer;
@@ -89,8 +91,9 @@ export const TextField = styled.input`
   border: 1px solid ${BLUE_TRANSP};
   font-size: 1.5rem;
   border-radius: 0.25rem;
-  width: 100%;
-  max-width: 32rem;
+  width: 70%;
+  min-width: 10rem;
+  max-width: 25rem;
   text-align: center;
   padding: 1rem;
   margin: 2rem;
@@ -122,7 +125,7 @@ export const SignUpAlert = styled.div`
 export const ViewContainer = styled.div`
   border-left: 0.125rem dashed ${BLUE_TRANSP};
   min-width: 320px;
-  max-width: 1024px;
+  max-width: 960px;
   width: 98%;
   justify-content: center;
   justify-self: center;

@@ -28,8 +28,6 @@ EventList.propTypes = {
 
 const EventListWrapper = styled.section`
   width: 100%;
-  justify-content: center;
-  justify-self: center;
 
   & > :last-of-type {
     margin-bottom: 3px;

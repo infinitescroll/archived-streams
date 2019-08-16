@@ -1,3 +1,7 @@
+import React from 'react'
+// import axios from 'axios'
+import { EventType } from '../components/events/Event'
+
 export const getEventMessage = data => {
   if (data.type === 'PushEvent') {
     const size = data.payload.size
@@ -42,4 +46,81 @@ export const getEventMessage = data => {
     return `Release ${data.payload.action}: <a href=${data.payload.release.html_url}>${data.payload.release.name}</a>`
   }
   return 'Unsupported event. ✨ Come around next week for updates.'
+}
+
+export const getEventData = data => {
+  if (data.type === 'PushEvent') {
+    if (data.payload.commits.length > 1) {
+      return (
+        <ul style={{ padding: 0 }}>
+          {data.payload.commits.map(commit => {
+            return (
+              <EventType style={{ padding: '.25rem 0' }}>
+                {commit.author.name}: <a href={commit.url}>{commit.message}</a>
+              </EventType>
+            )
+          })}
+        </ul>
+      )
+    } else {
+      return ``
+    }
+  } else if (data.type === 'PullRequestEvent') {
+    return (
+      <ul style={{ padding: 0 }}>
+        <EventType style={{ padding: '.25rem 0' }}>
+          {data.payload.pull_request.body}
+        </EventType>
+        <EventType style={{ padding: '.25rem 0' }}>
+          branch: {data.payload.pull_request.head.ref}
+        </EventType>
+        <EventType style={{ padding: '.25rem 0' }}>
+          number of commits: {data.payload.pull_request.commits}
+        </EventType>
+        {data.payload.pull_request.requested_reviewers.map(reviewer => {
+          return (
+            <EventType style={{ padding: '.25rem 0' }}>
+              reviewer: <a href={reviewer.html_url}>{reviewer.login}</a>
+            </EventType>
+          )
+        })}
+      </ul>
+    )
+    // } else if (data.type === 'ReleaseEvent') {
+    //   let url = data.payload.release.url
+    //   try {
+    //     let releaseInfo = axios.get(url).then(() => {
+    //       console.log('GOT IT: ', releaseInfo.body)
+    //       return (
+    //         <EventType>
+    //           <a>{releaseInfo.body}</a>
+    //         </EventType>
+    //       )
+    //     })
+    //   } catch (err) {
+    //     console.log(err)
+    //   }
+  } else if (data.type === 'IssuesEvent') {
+    return (
+      <React.Fragment>
+        <EventType>{data.payload.issue.body}</EventType>
+        <EventType style={{ marginTop: '1.25rem' }}>
+          Labels:{' '}
+          {data.payload.issue.labels.map(label => (
+            <span
+              style={{
+                color: `#${label.color}`,
+                // backgroundColor: DARK_BLUE,
+                marginRight: '1rem'
+              }}
+            >
+              {label.name}
+            </span>
+          ))}
+        </EventType>
+      </React.Fragment>
+    )
+  } else {
+    return <EventType>No metadata to see here :/ maybe next time!</EventType>
+  }
 }
