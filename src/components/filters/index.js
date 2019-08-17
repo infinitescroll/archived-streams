@@ -3,27 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useFilters } from '../../hooks'
 import { AlignItemsColumn } from '../../styled/components'
-import {
-  BLUE_TRANSP,
-  DARK_BLUE,
-  MID_BLUE,
-  BR_CREAM,
-  DARK_LILAC,
-  BR_PINK
-} from '../../styled/themes'
-
-const FiltersContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-
-  margin-left: 0.875rem;
-  margin-right: 0.875rem;
-
-  background: ${BR_PINK};
-  border: solid 2px ${DARK_LILAC};
-  border-radius: 4px;
-`
+import { BLUE_TRANSP, DARK_BLUE, MID_BLUE, BR_CREAM } from '../../styled/themes'
 
 const Label = styled.summary`
   padding-bottom: 0.25rem;
@@ -37,7 +17,7 @@ const Label = styled.summary`
   min-width: max-content;
   white-space: nowrap;
 `
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
   margin: 0.25rem;
   border: 1px solid ${BLUE_TRANSP};
   border-radius: 4px;
@@ -57,77 +37,45 @@ const FilterList = styled.div`
   overflow: scroll;
 `
 
-const Filters = ({ types, users }) => {
+const Filters = ({ types }) => {
   const { filters, filterEvents, unfilterEvents } = useFilters()
 
   return (
-    <FiltersContainer>
-      <AlignItemsColumn>
-        <FilterDetails>
-          <Label>Filter By User:</Label>
-          <FilterList>
-            {users.map(user => {
-              return (
-                <FilterButton
-                  key={user}
-                  style={{
-                    color:
-                      filters.users.indexOf(user) > -1 ? BR_CREAM : MID_BLUE,
-                    backgroundColor:
-                      filters.users.indexOf(user) > -1 ? MID_BLUE : BR_CREAM
-                  }}
-                  onClick={() => {
-                    if (filters.users.indexOf(user) > -1) {
-                      unfilterEvents('user', user)
-                    } else {
-                      filterEvents('user', user)
-                    }
-                  }}
-                >
-                  {user} {filters.users.indexOf(user) > -1 ? ' ✓' : '  '}
-                </FilterButton>
-              )
-            })}
-          </FilterList>
-        </FilterDetails>
-      </AlignItemsColumn>
-      <AlignItemsColumn>
-        <FilterDetails>
-          <Label>Filter By Activity Type:</Label>
-          <FilterList>
-            {types.map(type => {
-              return (
-                <FilterButton
-                  key={type}
-                  style={{
-                    color:
-                      filters.types.indexOf(type) > -1 ? BR_CREAM : MID_BLUE,
-                    backgroundColor:
-                      filters.types.indexOf(type) > -1 ? MID_BLUE : BR_CREAM
-                  }}
-                  onClick={() => {
-                    if (filters.types.indexOf(type) > -1) {
-                      unfilterEvents('type', type)
-                    } else {
-                      filterEvents('type', type)
-                    }
-                  }}
-                >
-                  {type}
-                  {filters.types.indexOf(type) > -1 ? ' ✓' : ''}
-                </FilterButton>
-              )
-            })}
-          </FilterList>
-        </FilterDetails>
-      </AlignItemsColumn>
-    </FiltersContainer>
+    <AlignItemsColumn>
+      <FilterDetails>
+        <Label>Filter By Activity Type:</Label>
+        <FilterList>
+          {types.map(type => {
+            return (
+              <FilterButton
+                key={type}
+                style={{
+                  color: filters.types.indexOf(type) > -1 ? BR_CREAM : MID_BLUE,
+                  backgroundColor:
+                    filters.types.indexOf(type) > -1 ? MID_BLUE : BR_CREAM
+                }}
+                onClick={() => {
+                  if (filters.types.indexOf(type) > -1) {
+                    unfilterEvents('type', type)
+                  } else {
+                    filterEvents('type', type)
+                  }
+                }}
+              >
+                {type}
+                {filters.types.indexOf(type) > -1 ? ' ✓' : ''}
+              </FilterButton>
+            )
+          })}
+        </FilterList>
+      </FilterDetails>
+    </AlignItemsColumn>
   )
 }
 
 Filters.propTypes = {
-  types: PropTypes.array.isRequired,
-  users: PropTypes.array.isRequired
+  types: PropTypes.array.isRequired
 }
 
 export default Filters
+export * from './grouping'
