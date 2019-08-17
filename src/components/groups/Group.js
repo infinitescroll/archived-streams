@@ -8,7 +8,7 @@ import { EventObjectContainer } from '../events/Event'
 import { DATE_FORMAT, GITHUB } from '../../constants'
 import { EventList } from '../events'
 
-const Group = ({ title, endpoint }) => {
+const Group = ({ title, endpoint, group }) => {
   const [open, setOpen] = useState(false)
   const [fetchedData, setFetchedData] = useState(false)
   const [events, setEvents] = useState([])
@@ -19,12 +19,19 @@ const Group = ({ title, endpoint }) => {
         const { data } = await axios.get(`${endpoint}?per_page=25`)
         setEvents(
           data.map(event => {
+            let type
+            if (group === 'issue') {
+              type = event.event
+            } else {
+              type = event.type
+            }
             return {
               app: GITHUB,
               createdAt: dayjs(event.created_at).format(DATE_FORMAT),
               data: event,
-              type: event.event,
-              user: event.actor.login
+              type,
+              user: event.actor.login,
+              id: event.id
             }
           })
         )
@@ -36,18 +43,20 @@ const Group = ({ title, endpoint }) => {
       }
     }
   }
+
   return (
     <GroupContainer onClick={() => handleExpansion()}>
       <h2>{title}</h2>
       <div style={{ display: open ? 'block' : 'none' }}>
-        <EventList events={events} />
+        {open && <EventList events={events} />}
       </div>
     </GroupContainer>
   )
 }
 Group.propTypes = {
   title: PropTypes.string.isRequired,
-  endpoint: PropTypes.string.isRequired
+  endpoint: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired
 }
 const GroupContainer = styled(EventObjectContainer)`
   background: ${BR_PINK};

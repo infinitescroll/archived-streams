@@ -8,7 +8,7 @@ const EventList = ({ events }) => (
     <EventColumns />
     {events.map(event => (
       <Event
-        key={event.data.id}
+        key={event.id}
         createdAt={event.createdAt}
         data={event.data}
         type={event.type}

@@ -69,7 +69,7 @@ export const getEventData = data => {
         <ul style={{ padding: 0 }}>
           {data.payload.commits.map(commit => {
             return (
-              <EventType style={{ padding: '.25rem 0' }}>
+              <EventType key={commit.sha} style={{ padding: '.25rem 0' }}>
                 {commit.author.name}: <a href={commit.url}>{commit.message}</a>
               </EventType>
             )
@@ -93,7 +93,7 @@ export const getEventData = data => {
         </EventType>
         {data.payload.pull_request.requested_reviewers.map(reviewer => {
           return (
-            <EventType style={{ padding: '.25rem 0' }}>
+            <EventType key={reviewer.id} style={{ padding: '.25rem 0' }}>
               reviewer: <a href={reviewer.html_url}>{reviewer.login}</a>
             </EventType>
           )
@@ -122,6 +122,7 @@ export const getEventData = data => {
           Labels:{' '}
           {data.payload.issue.labels.map(label => (
             <span
+              key={label.id}
               style={{
                 color: `#${label.color}`,
                 // backgroundColor: DARK_BLUE,

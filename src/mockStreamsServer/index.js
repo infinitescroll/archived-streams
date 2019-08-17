@@ -101,7 +101,8 @@ class MockStreamsServer {
               createdAt: dayjs(event.created_at).format(DATE_FORMAT),
               data: event,
               type: event.type,
-              user: event.actor.display_login
+              user: event.actor.display_login,
+              id: event.id
             }
           })
         } catch (error) {

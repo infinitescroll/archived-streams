@@ -25,11 +25,15 @@ GroupSelection.propTypes = {
 // return <Group title={event.user} events={events} />
 
 export const IssueGroups = ({ issues }) => {
-  console.log(issues)
   return (
     <div>
       {issues.map(issue => (
-        <Group title={issue.title} endpoint={issue.eventsUrl} />
+        <Group
+          key={issue.id}
+          title={issue.title}
+          endpoint={issue.eventsUrl}
+          group="issue"
+        />
       ))}
     </div>
   )
@@ -40,7 +44,18 @@ IssueGroups.propTypes = {
 }
 
 export const UserGroups = ({ users }) => {
-  return <div>yo</div>
+  return (
+    <div>
+      {users.map(user => (
+        <Group
+          key={user.id}
+          title={user.user}
+          endpoint={user.eventsUrl}
+          group="user"
+        />
+      ))}
+    </div>
+  )
 }
 
 UserGroups.propTypes = {
