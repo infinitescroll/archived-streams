@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useGitHubEvents } from '../hooks'
+import { useGitHubEvents, useGroup } from '../hooks'
 
 import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
 import { EventList } from '../components/events'
-import { GroupSelection } from '../components/groups'
+import { GroupSelection, GroupList } from '../components/groups'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
 
@@ -28,6 +28,8 @@ export default () => {
     repoPath
   } = useGitHubEvents()
 
+  const { groupbyIsActive, group, groupEvents, ungroupEvents } = useGroup()
+
   return (
     <React.Fragment>
       <GlobalStyle />
@@ -39,11 +41,18 @@ export default () => {
           {loadingEvents && <Link>Loading your events.....</Link>}
           {loadedEvents && loadedEventsSuccess && (
             <FiltersContainer>
-              <GroupSelection />
+              <GroupSelection
+                groupEvents={groupEvents}
+                ungroupEvents={ungroupEvents}
+              />
               <Filters types={types} />
             </FiltersContainer>
           )}
-          {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
+          {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
+            <GroupList group={group} />
+          ) : (
+            <EventList events={events} />
+          )}
         </ViewContainer>
       </StreamContainer>
     </React.Fragment>
