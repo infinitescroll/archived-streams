@@ -34,7 +34,7 @@ const AppButton = ({ app: { appName, userHasAuthenticated } }) => {
     <MyButton>
       <a
         target="_blank"
-        rel="noopener"
+        rel="noopener noreferrer"
         href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}
       >
         {userHasAuthenticated

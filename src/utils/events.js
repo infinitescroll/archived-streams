@@ -27,17 +27,17 @@ export const getEventMessage = data => {
 
     return `${size} commit${
       size === 1 ? '' : 's'
-    } pushed: <a target="_blank" rel="noopener" href="${htmlUrl}">${
+    } pushed: <a target="_blank" rel="noopener noreferrer" href="${htmlUrl}">${
       data.payload.commits[0].message
     }</a>${size === 1 ? '' : '...'}`
   } else if (data.type === PULL_REQUEST_EVENT) {
-    return `Pull request ${data.payload.action}: <a target="_blank" rel="noopener" href="${data.payload.pull_request.html_url}">${data.payload.pull_request.title}</a>`
+    return `Pull request ${data.payload.action}: <a target="_blank" rel="noopener noreferrer" href="${data.payload.pull_request.html_url}">${data.payload.pull_request.title}</a>`
   } else if (data.type === PULL_REQUEST_REVIEW_COMMENT_EVENT) {
-    return `<a target="_blank" rel="noopener" href=${data.payload.comment.html_url}>Comment</a> on pull request: ${data.payload.pull_request.title}`
+    return `<a target="_blank" rel="noopener noreferrer" href=${data.payload.comment.html_url}>Comment</a> on pull request: ${data.payload.pull_request.title}`
   } else if (data.type === ISSUES_EVENT) {
-    return `Issue ${data.payload.action}: <a target="_blank" rel="noopener" href=${data.payload.issue.html_url}>${data.payload.issue.title}</a>`
+    return `Issue ${data.payload.action}: <a target="_blank" rel="noopener noreferrer" href=${data.payload.issue.html_url}>${data.payload.issue.title}</a>`
   } else if (data.type === ISSUE_COMMENT_EVENT) {
-    return `<a target="_blank" rel="noopener" href=${data.payload.comment.html_url}>Comment</a> on issue: ${data.payload.issue.title}`
+    return `<a target="_blank" rel="noopener noreferrer" href=${data.payload.comment.html_url}>Comment</a> on issue: ${data.payload.issue.title}`
   } else if (data.type === CREATE_EVENT) {
     if (data.payload.ref_type === 'branch') {
       return `Branch created: ${data.payload.ref}`
@@ -53,11 +53,11 @@ export const getEventMessage = data => {
   } else if (data.type === WATCH_EVENT) {
     return `Repo watched`
   } else if (data.type === FORK_EVENT) {
-    return `Repo <a target="_blank" rel="noopener" href=${data.payload.forkee.html_url}>forked</a>`
+    return `Repo <a target="_blank" rel="noopener noreferrer" href=${data.payload.forkee.html_url}>forked</a>`
   } else if (data.type === MEMBER_EVENT) {
-    return `Member ${data.payload.action}: <a target="_blank" rel="noopener" href=${data.payload.member.html_url}>${data.payload.member.login}</a>`
+    return `Member ${data.payload.action}: <a target="_blank" rel="noopener noreferrer" href=${data.payload.member.html_url}>${data.payload.member.login}</a>`
   } else if (data.type === RELEASE_EVENT) {
-    return `Release ${data.payload.action}: <a target="_blank" rel="noopener" href=${data.payload.release.html_url}>${data.payload.release.name}</a>`
+    return `Release ${data.payload.action}: <a target="_blank" rel="noopener noreferrer" href=${data.payload.release.html_url}>${data.payload.release.name}</a>`
   }
   return 'Unsupported event. ✨ Come around next week for updates.'
 }
@@ -71,7 +71,7 @@ export const getEventData = data => {
             return (
               <EventType key={commit.sha} style={{ padding: '.25rem 0' }}>
                 {commit.author.name}:{' '}
-                <a target="_blank" rel="noopener" href={commit.url}>
+                <a target="_blank" rel="noopener noreferrer" href={commit.url}>
                   {commit.message}
                 </a>
               </EventType>
@@ -98,7 +98,11 @@ export const getEventData = data => {
           return (
             <EventType key={reviewer.id} style={{ padding: '.25rem 0' }}>
               reviewer:{' '}
-              <a target="_blank" rel="noopener" href={reviewer.html_url}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={reviewer.html_url}
+              >
                 {reviewer.login}
               </a>
             </EventType>

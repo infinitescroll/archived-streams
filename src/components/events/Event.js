@@ -29,7 +29,7 @@ export const Event = ({ data, type, user, createdAt }) => {
       <EventAuthor>
         <Link
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           href={'https://github.com/' + user}
         >
           {user}

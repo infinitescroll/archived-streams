@@ -16,7 +16,7 @@ const PullRequestGroup = ({
   assignees
 }) => {
   return (
-    <GroupContainer href={url} target="_blank" rel="noopener">
+    <GroupContainer href={url} target="_blank" rel="noopener noreferrer">
       <h2>
         #{number} {title}
       </h2>
