@@ -23,6 +23,7 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    camelcase: 0,
     'valid-jsdoc': 'error',
     'react/prop-types': 'warn',
     'react-hooks/rules-of-hooks': 'error',
