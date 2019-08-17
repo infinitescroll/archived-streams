@@ -12,13 +12,11 @@ import {
   GITHUB,
   SLACK,
   TRELLO,
-  DATE_FORMAT,
-  ISSUES_EVENT,
-  ISSUE_COMMENT_EVENT
+  DATE_FORMAT
 } from '../constants'
 import { TRELLO_TOKEN, TRELLO_KEY, DROPBOX_TOKEN } from '../secrets'
 
-import { flatten2DArray } from '../utils'
+import { flatten2DArray, groupify } from '../utils'
 
 class MockStreamsServer {
   constructor() {
@@ -26,7 +24,8 @@ class MockStreamsServer {
       events: [],
       users: {},
       types: new Set([]),
-      issues: {}
+      issues: {},
+      pullRequests: {}
     }
   }
 
@@ -73,28 +72,7 @@ class MockStreamsServer {
         try {
           const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
           return data.map(event => {
-            if (
-              event.type === ISSUES_EVENT ||
-              event.type === ISSUE_COMMENT_EVENT
-            ) {
-              const issue = event.payload.issue
-              if (!this.database.issues[issue.id]) {
-                this.database.issues[issue.id] = {
-                  eventsUrl: issue.events_url,
-                  createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-                  title: issue.title,
-                  labels: issue.labels,
-                  id: issue.id
-                }
-              }
-            }
-            if (!this.database.users[event.actor.id]) {
-              this.database.users[event.actor.id] = {
-                eventsUrl: `${event.actor.url}/events`,
-                id: event.actor.id,
-                user: event.actor.display_login
-              }
-            }
+            groupify(this.database, event)
             this.database.types.add(event.type)
             return {
               app: GITHUB,
