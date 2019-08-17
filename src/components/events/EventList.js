@@ -1,26 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { EventColumns } from './Event'
-import { Group } from './group'
-import { groupBy } from '../../utils/groups'
+import { EventColumns, Event } from './Event'
 
-const EventList = ({ events, type }) => {
-  const groupedEvents = groupBy(type, events)
-
-  return (
-    <EventListWrapper>
-      <EventColumns />
-      {groupedEvents.map(events => {
-        return <Group title={events[0].user} events={events} />
-      })}
-    </EventListWrapper>
-  )
-}
+const EventList = ({ events }) => (
+  <EventListWrapper>
+    <EventColumns />
+    {events.map(event => (
+      <Event
+        key={event.data.id}
+        createdAt={event.createdAt}
+        data={event.data}
+        type={event.type}
+        user={event.user}
+      />
+    ))}
+  </EventListWrapper>
+)
 
 EventList.propTypes = {
-  events: PropTypes.array.isRequired,
-  type: PropTypes.string.isRequired
+  events: PropTypes.array.isRequired
 }
 
 const EventListWrapper = styled.section`

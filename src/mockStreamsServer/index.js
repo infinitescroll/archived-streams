@@ -24,7 +24,7 @@ class MockStreamsServer {
   constructor() {
     this.database = {
       events: [],
-      users: new Set([]),
+      users: {},
       types: new Set([]),
       issues: {}
     }
@@ -34,7 +34,8 @@ class MockStreamsServer {
     return this.database.events
   }
 
-  getUsers = () => [...this.database.users]
+  getUsers = () =>
+    Object.keys(this.database.users).map(userId => this.database.users[userId])
 
   getTypes = () => [...this.database.types]
 
@@ -87,7 +88,13 @@ class MockStreamsServer {
                 }
               }
             }
-            this.database.users.add(event.actor.display_login)
+            if (!this.database.users[event.actor.id]) {
+              this.database.users[event.actor.id] = {
+                eventsUrl: `${event.actor.url}/events`,
+                id: event.actor.id,
+                user: event.actor.display_login
+              }
+            }
             this.database.types.add(event.type)
             return {
               app: GITHUB,
