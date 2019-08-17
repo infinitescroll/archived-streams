@@ -5,6 +5,7 @@ export const initialState = {
     data: [],
     error: {},
     filters: {},
+    groupby: '',
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -152,14 +153,24 @@ export const appliedFilters = (state, { filters }) => {
   }
 }
 
-export const removedFilters = (state, { filters }) => {
-  filters.forEach(filter => state.events.filters.delete(filter))
+export const appliedGroup = (state, { group }) => {
   return {
     ...state,
 
     events: {
       ...state.events,
-      filters: new Map([...state.events.filters])
+      groupby: group
+    }
+  }
+}
+
+export const removedGroup = state => {
+  return {
+    ...state,
+
+    events: {
+      ...state.events,
+      groupby: ''
     }
   }
 }

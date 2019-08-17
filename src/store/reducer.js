@@ -1,17 +1,22 @@
 import cloneDeep from 'lodash.clonedeep'
 
 import {
+  APPLY_FILTER_SET,
+  APPLY_GROUP,
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
-  APPLY_FILTER_SET,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
   REQUESTED_USER_ERROR,
-  RETRIEVED_APP_DATA
+  RETRIEVED_APP_DATA,
+  REMOVE_GROUP
 } from './actionTypes'
 
 import {
+  appliedFilters,
+  appliedGroup,
+  removedGroup,
   initialState,
   requestedUser,
   requestedUserSuccess,
@@ -19,7 +24,6 @@ import {
   requestedStreamEvents,
   requestedStreamEventsSuccess,
   requestedStreamEventsError,
-  appliedFilters,
   retrievedAppData
 } from './states'
 
@@ -48,6 +52,12 @@ export const reducer = (state = initialState, action) => {
     }
     case APPLY_FILTER_SET: {
       return appliedFilters(cloneDeep(state), action.payload)
+    }
+    case APPLY_GROUP: {
+      return appliedGroup(cloneDeep(state), action.payload)
+    }
+    case REMOVE_GROUP: {
+      return removedGroup(cloneDeep(state), action.payload)
     }
     default: {
       return cloneDeep(state)
