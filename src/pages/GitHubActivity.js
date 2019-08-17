@@ -17,6 +17,7 @@ const StreamContainer = styled.section`
 export default () => {
   const {
     events,
+    issues,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
@@ -35,7 +36,7 @@ export default () => {
         <ViewContainer>
           {loadingEvents && <Link>Loading your events.....</Link>}
           {loadedEvents && loadedEventsSuccess && (
-            <Filters users={users} types={types} />
+            <Filters users={users} types={types} issues={issues} />
           )}
           {loadedEvents && loadedEventsSuccess && <EventList events={events} />}
         </ViewContainer>

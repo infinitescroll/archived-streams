@@ -60,6 +60,7 @@ export default () => {
 
   return {
     events: events.filter(filterEvents(filters)),
+    issues: mockStreamServer.getIssues(),
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,

@@ -12,7 +12,9 @@ import {
   GITHUB,
   SLACK,
   TRELLO,
-  DATE_FORMAT
+  DATE_FORMAT,
+  ISSUES_EVENT,
+  ISSUE_COMMENT_EVENT
 } from '../constants'
 import { TRELLO_TOKEN, TRELLO_KEY, DROPBOX_TOKEN } from '../secrets'
 
@@ -23,7 +25,8 @@ class MockStreamsServer {
     this.database = {
       events: [],
       users: new Set([]),
-      types: new Set([])
+      types: new Set([]),
+      issues: {}
     }
   }
 
@@ -35,13 +38,20 @@ class MockStreamsServer {
 
   getTypes = () => [...this.database.types]
 
+  getIssues = () =>
+    Object.keys(this.database.issues)
+      .map(issueId => this.database.issues[issueId])
+      .sort((eventA, eventB) =>
+        dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
+      )
+
   fetchEvents = async (streamSettings, { githubToken }) => {
     try {
       const allEvents = await Promise.all([
-        ...(await this.fetchGithubEvents(streamSettings.repos, githubToken)),
+        ...(await this.fetchGithubEvents(streamSettings.repos, githubToken))
         // ...(await this.fetchArenaEvents()),
         // ...(await this.fetchTrelloEvents()),
-        ...(await this.fetchSlackEvents(streamSettings.channels))
+        // ...(await this.fetchSlackEvents(streamSettings.channels))
         // ...(await this.fetchDropboxEvents())
       ])
       this.database.events = this.sortEvents(allEvents)
@@ -62,6 +72,21 @@ class MockStreamsServer {
         try {
           const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
           return data.map(event => {
+            if (
+              event.type === ISSUES_EVENT ||
+              event.type === ISSUE_COMMENT_EVENT
+            ) {
+              const issue = event.payload.issue
+              if (!this.database.issues[issue.id]) {
+                this.database.issues[issue.id] = {
+                  eventsUrl: issue.events_url,
+                  createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+                  title: issue.title,
+                  labels: issue.labels,
+                  id: issue.id
+                }
+              }
+            }
             this.database.users.add(event.actor.display_login)
             this.database.types.add(event.type)
             return {
