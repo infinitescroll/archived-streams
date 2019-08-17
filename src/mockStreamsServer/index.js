@@ -25,7 +25,7 @@ class MockStreamsServer {
       users: {},
       types: new Set([]),
       issues: {},
-      pullRequests: {}
+      pullRequests: []
     }
   }
 
@@ -44,6 +44,11 @@ class MockStreamsServer {
       .sort((eventA, eventB) =>
         dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
       )
+
+  getPullRequests = () =>
+    this.database.pullRequests.sort((prA, prB) =>
+      dayjs(prA.updatedAt).isAfter(dayjs(prB.updatedAt)) ? -1 : 1
+    )
 
   fetchEvents = async (streamSettings, { githubToken }) => {
     try {
@@ -70,8 +75,58 @@ class MockStreamsServer {
     const repoEvents = await Promise.all(
       repos.map(async repo => {
         try {
-          const { data } = await axios.get(`${repo.endpoint}?per_page=500`)
+          const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
+          this.database.pullRequests = await Promise.all(
+            pulls.data.map(
+              async ({
+                title,
+                base: { label },
+                id,
+                number,
+                labels,
+                assignee,
+                assignees,
+                issue_url,
+                body,
+                user,
+                state,
+                updated_at,
+                html_url
+              }) => {
+                const {
+                  data: { comments }
+                } = await axios.get(issue_url)
+                if (!this.database.users[user.id]) {
+                  this.database.users[user.id] = {
+                    eventsUrl: user.events_url,
+                    id: user.id,
+                    user: user.login
+                  }
+                }
+                return {
+                  title,
+                  id,
+                  number,
+                  labels,
+                  assignee,
+                  assignees,
+                  label,
+                  comments,
+                  body,
+                  url: html_url,
+                  user: user.login,
+                  state,
+                  updatedAt: dayjs(updated_at).format(DATE_FORMAT)
+                }
+              }
+            )
+          )
+
+          const { data } = await axios.get(
+            `${repo.endpoint}/events?per_page=500`
+          )
           return data.map(event => {
+            // mutates the database (bad practice)
             groupify(this.database, event)
             this.database.types.add(event.type)
             return {

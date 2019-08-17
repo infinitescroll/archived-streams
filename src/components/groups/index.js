@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
 import Group from './Group'
+import PullRequestGroup from './PullRequestGroup'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
   return (
@@ -12,6 +13,9 @@ export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
       </GroupButton>
       <GroupButton onClick={() => groupEvents('issue')}>
         Group by issue
+      </GroupButton>
+      <GroupButton onClick={() => groupEvents('pullrequest')}>
+        Group by PR
       </GroupButton>
       <GroupButton onClick={() => ungroupEvents()}>ungroup</GroupButton>
     </div>
@@ -62,11 +66,41 @@ UserGroups.propTypes = {
   users: PropTypes.array.isRequired
 }
 
+export const PullRequestGroups = ({ pulls }) => {
+  return (
+    <div>
+      {pulls.map(pull => (
+        <PullRequestGroup
+          key={pull.id}
+          assignees={pull.assignees}
+          body={pull.body}
+          comments={pull.comments}
+          group="pull"
+          labels={pull.labels}
+          number={pull.number}
+          state={pull.state}
+          stuff={pull}
+          title={pull.title}
+          url={pull.url}
+          user={pull.user}
+          updatedAt={pull.updatedAt}
+        />
+      ))}
+    </div>
+  )
+}
+
+PullRequestGroups.propTypes = {
+  pulls: PropTypes.array.isRequired
+}
+
 export const GroupList = ({ group }) => {
   if (group === 'issue')
     return <IssueGroups issues={mockStreamsServer.getIssues()} />
   if (group === 'user')
     return <UserGroups users={mockStreamsServer.getUsers()} />
+  if (group === 'pullrequest')
+    return <PullRequestGroups pulls={mockStreamsServer.getPullRequests()} />
 }
 
 GroupList.propTypes = {

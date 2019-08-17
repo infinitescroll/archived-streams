@@ -27,7 +27,13 @@ export const Event = ({ data, type, user, createdAt }) => {
   return (
     <EventObjectContainer onClick={() => setActive(!dataActive)}>
       <EventAuthor>
-        <Link href={'https://github.com/' + user}>{user}</Link>
+        <Link
+          target="_blank"
+          rel="noopener"
+          href={'https://github.com/' + user}
+        >
+          {user}
+        </Link>
       </EventAuthor>
       <div>
         <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
