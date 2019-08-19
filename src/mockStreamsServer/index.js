@@ -98,7 +98,7 @@ class MockStreamsServer {
                 } = await axios.get(issue_url)
                 if (!this.database.users[user.id]) {
                   this.database.users[user.id] = {
-                    eventsUrl: user.events_url,
+                    eventsUrl: user.events_url.replace('{/privacy}', ''),
                     id: user.id,
                     user: user.login
                   }
