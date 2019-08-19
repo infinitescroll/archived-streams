@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useGitHubEvents, useGroup } from '../hooks'
 
 import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
-import { EventList } from '../components/events'
+import { Events } from '../components/events'
 import { GroupSelection, GroupList } from '../components/groups'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
@@ -51,7 +51,7 @@ export default () => {
           {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
             <GroupList group={group} />
           ) : (
-            <EventList events={events} />
+            <Events events={events} />
           )}
         </ViewContainer>
       </StreamContainer>

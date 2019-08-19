@@ -2,7 +2,13 @@ import { GITHUB, TRELLO, SLACK, ARENA, DROPBOX } from '../constants'
 
 export const initialState = {
   events: {
-    data: [],
+    data: {
+      today: [],
+      yesterday: [],
+      lastWeek: [],
+      lastMonth: [],
+      catchAll: []
+    },
     error: {},
     filters: {},
     groupby: '',
@@ -125,7 +131,7 @@ export const requestedStreamEventsSuccess = (state, payload) => {
       loading: false,
       loaded: true,
       loadedSuccess: true,
-      data: [...state.events.data, ...payload.data]
+      data: payload.data
     }
   }
 }

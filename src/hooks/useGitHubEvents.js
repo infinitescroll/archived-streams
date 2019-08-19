@@ -38,14 +38,12 @@ export default () => {
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
 
-      const events = await mockStreamServer.fetchGithubEvents([
-        { endpoint: reconstructedUrl }
-      ])
+      const events = await mockStreamServer.fetchGithubEvents({
+        endpoint: reconstructedUrl
+      })
 
       try {
-        dispatch(
-          requestedStreamEventsSuccess(mockStreamServer.sortEvents(events))
-        )
+        dispatch(requestedStreamEventsSuccess(events))
       } catch (error) {
         dispatch(requestedStreamEventsError(error))
       }
@@ -56,8 +54,15 @@ export default () => {
     }
   }, [dispatch, reconstructedUrl, fetched])
 
+  const filteredEvents = {}
+  Object.keys(events).forEach(timeDelineation => {
+    filteredEvents[timeDelineation] = events[timeDelineation].filter(
+      filterEvents(filters)
+    )
+  })
+
   return {
-    events: events.filter(filterEvents(filters)),
+    events: filteredEvents,
     issues: mockStreamServer.getIssues(),
     loadingEvents,
     loadedEvents,

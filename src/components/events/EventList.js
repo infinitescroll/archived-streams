@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { EventColumns, Event } from './Event'
 
-const EventList = ({ events }) => (
+const EventList = ({ events, timeDelineation }) => (
   <EventListWrapper>
+    <p>{timeDelineation}</p>
     <EventColumns />
     {events.map(event => (
       <Event
@@ -19,7 +20,12 @@ const EventList = ({ events }) => (
 )
 
 EventList.propTypes = {
-  events: PropTypes.array.isRequired
+  events: PropTypes.array.isRequired,
+  timeDelineation: PropTypes.string
+}
+
+EventList.defaultProps = {
+  timeDelineation: ''
 }
 
 const EventListWrapper = styled.section`

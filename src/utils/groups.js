@@ -45,3 +45,18 @@ export const groupify = (database, event) => {
       break
   }
 }
+
+export const eventHappenedToday = timeAgo => timeAgo.indexOf('hours') > -1
+
+export const eventHappenedYesterday = timeAgo =>
+  timeAgo.indexOf('a day ago') > -1
+
+export const eventHappenedLastWeek = timeAgo =>
+  timeAgo.indexOf('2 days ago') > -1 ||
+  timeAgo.indexOf('3 days ago') > -1 ||
+  timeAgo.indexOf('4 days ago') > -1 ||
+  timeAgo.indexOf('5 days ago') > -1 ||
+  timeAgo.indexOf('6 days ago') > -1 ||
+  timeAgo.indexOf('7 days ago') > -1
+
+export const eventHappenedLastMonth = timeAgo => timeAgo.indexOf('days ago')

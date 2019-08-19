@@ -1,5 +1,6 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 
 import {
   ARENA_ENDPOINT_STREAMS,
@@ -16,7 +17,16 @@ import {
 } from '../constants'
 import { TRELLO_TOKEN, TRELLO_KEY, DROPBOX_TOKEN } from '../secrets'
 
-import { flatten2DArray, groupify } from '../utils'
+import {
+  flatten2DArray,
+  groupify,
+  eventHappenedToday,
+  eventHappenedYesterday,
+  eventHappenedLastWeek,
+  eventHappenedLastMonth
+} from '../utils'
+
+dayjs.extend(relativeTime)
 
 class MockStreamsServer {
   constructor() {
@@ -53,7 +63,8 @@ class MockStreamsServer {
   fetchEvents = async (streamSettings, { githubToken }) => {
     try {
       const allEvents = await Promise.all([
-        ...(await this.fetchGithubEvents(streamSettings.repos, githubToken))
+        // TODO: this is only fetching the first repo (1 at a time)
+        ...(await this.fetchGithubEvents(streamSettings.repos[0], githubToken))
         // ...(await this.fetchArenaEvents()),
         // ...(await this.fetchTrelloEvents()),
         // ...(await this.fetchSlackEvents(streamSettings.channels))
@@ -71,81 +82,93 @@ class MockStreamsServer {
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
-  fetchGithubEvents = async repos => {
-    const repoEvents = await Promise.all(
-      repos.map(async repo => {
-        try {
-          const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
-          this.database.pullRequests = await Promise.all(
-            pulls.data.map(
-              async ({
-                title,
-                base: { label },
-                id,
-                number,
-                labels,
-                assignee,
-                assignees,
-                issue_url,
-                body,
-                user,
-                state,
-                updated_at,
-                html_url
-              }) => {
-                const {
-                  data: { comments }
-                } = await axios.get(issue_url)
-                if (!this.database.users[user.id]) {
-                  this.database.users[user.id] = {
-                    eventsUrl: user.events_url.replace('{/privacy}', ''),
-                    id: user.id,
-                    user: user.login
-                  }
-                }
-                return {
-                  title,
-                  id,
-                  number,
-                  labels,
-                  assignee,
-                  assignees,
-                  label,
-                  comments,
-                  body,
-                  url: html_url,
-                  user: user.login,
-                  state,
-                  updatedAt: dayjs(updated_at).format(DATE_FORMAT)
-                }
+  fetchGithubEvents = async repo => {
+    try {
+      const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
+      this.database.pullRequests = await Promise.all(
+        pulls.data.map(
+          async ({
+            title,
+            base: { label },
+            id,
+            number,
+            labels,
+            assignee,
+            assignees,
+            issue_url,
+            body,
+            user,
+            state,
+            updated_at,
+            html_url
+          }) => {
+            const {
+              data: { comments }
+            } = await axios.get(issue_url)
+            if (!this.database.users[user.id]) {
+              this.database.users[user.id] = {
+                eventsUrl: user.events_url.replace('{/privacy}', ''),
+                id: user.id,
+                user: user.login
               }
-            )
-          )
-
-          const { data } = await axios.get(
-            `${repo.endpoint}/events?per_page=500`
-          )
-          return data.map(event => {
-            // mutates the database (bad practice)
-            groupify(this.database, event)
-            this.database.types.add(event.type)
-            return {
-              app: GITHUB,
-              createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-              data: event,
-              type: event.type,
-              user: event.actor.display_login,
-              id: event.id
             }
-          })
-        } catch (error) {
-          console.error(error)
-          return []
-        }
-      })
-    )
+            return {
+              title,
+              id,
+              number,
+              labels,
+              assignee,
+              assignees,
+              label,
+              comments,
+              body,
+              url: html_url,
+              user: user.login,
+              state,
+              updatedAt: dayjs(updated_at).format(DATE_FORMAT)
+            }
+          }
+        )
+      )
 
-    return flatten2DArray(repoEvents)
+      const { data } = await axios.get(`${repo.endpoint}/events?per_page=500`)
+
+      const events = {
+        today: [],
+        yesterday: [],
+        lastWeek: [],
+        lastMonth: [],
+        catchAll: []
+      }
+      data.forEach(event => {
+        // mutates the database (bad practice)
+        groupify(this.database, event)
+        this.database.types.add(event.type)
+
+        const formattedEvent = {
+          app: GITHUB,
+          createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+          data: event,
+          type: event.type,
+          user: event.actor.display_login,
+          id: event.id
+        }
+
+        const timeAgo = dayjs().to(dayjs(event.created_at))
+        if (eventHappenedToday(timeAgo)) events.today.push(formattedEvent)
+        else if (eventHappenedYesterday(timeAgo))
+          events.yesterday.push(formattedEvent)
+        else if (eventHappenedLastWeek(timeAgo))
+          events.lastWeek.push(formattedEvent)
+        else if (eventHappenedLastMonth(timeAgo))
+          events.lastMonth.push(formattedEvent)
+        else events.catchAll.push(formattedEvent)
+      })
+      return events
+    } catch (error) {
+      console.error(error)
+      return []
+    }
   }
 
   fetchArenaEvents = async (page = '0') => {
