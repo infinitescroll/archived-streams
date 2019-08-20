@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
@@ -8,39 +7,31 @@ import BranchGroup from './BranchGroup'
 import { ViewContainer } from '../../styled/components'
 import UserAndIssueGroup from './UserAndIssueGroup'
 
-export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
-  const currentGroup = useSelector(({ events }) => events.groupby)
-  return (
-    <div style={{ padding: '.875rem', flex: '1', textAlign: 'center' }}>
-      <GroupButton
-        type="user"
-        groupEvents={groupEvents}
-        ungroupEvents={ungroupEvents}
-      >
-        Group by user {currentGroup === 'user' ? ' ✓' : ''}
-      </GroupButton>
-      <GroupButton
-        type="issue"
-        groupEvents={groupEvents}
-        ungroupEvents={ungroupEvents}
-      >
-        Group by issue {currentGroup === 'issue' ? ' ✓' : ''}
-      </GroupButton>
-      <GroupButton
-        type="branch"
-        groupEvents={groupEvents}
-        ungroupEvents={ungroupEvents}
-      >
-        Group by branch {currentGroup === 'branch' ? ' ✓' : ''}
-      </GroupButton>
-      <GroupButton
-        type="pullrequest"
-        groupEvents={groupEvents}
-        ungroupEvents={ungroupEvents}
-      ></GroupButton>
-    </div>
-  )
-}
+export const GroupSelection = ({ groupEvents, ungroupEvents }) => (
+  <div style={{ padding: '.875rem', flex: '1', textAlign: 'center' }}>
+    <GroupButton
+      type="user"
+      groupEvents={groupEvents}
+      ungroupEvents={ungroupEvents}
+    />
+    <GroupButton
+      type="issue"
+      groupEvents={groupEvents}
+      ungroupEvents={ungroupEvents}
+    />
+    <GroupButton
+      type="branch"
+      groupEvents={groupEvents}
+      ungroupEvents={ungroupEvents}
+    />
+    <GroupButton
+      type="pullrequest"
+      groupEvents={groupEvents}
+      ungroupEvents={ungroupEvents}
+    />
+  </div>
+)
+
 GroupSelection.propTypes = {
   groupEvents: PropTypes.func.isRequired,
   ungroupEvents: PropTypes.func.isRequired
