@@ -82,7 +82,6 @@ export const PullRequestGroups = ({ pulls }) => {
           key={pull.id}
           assignees={pull.assignees}
           body={pull.body}
-          comments={pull.comments}
           group="pull"
           labels={pull.labels}
           number={pull.number}

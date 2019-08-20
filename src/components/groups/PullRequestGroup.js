@@ -6,7 +6,6 @@ import { BR_PINK, BLUE, BLUE_TRANSP } from '../../styled/themes'
 const PullRequestGroup = ({
   title,
   number,
-  comments,
   labels,
   state,
   updatedAt,
@@ -20,7 +19,6 @@ const PullRequestGroup = ({
       <h2>
         #{number} {title}
       </h2>
-      <p>Comment count: {comments}</p>
       <p>updated at: {updatedAt}</p>
       <p>User: {user}</p>
     </GroupContainer>
@@ -29,7 +27,6 @@ const PullRequestGroup = ({
 PullRequestGroup.propTypes = {
   title: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
-  comments: PropTypes.number.isRequired,
   labels: PropTypes.array.isRequired,
   state: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import parse from 'parse-link-header'
 
 import {
   ARENA_ENDPOINT_STREAMS,
@@ -79,8 +80,26 @@ class MockStreamsServer {
       dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
     )
 
+  recursivelyFetchAllGithubEvents = async endpoint => {
+    const recurse = async (events, parsedLink, count) => {
+      if (count === 3) return events
+      if (!parsedLink.last) return events
+      const {
+        data,
+        headers: { link }
+      } = await axios.get(parsedLink.next.url)
+
+      return recurse(events.concat(data), parse(link), count + 1)
+    }
+    const {
+      data,
+      headers: { link }
+    } = await axios.get(`${endpoint}/events?per_page=100`)
+    return recurse(data, parse(link), 0)
+  }
+
   fetchGithubEvents = async repo => {
-    const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
+    const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=5`)
     this.database.pullRequests = await Promise.all(
       pulls.data.map(
         async ({
@@ -98,10 +117,6 @@ class MockStreamsServer {
           updated_at,
           html_url
         }) => {
-          const {
-            data: { comments }
-          } = await axios.get(issue_url)
-
           return {
             title,
             id,
@@ -110,7 +125,6 @@ class MockStreamsServer {
             assignee,
             assignees,
             label,
-            comments,
             body,
             url: html_url,
             user: user.login,
@@ -121,8 +135,7 @@ class MockStreamsServer {
       )
     )
 
-    const { data } = await axios.get(`${repo.endpoint}/events?per_page=500`)
-
+    const data = await this.recursivelyFetchAllGithubEvents(repo.endpoint)
     const events = {
       today: [],
       yesterday: [],
