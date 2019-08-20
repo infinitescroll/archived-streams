@@ -23,28 +23,29 @@ const GroupStyledButton = styled.button`
 
 export const GroupButton = ({ type, groupEvents, ungroupEvents }) => {
   const currentGroup = useSelector(({ events }) => events.groupby)
-  let isActive = currentGroup === type
-  let text = () => {
-    switch (type) {
-      case 'pullrequest':
-        return `Group by Open Pull Requests ${isActive ? ' ✓' : ''}`
-      case 'user':
-        return `Group by User ${isActive ? ' ✓' : ''}`
-      case 'issue':
-        return `Group by Issues ${isActive ? ' ✓' : ''}`
-      default:
-        return `uhhhh`
-    }
-  }
+  const isActive = currentGroup === type
 
   return (
     <GroupStyledButton
       active={isActive}
       onClick={() => (isActive ? ungroupEvents() : groupEvents(type))}
     >
-      {text()}
+      {text(isActive, type)}
     </GroupStyledButton>
   )
+}
+
+const text = (isActive, type) => {
+  switch (type) {
+    case 'pullrequest':
+      return `Group by Open Pull Requests ${isActive ? ' ✓' : ''}`
+    case 'user':
+      return `Group by User ${isActive ? ' ✓' : ''}`
+    case 'issue':
+      return `Group by Issues ${isActive ? ' ✓' : ''}`
+    default:
+      return `uhhhh`
+  }
 }
 
 GroupButton.propTypes = {
