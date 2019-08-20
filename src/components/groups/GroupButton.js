@@ -43,6 +43,8 @@ const Text = ({ isActive, type }) => {
       return `Group by User ${isActive ? ' ✓' : ''}`
     case 'issue':
       return `Group by Issues ${isActive ? ' ✓' : ''}`
+    case 'branch':
+      return `Group by Branches ${isActive ? ' ✓' : ''}`
     default:
       return `uhhhh`
   }

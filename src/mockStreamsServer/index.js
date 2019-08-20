@@ -35,7 +35,8 @@ class MockStreamsServer {
       users: {},
       types: new Set([]),
       issues: {},
-      pullRequests: []
+      pullRequests: [],
+      branches: {}
     }
   }
 
@@ -59,6 +60,8 @@ class MockStreamsServer {
     this.database.pullRequests.sort((prA, prB) =>
       dayjs(prA.updatedAt).isAfter(dayjs(prB.updatedAt)) ? -1 : 1
     )
+
+  getBranchGroups = () => this.database.branches
 
   fetchEvents = async (streamSettings, { githubToken }) => {
     try {
