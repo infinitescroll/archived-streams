@@ -1,31 +1,46 @@
-import React, { Fragment } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
 import Group from './Group'
 import PullRequestGroup from './PullRequestGroup'
 import BranchGroup from './BranchGroup'
+import { ViewContainer } from '../../styled/components'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
+  const currentGroup = useSelector(({ events }) => events.groupby)
   return (
-    <div>
-      <GroupButton onClick={() => groupEvents('user')}>
-        Group by user
+    <div style={{ padding: '.875rem', flex: '1', textAlign: 'center' }}>
+      <GroupButton
+        type="user"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      >
+        Group by user {currentGroup === 'user' ? ' ✓' : ''}
       </GroupButton>
-      <GroupButton onClick={() => groupEvents('issue')}>
-        Group by issue
+      <GroupButton
+        type="issue"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      >
+        Group by issue {currentGroup === 'issue' ? ' ✓' : ''}
       </GroupButton>
-      <GroupButton onClick={() => groupEvents('pullrequest')}>
-        Group by PR
+      <GroupButton
+        type="branch"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      >
+        Group by branch {currentGroup === 'branch' ? ' ✓' : ''}
       </GroupButton>
-      <GroupButton onClick={() => groupEvents('branch')}>
-        Group by branch
-      </GroupButton>
-      <GroupButton onClick={() => ungroupEvents()}>ungroup</GroupButton>
+      <GroupButton
+        type="pullrequest"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      ></GroupButton>
     </div>
   )
 }
-
 GroupSelection.propTypes = {
   groupEvents: PropTypes.func.isRequired,
   ungroupEvents: PropTypes.func.isRequired
@@ -33,7 +48,7 @@ GroupSelection.propTypes = {
 
 export const IssueGroups = ({ issues }) => {
   return (
-    <div>
+    <ViewContainer>
       {issues.map(issue => (
         <Group
           key={issue.id}
@@ -42,7 +57,7 @@ export const IssueGroups = ({ issues }) => {
           group="issue"
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 
@@ -50,28 +65,30 @@ IssueGroups.propTypes = {
   issues: PropTypes.array.isRequired
 }
 
-export const UserGroups = ({ users }) => {
+export const UserGroups = ({ users, repoPath }) => {
   return (
-    <div>
+    <ViewContainer>
       {users.map(user => (
         <Group
+          repoPath={repoPath}
           key={user.id}
           title={user.user}
           endpoint={user.eventsUrl}
           group="user"
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 
 UserGroups.propTypes = {
+  repoPath: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired
 }
 
 export const PullRequestGroups = ({ pulls }) => {
   return (
-    <div>
+    <ViewContainer>
       {pulls.map(pull => (
         <PullRequestGroup
           key={pull.id}
@@ -89,7 +106,7 @@ export const PullRequestGroups = ({ pulls }) => {
           updatedAt={pull.updatedAt}
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 
@@ -99,7 +116,7 @@ PullRequestGroups.propTypes = {
 
 const BranchGroups = ({ branches }) => {
   return (
-    <Fragment>
+    <ViewContainer>
       {Object.keys(branches).map(branchName => {
         return (
           <BranchGroup
@@ -110,7 +127,7 @@ const BranchGroups = ({ branches }) => {
           />
         )
       })}
-    </Fragment>
+    </ViewContainer>
   )
 }
 
@@ -118,11 +135,13 @@ BranchGroups.propTypes = {
   branches: PropTypes.object.isRequired
 }
 
-export const GroupList = ({ group }) => {
+export const GroupList = ({ group, repoPath }) => {
   if (group === 'issue')
     return <IssueGroups issues={mockStreamsServer.getIssues()} />
   if (group === 'user')
-    return <UserGroups users={mockStreamsServer.getUsers()} />
+    return (
+      <UserGroups users={mockStreamsServer.getUsers()} repoPath={repoPath} />
+    )
   if (group === 'pullrequest')
     return <PullRequestGroups pulls={mockStreamsServer.getPullRequests()} />
   if (group === 'branch')

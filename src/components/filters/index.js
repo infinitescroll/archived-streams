@@ -41,7 +41,7 @@ const Filters = ({ types }) => {
   const { filters, filterEvents, unfilterEvents } = useFilters()
 
   return (
-    <AlignItemsColumn>
+    <AlignItemsColumn style={{ flex: '1' }}>
       <FilterDetails>
         <Label>Filter By Activity Type:</Label>
         <FilterList>

@@ -54,13 +54,6 @@ export const formatAndGroupByTime = (database, branchName, event) => {
 }
 
 export const groupify = (database, event) => {
-  if (!database.users[event.actor.id]) {
-    database.users[event.actor.id] = {
-      eventsUrl: `${event.actor.url}/events`,
-      id: event.actor.id,
-      user: event.actor.display_login
-    }
-  }
   switch (event.type) {
     case ISSUES_EVENT:
       {
@@ -127,7 +120,8 @@ export const groupify = (database, event) => {
   }
 }
 
-export const eventHappenedToday = timeAgo => timeAgo.indexOf('hours') > -1
+export const eventHappenedToday = timeAgo =>
+  timeAgo.indexOf('hour') > -1 || timeAgo.indexOf('minute') > -1
 
 export const eventHappenedYesterday = timeAgo =>
   timeAgo.indexOf('a day ago') > -1

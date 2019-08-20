@@ -55,10 +55,8 @@ export default () => {
   }, [dispatch, reconstructedUrl, fetched])
 
   const filteredEvents = {}
-  Object.keys(events).forEach(timeDelineation => {
-    filteredEvents[timeDelineation] = events[timeDelineation].filter(
-      filterEvents(filters)
-    )
+  Object.keys(events).forEach(timeLabel => {
+    filteredEvents[timeLabel] = events[timeLabel].filter(filterEvents(filters))
   })
 
   return {

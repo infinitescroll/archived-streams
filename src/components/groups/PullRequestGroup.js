@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { BR_PINK, BR_LILAC, BLUE, BLUE_TRANSP } from '../../styled/themes'
+import { BR_PINK, BLUE, BLUE_TRANSP } from '../../styled/themes'
 
 const PullRequestGroup = ({
   title,
@@ -38,27 +38,15 @@ PullRequestGroup.propTypes = {
   body: PropTypes.string.isRequired,
   assignees: PropTypes.array.isRequired
 }
-export const EventObjectContainer = styled.a`
-  position: relative;
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns:
-    minmax(5rem, max-content) 3rem auto
-    10%;
-  grid-gap: 1.5rem;
-  align-items: center;
-  max-width: 960px;
-  background: ${BR_LILAC};
-  margin: 0.875rem;
-  padding: 0.875rem;
+
+const GroupContainer = styled.a`
+  padding: 1.5rem;
   border-radius: 4px;
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
-  grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
-  font-size: 1rem;
-  cursor: pointer;
-`
-const GroupContainer = styled(EventObjectContainer)`
+
+  margin-top: 1.5rem;
+
   background: ${BR_PINK};
   cursor: pointer;
   display: flex;
