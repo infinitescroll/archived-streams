@@ -7,7 +7,7 @@ import { Events } from '../events'
 import { filterEvents } from '../../utils'
 import { useFilters } from '../../hooks'
 
-const Group = ({ title, events }) => {
+const BranchGroup = ({ title, events }) => {
   const [open, setOpen] = useState(false)
   const [filteredEvents, setFilteredEvents] = useState({
     today: [],
@@ -37,7 +37,7 @@ const Group = ({ title, events }) => {
     </GroupContainer>
   )
 }
-Group.propTypes = {
+BranchGroup.propTypes = {
   title: PropTypes.string.isRequired,
   events: PropTypes.object.isRequired
 }
@@ -48,4 +48,4 @@ const GroupContainer = styled(EventObjectContainer)`
   flex-direction: column;
 `
 
-export default Group
+export default BranchGroup
