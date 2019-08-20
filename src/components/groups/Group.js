@@ -75,10 +75,10 @@ const Group = ({ title, endpoint, group }) => {
         })
         setEvents(eventsFromGithub)
         const filteredEvents = {}
-        Object.keys(eventsFromGithub).forEach(timeDelineation => {
-          filteredEvents[timeDelineation] = eventsFromGithub[
-            timeDelineation
-          ].filter(filterEvents(filters))
+        Object.keys(eventsFromGithub).forEach(timeLabel => {
+          filteredEvents[timeLabel] = eventsFromGithub[timeLabel].filter(
+            filterEvents(filters)
+          )
         })
         setFilteredEvents(filteredEvents)
         setOpen(!open)
@@ -92,8 +92,8 @@ const Group = ({ title, endpoint, group }) => {
 
   useEffect(() => {
     const filteredEvents = {}
-    Object.keys(events).forEach(timeDelineation => {
-      filteredEvents[timeDelineation] = events[timeDelineation].filter(
+    Object.keys(events).forEach(timeLabel => {
+      filteredEvents[timeLabel] = events[timeLabel].filter(
         filterEvents(filters)
       )
     })

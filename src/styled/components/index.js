@@ -123,7 +123,6 @@ export const SignUpAlert = styled.div`
 `
 
 export const ViewContainer = styled.div`
-  border-left: 0.125rem dashed ${BLUE_TRANSP};
   min-width: 320px;
   max-width: 960px;
   width: 98%;
