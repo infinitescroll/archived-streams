@@ -22,11 +22,13 @@ export default () => {
   const dispatch = useDispatch()
 
   const {
+    error,
     events,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess
   } = useSelector(({ events }) => ({
+    error: events.error,
     events: events.data,
     loadingEvents: events.loading,
     loadedEvents: events.loaded,
@@ -37,12 +39,11 @@ export default () => {
     document.body.classList.add('background-light')
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
-
-      const events = await mockStreamServer.fetchGithubEvents({
-        endpoint: reconstructedUrl
-      })
-
       try {
+        const events = await mockStreamServer.fetchGithubEvents({
+          endpoint: reconstructedUrl
+        })
+
         dispatch(requestedStreamEventsSuccess(events))
       } catch (error) {
         dispatch(requestedStreamEventsError(error))
@@ -60,6 +61,7 @@ export default () => {
   })
 
   return {
+    error,
     events: filteredEvents,
     issues: mockStreamServer.getIssues(),
     loadingEvents,

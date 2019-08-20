@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { useGitHubEvents, useGroup } from '../hooks'
 
-import { Title, GlobalStyle, Link, ViewContainer } from '../styled/components'
+import {
+  Title,
+  GlobalStyle,
+  Link,
+  ViewContainer,
+  ErrorMessage
+} from '../styled/components'
 import { Events } from '../components/events'
 import { GroupSelection, GroupList } from '../components/groups'
 import Filters from '../components/filters'
@@ -19,45 +25,53 @@ const StreamContainer = styled.section`
 
 export default () => {
   const {
+    error,
     events,
-    // issues,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
     types,
-    // users,
     repoPath
   } = useGitHubEvents()
 
   const { groupbyIsActive, group, groupEvents, ungroupEvents } = useGroup()
 
   return (
-    <React.Fragment>
+    <Fragment>
       <GlobalStyle />
       <StreamContainer>
-        <div>
-          <Title>{repoPath}</Title>
-        </div>
-        {loadingEvents && <Link>Loading your events.....</Link>}
-        {loadedEvents && loadedEventsSuccess && (
-          <ViewContainer>
-            <TimeLabel style={{ padding: '0' }}> </TimeLabel>
-            <FiltersContainer>
-              <GroupSelection
-                groupEvents={groupEvents}
-                ungroupEvents={ungroupEvents}
-              />
-              <Filters types={types} />
-            </FiltersContainer>
-          </ViewContainer>
-        )}
-        {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
-          <GroupList group={group} repoPath={repoPath} />
+        {error ? (
+          <ErrorMessage>
+            Oh no something went wrong! Make sure you copy pasted the github url
+            properly
+          </ErrorMessage>
         ) : (
-          <Events events={events} />
+          <Fragment>
+            <div>
+              <Title>{repoPath}</Title>
+            </div>
+            {loadingEvents && <Link>Loading your events.....</Link>}
+            {loadedEvents && loadedEventsSuccess && (
+              <ViewContainer>
+                <TimeLabel style={{ padding: '0' }}> </TimeLabel>
+                <FiltersContainer>
+                  <GroupSelection
+                    groupEvents={groupEvents}
+                    ungroupEvents={ungroupEvents}
+                  />
+                  <Filters types={types} />
+                </FiltersContainer>
+              </ViewContainer>
+            )}
+            {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
+              <GroupList group={group} />
+            ) : (
+              <Events events={events} />
+            )}
+          </Fragment>
         )}
       </StreamContainer>
-    </React.Fragment>
+    </Fragment>
   )
 }
 
