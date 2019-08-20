@@ -6,13 +6,6 @@ export const getGroupFromUrlBar = params => {
 }
 
 export const groupify = (database, event) => {
-  if (!database.users[event.actor.id]) {
-    database.users[event.actor.id] = {
-      eventsUrl: `${event.actor.url}/events`,
-      id: event.actor.id,
-      user: event.actor.display_login
-    }
-  }
   switch (event.type) {
     case ISSUES_EVENT:
       {
