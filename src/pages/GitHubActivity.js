@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useGitHubEvents } from '../hooks'
+import { useGitHubEvents, useGroup } from '../hooks'
 
 import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
-import { EventList } from '../components/events'
-import Filters, { GroupButton } from '../components/filters'
+import { Events } from '../components/events'
+import { GroupSelection, GroupList } from '../components/groups'
+import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
 
 const StreamContainer = styled.section`
@@ -18,14 +19,16 @@ const StreamContainer = styled.section`
 export default () => {
   const {
     events,
+    // issues,
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,
     types,
+    // users,
     repoPath
   } = useGitHubEvents()
 
-  const [groupType, setGroupType] = useState('')
+  const { groupbyIsActive, group, groupEvents, ungroupEvents } = useGroup()
 
   return (
     <React.Fragment>
@@ -38,14 +41,17 @@ export default () => {
           {loadingEvents && <Link>Loading your events.....</Link>}
           {loadedEvents && loadedEventsSuccess && (
             <FiltersContainer>
-              <GroupButton onclick={setGroupType('user')}>
-                Group by user
-              </GroupButton>
+              <GroupSelection
+                groupEvents={groupEvents}
+                ungroupEvents={ungroupEvents}
+              />
               <Filters types={types} />
             </FiltersContainer>
           )}
-          {loadedEvents && loadedEventsSuccess && (
-            <EventList events={events} grouping={groupType} />
+          {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
+            <GroupList group={group} />
+          ) : (
+            <Events events={events} />
           )}
         </ViewContainer>
       </StreamContainer>

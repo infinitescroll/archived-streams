@@ -78,4 +78,3 @@ Filters.propTypes = {
 }
 
 export default Filters
-export * from './grouping'

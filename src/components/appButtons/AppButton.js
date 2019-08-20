@@ -32,7 +32,11 @@ const MyButton = styled.div`
 const AppButton = ({ app: { appName, userHasAuthenticated } }) => {
   return (
     <MyButton>
-      <a href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}>
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={userHasAuthenticated ? '/' : APP_AUTH_ENDPOINTS[appName]}
+      >
         {userHasAuthenticated
           ? `Already integrated\n${appName}!`
           : `Integrate\n${appName}!`}

@@ -2,9 +2,16 @@ import { GITHUB, TRELLO, SLACK, ARENA, DROPBOX } from '../constants'
 
 export const initialState = {
   events: {
-    data: [],
+    data: {
+      today: [],
+      yesterday: [],
+      lastWeek: [],
+      lastMonth: [],
+      catchAll: []
+    },
     error: {},
     filters: {},
+    groupby: '',
     loading: false,
     loaded: false,
     loadedSuccess: false
@@ -124,7 +131,7 @@ export const requestedStreamEventsSuccess = (state, payload) => {
       loading: false,
       loaded: true,
       loadedSuccess: true,
-      data: [...state.events.data, ...payload.data]
+      data: payload.data
     }
   }
 }
@@ -152,14 +159,24 @@ export const appliedFilters = (state, { filters }) => {
   }
 }
 
-export const removedFilters = (state, { filters }) => {
-  filters.forEach(filter => state.events.filters.delete(filter))
+export const appliedGroup = (state, { group }) => {
   return {
     ...state,
 
     events: {
       ...state.events,
-      filters: new Map([...state.events.filters])
+      groupby: group
+    }
+  }
+}
+
+export const removedGroup = state => {
+  return {
+    ...state,
+
+    events: {
+      ...state.events,
+      groupby: ''
     }
   }
 }

@@ -65,3 +65,15 @@ const calculateHoursToEmojis = () => {
 }
 
 export const hoursToEmoji = calculateHoursToEmojis()
+
+export const PUSH_EVENT = 'PushEvent'
+export const PULL_REQUEST_EVENT = 'PullRequestEvent'
+export const PULL_REQUEST_REVIEW_COMMENT_EVENT = 'PullRequestReviewCommentEvent'
+export const ISSUES_EVENT = 'IssuesEvent'
+export const ISSUE_COMMENT_EVENT = 'IssueCommentEvent'
+export const CREATE_EVENT = 'CreateEvent'
+export const DELETE_EVENT = 'DeleteEvent'
+export const WATCH_EVENT = 'WatchEvent'
+export const FORK_EVENT = 'ForkEvent'
+export const MEMBER_EVENT = 'MemberEvent'
+export const RELEASE_EVENT = 'ReleaseEvent'

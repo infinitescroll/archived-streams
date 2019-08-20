@@ -18,9 +18,7 @@ export default () => {
 
   const params = new URLSearchParams(location.search)
   const repoPath = params.getAll('repo')
-  const reconstructedUrl = new URL(
-    `https://api.github.com/repos/${repoPath}/events`
-  )
+  const reconstructedUrl = new URL(`https://api.github.com/repos/${repoPath}`)
   const dispatch = useDispatch()
 
   const {
@@ -40,14 +38,12 @@ export default () => {
     const requestStreams = async () => {
       dispatch(requestedStreamEvents())
 
-      const events = await mockStreamServer.fetchGithubEvents([
-        { endpoint: reconstructedUrl }
-      ])
+      const events = await mockStreamServer.fetchGithubEvents({
+        endpoint: reconstructedUrl
+      })
 
       try {
-        dispatch(
-          requestedStreamEventsSuccess(mockStreamServer.sortEvents(events))
-        )
+        dispatch(requestedStreamEventsSuccess(events))
       } catch (error) {
         dispatch(requestedStreamEventsError(error))
       }
@@ -58,8 +54,16 @@ export default () => {
     }
   }, [dispatch, reconstructedUrl, fetched])
 
+  const filteredEvents = {}
+  Object.keys(events).forEach(timeDelineation => {
+    filteredEvents[timeDelineation] = events[timeDelineation].filter(
+      filterEvents(filters)
+    )
+  })
+
   return {
-    events: events.filter(filterEvents(filters)),
+    events: filteredEvents,
+    issues: mockStreamServer.getIssues(),
     loadingEvents,
     loadedEvents,
     loadedEventsSuccess,

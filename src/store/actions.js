@@ -1,8 +1,10 @@
 import {
+  APPLY_FILTER_SET,
+  APPLY_GROUP,
+  REMOVE_GROUP,
   REQUESTED_STREAM_EVENTS,
   REQUESTED_STREAM_EVENTS_SUCCESS,
   REQUESTED_STREAM_EVENTS_ERROR,
-  APPLY_FILTER_SET,
   REQUESTED_USER,
   REQUESTED_USER_SUCCESS,
   REQUESTED_USER_ERROR,
@@ -70,5 +72,20 @@ export const applyFilterSet = filters => {
     payload: {
       filters
     }
+  }
+}
+
+export const applyGroup = group => {
+  return {
+    type: APPLY_GROUP,
+    payload: {
+      group
+    }
+  }
+}
+
+export const removeGroup = () => {
+  return {
+    type: REMOVE_GROUP
   }
 }
