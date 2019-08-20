@@ -30,12 +30,12 @@ export const GroupButton = ({ type, groupEvents, ungroupEvents }) => {
       active={isActive}
       onClick={() => (isActive ? ungroupEvents() : groupEvents(type))}
     >
-      {text(isActive, type)}
+      <Text isActive={isActive} type={type} />
     </GroupStyledButton>
   )
 }
 
-const text = (isActive, type) => {
+const Text = ({ isActive, type }) => {
   switch (type) {
     case 'pullrequest':
       return `Group by Open Pull Requests ${isActive ? ' ✓' : ''}`
@@ -46,6 +46,11 @@ const text = (isActive, type) => {
     default:
       return `uhhhh`
   }
+}
+
+Text.propTypes = {
+  isActive: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired
 }
 
 GroupButton.propTypes = {
