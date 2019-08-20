@@ -1,8 +1,56 @@
 import dayjs from 'dayjs'
-import { DATE_FORMAT, ISSUES_EVENT, ISSUE_COMMENT_EVENT } from '../constants'
+import {
+  DATE_FORMAT,
+  ISSUES_EVENT,
+  ISSUE_COMMENT_EVENT,
+  PUSH_EVENT,
+  PULL_REQUEST_EVENT,
+  PULL_REQUEST_REVIEW_COMMENT_EVENT,
+  CREATE_EVENT,
+  DELETE_EVENT,
+  GITHUB
+} from '../constants'
 
 export const getGroupFromUrlBar = params => {
   return params.get('groupby') || ''
+}
+
+export const formBranchNameFromRef = ref => {
+  if (ref.indexOf('refs/heads') > -1) return ref
+  return `refs/heads/${ref}`
+}
+
+export const formatAndGroupByTime = (database, branchName, event) => {
+  if (!database.branches[branchName]) {
+    database.branches[branchName] = {
+      events: {
+        today: [],
+        yesterday: [],
+        lastWeek: [],
+        lastMonth: [],
+        catchAll: []
+      }
+    }
+  }
+  const formattedEvent = {
+    app: GITHUB,
+    createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+    data: event,
+    type: event.type,
+    user: event.actor.login,
+    id: event.id
+  }
+
+  const timeAgo = dayjs().to(dayjs(event.created_at))
+  if (eventHappenedToday(timeAgo))
+    database.branches[branchName].events.today.push(formattedEvent)
+  else if (eventHappenedYesterday(timeAgo))
+    database.branches[branchName].events.yesterday.push(formattedEvent)
+  else if (eventHappenedLastWeek(timeAgo))
+    database.branches[branchName].events.lastWeek.push(formattedEvent)
+  else if (eventHappenedLastMonth(timeAgo))
+    database.branches[branchName].events.lastMonth.push(formattedEvent)
+  else database.branches[branchName].events.catchAll.push(formattedEvent)
 }
 
 export const groupify = (database, event) => {
@@ -43,6 +91,39 @@ export const groupify = (database, event) => {
         }
       }
       break
+
+    case PUSH_EVENT: {
+      const { ref } = event.payload
+      const branchName = formBranchNameFromRef(ref)
+      formatAndGroupByTime(database, branchName, event)
+      break
+    }
+    case PULL_REQUEST_EVENT: {
+      const branchName = formBranchNameFromRef(
+        event.payload.pull_request.head.ref
+      )
+      formatAndGroupByTime(database, branchName, event)
+      break
+    }
+    case PULL_REQUEST_REVIEW_COMMENT_EVENT: {
+      const branchName = formBranchNameFromRef(
+        event.payload.pull_request.head.ref
+      )
+      formatAndGroupByTime(database, branchName, event)
+      break
+    }
+    case CREATE_EVENT:
+    case DELETE_EVENT: {
+      const { ref, ref_type } = event.payload
+      if (ref_type === 'branch') {
+        const branchName = formBranchNameFromRef(ref)
+        formatAndGroupByTime(database, branchName, event)
+      }
+      break
+    }
+    default: {
+      break
+    }
   }
 }
 

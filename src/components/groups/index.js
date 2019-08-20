@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
 import Group from './Group'
 import PullRequestGroup from './PullRequestGroup'
+import BranchGroup from './BranchGroup'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
   return (
@@ -17,6 +18,9 @@ export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
       <GroupButton onClick={() => groupEvents('pullrequest')}>
         Group by PR
       </GroupButton>
+      <GroupButton onClick={() => groupEvents('branch')}>
+        Group by branch
+      </GroupButton>
       <GroupButton onClick={() => ungroupEvents()}>ungroup</GroupButton>
     </div>
   )
@@ -26,7 +30,6 @@ GroupSelection.propTypes = {
   groupEvents: PropTypes.func.isRequired,
   ungroupEvents: PropTypes.func.isRequired
 }
-// return <Group title={event.user} events={events} />
 
 export const IssueGroups = ({ issues }) => {
   return (
@@ -94,6 +97,27 @@ PullRequestGroups.propTypes = {
   pulls: PropTypes.array.isRequired
 }
 
+const BranchGroups = ({ branches }) => {
+  return (
+    <Fragment>
+      {Object.keys(branches).map(branchName => {
+        return (
+          <BranchGroup
+            key={branchName}
+            title={branchName}
+            group="branch"
+            events={branches[branchName].events}
+          />
+        )
+      })}
+    </Fragment>
+  )
+}
+
+BranchGroups.propTypes = {
+  branches: PropTypes.object.isRequired
+}
+
 export const GroupList = ({ group }) => {
   if (group === 'issue')
     return <IssueGroups issues={mockStreamsServer.getIssues()} />
@@ -101,6 +125,8 @@ export const GroupList = ({ group }) => {
     return <UserGroups users={mockStreamsServer.getUsers()} />
   if (group === 'pullrequest')
     return <PullRequestGroups pulls={mockStreamsServer.getPullRequests()} />
+  if (group === 'branch')
+    return <BranchGroups branches={mockStreamsServer.getBranchGroups()} />
 }
 
 GroupList.propTypes = {
