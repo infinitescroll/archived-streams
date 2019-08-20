@@ -46,7 +46,7 @@ const Group = ({ title, endpoint, group, repoPath }) => {
           catchAll: []
         }
         const { data } = await axios.get(`${endpoint}?per_page=25`)
-        data.forEach((event, index) => {
+        data.forEach(event => {
           let type
           if (group === 'issue') {
             type = event.event
