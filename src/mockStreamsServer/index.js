@@ -105,13 +105,7 @@ class MockStreamsServer {
             const {
               data: { comments }
             } = await axios.get(issue_url)
-            if (!this.database.users[user.id]) {
-              this.database.users[user.id] = {
-                eventsUrl: user.events_url.replace('{/privacy}', ''),
-                id: user.id,
-                user: user.login
-              }
-            }
+
             return {
               title,
               id,
@@ -130,6 +124,19 @@ class MockStreamsServer {
           }
         )
       )
+
+      const contributors = await axios.get(
+        `${repo.endpoint}/stats/contributors`
+      )
+
+      contributors.data.forEach(({ author }) => {
+        const { login, id, events_url } = author
+        this.database.users[id] = {
+          id,
+          eventsUrl: events_url.replace('{/privacy}', ''),
+          user: login
+        }
+      })
 
       const { data } = await axios.get(`${repo.endpoint}/events?per_page=500`)
 
