@@ -16,7 +16,7 @@ import {
 } from '../../utils'
 import { useFilters } from '../../hooks'
 
-const Group = ({ title, endpoint, group }) => {
+const Group = ({ title, endpoint, group, repoPath }) => {
   const [open, setOpen] = useState(false)
   const [fetchedData, setFetchedData] = useState(false)
   const [events, setEvents] = useState({
@@ -50,6 +50,9 @@ const Group = ({ title, endpoint, group }) => {
           let type
           if (group === 'issue') {
             type = event.event
+          } else if (group === 'user') {
+            if (event.repo.name !== repoPath[0]) return
+            type = event.type
           } else {
             type = event.type
           }

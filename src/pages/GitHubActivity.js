@@ -49,7 +49,7 @@ export default () => {
             </FiltersContainer>
           )}
           {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
-            <GroupList group={group} />
+            <GroupList group={group} repoPath={repoPath} />
           ) : (
             <Events events={events} />
           )}

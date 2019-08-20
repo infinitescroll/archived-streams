@@ -47,11 +47,12 @@ IssueGroups.propTypes = {
   issues: PropTypes.array.isRequired
 }
 
-export const UserGroups = ({ users }) => {
+export const UserGroups = ({ users, repoPath }) => {
   return (
     <div>
       {users.map(user => (
         <Group
+          repoPath={repoPath}
           key={user.id}
           title={user.user}
           endpoint={user.eventsUrl}
@@ -94,11 +95,13 @@ PullRequestGroups.propTypes = {
   pulls: PropTypes.array.isRequired
 }
 
-export const GroupList = ({ group }) => {
+export const GroupList = ({ group, repoPath }) => {
   if (group === 'issue')
     return <IssueGroups issues={mockStreamsServer.getIssues()} />
   if (group === 'user')
-    return <UserGroups users={mockStreamsServer.getUsers()} />
+    return (
+      <UserGroups users={mockStreamsServer.getUsers()} repoPath={repoPath} />
+    )
   if (group === 'pullrequest')
     return <PullRequestGroups pulls={mockStreamsServer.getPullRequests()} />
 }
