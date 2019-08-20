@@ -46,8 +46,10 @@ EventList.defaultProps = {
 }
 
 const EventListWrapper = styled.section`
-  width: 100%;
   border-left: 0.125rem dashed ${BLUE_TRANSP};
+  min-width: 320px;
+  max-width: 900px;
+  width: 100%;
 
   & > :last-of-type {
     margin-bottom: 3px;
@@ -56,7 +58,7 @@ const EventListWrapper = styled.section`
     margin-top: 0;
   }
 `
-const TimeLabel = styled(EventType)`
+export const TimeLabel = styled(EventType)`
   width: 6rem;
   color: ${BLUE};
   text-align: right;
@@ -67,6 +69,8 @@ const EventsTimeWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 1.5rem;
+  width: 100%;
+  justify-content: center;
 `
 
 const NoEvents = styled(EventType)`

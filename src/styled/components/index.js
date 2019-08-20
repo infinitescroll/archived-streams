@@ -124,8 +124,11 @@ export const SignUpAlert = styled.div`
 
 export const ViewContainer = styled.div`
   min-width: 320px;
-  max-width: 960px;
-  width: 98%;
+  max-width: calc(900px - 0.875rem);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  justify-self: center;
+
+  padding-left: 6rem;
 `

@@ -2,11 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useGitHubEvents, useGroup } from '../hooks'
 
-import { Title, GlobalStyle, ViewContainer, Link } from '../styled/components'
+import { Title, GlobalStyle, Link } from '../styled/components'
 import { Events } from '../components/events'
 import { GroupSelection, GroupList } from '../components/groups'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
+import { TimeLabel } from '../components/events/EventList'
 
 const StreamContainer = styled.section`
   display: grid;
@@ -37,9 +38,15 @@ export default () => {
         <div>
           <Title>{repoPath}</Title>
         </div>
-        <ViewContainer>
-          {loadingEvents && <Link>Loading your events.....</Link>}
-          {loadedEvents && loadedEventsSuccess && (
+        {loadingEvents && <Link>Loading your events.....</Link>}
+        {loadedEvents && loadedEventsSuccess && (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
+            <TimeLabel style={{ padding: '0' }}> </TimeLabel>
             <FiltersContainer>
               <GroupSelection
                 groupEvents={groupEvents}
@@ -47,13 +54,13 @@ export default () => {
               />
               <Filters types={types} />
             </FiltersContainer>
-          )}
-          {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
-            <GroupList group={group} />
-          ) : (
-            <Events events={events} />
-          )}
-        </ViewContainer>
+          </div>
+        )}
+        {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
+          <GroupList group={group} />
+        ) : (
+          <Events events={events} />
+        )}
       </StreamContainer>
     </React.Fragment>
   )
@@ -64,8 +71,9 @@ const FiltersContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
 
-  margin-left: 0.875rem;
-  margin-right: 0.875rem;
+  min-width: 320px;
+  max-width: calc(900px - 0.875rem);
+  width: 100%;
 
   background: ${BR_PINK};
   border: solid 2px ${DARK_LILAC};

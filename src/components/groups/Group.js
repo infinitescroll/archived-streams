@@ -102,7 +102,7 @@ const Group = ({ title, endpoint, group }) => {
   return (
     <GroupContainer onClick={() => handleExpansion()}>
       <h2>{title}</h2>
-      <div style={{ display: open ? 'block' : 'none', width: '100%' }}>
+      <div style={{ display: open ? 'block' : 'none' }}>
         {open && <Events events={filteredEvents} />}
       </div>
     </GroupContainer>
@@ -113,7 +113,10 @@ Group.propTypes = {
   endpoint: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired
 }
+
 const GroupContainer = styled(EventObjectContainer)`
+  margin-left: 0;
+  margin-right: 0;
   background: ${BR_PINK};
   cursor: pointer;
   display: flex;
