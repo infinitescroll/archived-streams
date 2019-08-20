@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { BR_PINK } from '../../styled/themes'
-import { EventObjectContainer } from '../events/Event'
+import { EventObjectContainer, EventType } from '../events/Event'
 import { DATE_FORMAT, GITHUB } from '../../constants'
 import { Events } from '../events'
 import {
@@ -36,6 +36,7 @@ const Group = ({ title, endpoint, group, repoPath }) => {
   const { filters } = useFilters()
 
   const handleExpansion = async () => {
+    setOpen(!open)
     if (!fetchedData) {
       try {
         const eventsFromGithub = {
@@ -78,13 +79,12 @@ const Group = ({ title, endpoint, group, repoPath }) => {
         })
         setEvents(eventsFromGithub)
         const filteredEvents = {}
-        Object.keys(eventsFromGithub).forEach(timeDelineation => {
-          filteredEvents[timeDelineation] = eventsFromGithub[
-            timeDelineation
-          ].filter(filterEvents(filters))
+        Object.keys(eventsFromGithub).forEach(timeLabel => {
+          filteredEvents[timeLabel] = eventsFromGithub[timeLabel].filter(
+            filterEvents(filters)
+          )
         })
         setFilteredEvents(filteredEvents)
-        setOpen(!open)
         setFetchedData(true)
       } catch (error) {
         console.error(error)
@@ -95,17 +95,17 @@ const Group = ({ title, endpoint, group, repoPath }) => {
 
   useEffect(() => {
     const filteredEvents = {}
-    Object.keys(events).forEach(timeDelineation => {
-      filteredEvents[timeDelineation] = events[timeDelineation].filter(
+    Object.keys(events).forEach(timeLabel => {
+      filteredEvents[timeLabel] = events[timeLabel].filter(
         filterEvents(filters)
       )
     })
     setFilteredEvents(filteredEvents)
   }, [events, filters])
   return (
-    <GroupContainer onClick={() => handleExpansion()}>
-      <h2>{title}</h2>
-      <div style={{ display: open ? 'block' : 'none' }}>
+    <GroupContainer onClick={() => (open ? setOpen(!open) : handleExpansion())}>
+      <GroupLabel>{title}</GroupLabel>
+      <div style={{ display: open ? 'block' : 'none', width: '100%' }}>
         {open && <Events events={filteredEvents} />}
       </div>
     </GroupContainer>
@@ -116,11 +116,19 @@ Group.propTypes = {
   endpoint: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired
 }
+
 const GroupContainer = styled(EventObjectContainer)`
+  margin: 1.5rem 0 0 0;
   background: ${BR_PINK};
   cursor: pointer;
   display: flex;
   flex-direction: column;
+`
+
+const GroupLabel = styled(EventType)`
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
 `
 
 export default Group

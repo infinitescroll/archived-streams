@@ -1,36 +1,45 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
 import Group from './Group'
 import PullRequestGroup from './PullRequestGroup'
+import { ViewContainer } from '../../styled/components'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
+  const currentGroup = useSelector(({ events }) => events.groupby)
   return (
-    <div>
-      <GroupButton onClick={() => groupEvents('user')}>
-        Group by user
+    <div style={{ padding: '.875rem', flex: '1', textAlign: 'center' }}>
+      <GroupButton
+        type="user"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      >
+        Group by user {currentGroup === 'user' ? ' ✓' : ''}
       </GroupButton>
-      <GroupButton onClick={() => groupEvents('issue')}>
-        Group by issue
+      <GroupButton
+        type="issue"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      >
+        Group by issue {currentGroup === 'issue' ? ' ✓' : ''}
       </GroupButton>
-      <GroupButton onClick={() => groupEvents('pullrequest')}>
-        Group by PR
-      </GroupButton>
-      <GroupButton onClick={() => ungroupEvents()}>ungroup</GroupButton>
+      <GroupButton
+        type="pullrequest"
+        groupEvents={groupEvents}
+        ungroupEvents={ungroupEvents}
+      ></GroupButton>
     </div>
   )
 }
-
 GroupSelection.propTypes = {
   groupEvents: PropTypes.func.isRequired,
   ungroupEvents: PropTypes.func.isRequired
 }
-// return <Group title={event.user} events={events} />
-
 export const IssueGroups = ({ issues }) => {
   return (
-    <div>
+    <ViewContainer>
       {issues.map(issue => (
         <Group
           key={issue.id}
@@ -39,7 +48,7 @@ export const IssueGroups = ({ issues }) => {
           group="issue"
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 
@@ -49,7 +58,7 @@ IssueGroups.propTypes = {
 
 export const UserGroups = ({ users, repoPath }) => {
   return (
-    <div>
+    <ViewContainer>
       {users.map(user => (
         <Group
           repoPath={repoPath}
@@ -59,7 +68,7 @@ export const UserGroups = ({ users, repoPath }) => {
           group="user"
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 
@@ -69,7 +78,7 @@ UserGroups.propTypes = {
 
 export const PullRequestGroups = ({ pulls }) => {
   return (
-    <div>
+    <ViewContainer>
       {pulls.map(pull => (
         <PullRequestGroup
           key={pull.id}
@@ -87,7 +96,7 @@ export const PullRequestGroups = ({ pulls }) => {
           updatedAt={pull.updatedAt}
         />
       ))}
-    </div>
+    </ViewContainer>
   )
 }
 

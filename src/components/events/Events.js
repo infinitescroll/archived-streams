@@ -1,14 +1,15 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import EventList from './EventList'
+import EventList, { EventListDemo } from './EventList'
 
 const Events = ({ events }) => (
   <Fragment>
-    <EventList timeDelineation="Today" events={events.today} />
-    <EventList timeDelineation="Yesterday" events={events.yesterday} />
-    <EventList timeDelineation="Last week" events={events.lastWeek} />
-    <EventList timeDelineation="Last Month" events={events.lastMonth} />
-    <EventList events={events.catchAll} />
+    <EventListDemo />
+    <EventList timeLabel="Today" events={events.today} />
+    <EventList timeLabel="Yesterday" events={events.yesterday} />
+    <EventList timeLabel="Last Week" events={events.lastWeek} />
+    <EventList timeLabel="Last Month" events={events.lastMonth} />
+    <EventList timeLabel="Even Older" events={events.catchAll} />
   </Fragment>
 )
 
