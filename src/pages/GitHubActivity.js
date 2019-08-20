@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useGitHubEvents, useGroup } from '../hooks'
 
-import { Title, GlobalStyle, Link } from '../styled/components'
+import { Title, GlobalStyle, Link, ViewContainer } from '../styled/components'
 import { Events } from '../components/events'
 import { GroupSelection, GroupList } from '../components/groups'
 import Filters from '../components/filters'
@@ -40,12 +40,7 @@ export default () => {
         </div>
         {loadingEvents && <Link>Loading your events.....</Link>}
         {loadedEvents && loadedEventsSuccess && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-          >
+          <ViewContainer>
             <TimeLabel style={{ padding: '0' }}> </TimeLabel>
             <FiltersContainer>
               <GroupSelection
@@ -54,7 +49,7 @@ export default () => {
               />
               <Filters types={types} />
             </FiltersContainer>
-          </div>
+          </ViewContainer>
         )}
         {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
           <GroupList group={group} />
