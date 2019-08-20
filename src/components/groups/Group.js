@@ -102,7 +102,7 @@ const Group = ({ title, endpoint, group }) => {
   return (
     <GroupContainer onClick={() => handleExpansion()}>
       <h2>{title}</h2>
-      <div style={{ display: open ? 'block' : 'none' }}>
+      <div style={{ display: open ? 'block' : 'none', width: '100%' }}>
         {open && <Events events={filteredEvents} />}
       </div>
     </GroupContainer>
