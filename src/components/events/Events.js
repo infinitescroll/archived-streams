@@ -9,7 +9,7 @@ const Events = ({ events }) => (
     <EventList timeLabel="Yesterday" events={events.yesterday} />
     <EventList timeLabel="Last Week" events={events.lastWeek} />
     <EventList timeLabel="Last Month" events={events.lastMonth} />
-    <EventList events={events.catchAll} />
+    <EventList timeLabel="Even Older" events={events.catchAll} />
   </Fragment>
 )
 

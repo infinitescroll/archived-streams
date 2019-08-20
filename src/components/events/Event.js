@@ -25,7 +25,12 @@ export const Event = ({ data, type, user, createdAt }) => {
   const [dataActive, setActive] = useState(false)
 
   return (
-    <EventObjectContainer onClick={() => setActive(!dataActive)}>
+    <EventObjectContainer
+      onClick={e => {
+        e.stopPropagation()
+        setActive(!dataActive)
+      }}
+    >
       <EventAuthor>
         <Link
           target="_blank"

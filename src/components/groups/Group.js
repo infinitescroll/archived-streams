@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { BR_PINK } from '../../styled/themes'
-import { EventObjectContainer } from '../events/Event'
+import { EventObjectContainer, EventType } from '../events/Event'
 import { DATE_FORMAT, GITHUB } from '../../constants'
 import { Events } from '../events'
 import {
@@ -36,6 +36,7 @@ const Group = ({ title, endpoint, group }) => {
   const { filters } = useFilters()
 
   const handleExpansion = async () => {
+    setOpen(!open)
     if (!fetchedData) {
       try {
         const eventsFromGithub = {
@@ -81,7 +82,6 @@ const Group = ({ title, endpoint, group }) => {
           )
         })
         setFilteredEvents(filteredEvents)
-        setOpen(!open)
         setFetchedData(true)
       } catch (error) {
         console.error(error)
@@ -100,9 +100,9 @@ const Group = ({ title, endpoint, group }) => {
     setFilteredEvents(filteredEvents)
   }, [events, filters])
   return (
-    <GroupContainer onClick={() => handleExpansion()}>
-      <h2>{title}</h2>
-      <div style={{ display: open ? 'block' : 'none' }}>
+    <GroupContainer onClick={() => (open ? setOpen(!open) : handleExpansion())}>
+      <GroupLabel>{title}</GroupLabel>
+      <div style={{ display: open ? 'block' : 'none', width: '100%' }}>
         {open && <Events events={filteredEvents} />}
       </div>
     </GroupContainer>
@@ -115,12 +115,17 @@ Group.propTypes = {
 }
 
 const GroupContainer = styled(EventObjectContainer)`
-  margin-left: 0;
-  margin-right: 0;
+  margin: 1.5rem 0 0 0;
   background: ${BR_PINK};
   cursor: pointer;
   display: flex;
   flex-direction: column;
+`
+
+const GroupLabel = styled(EventType)`
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
 `
 
 export default Group
