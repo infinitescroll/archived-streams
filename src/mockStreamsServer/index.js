@@ -49,12 +49,7 @@ class MockStreamsServer {
 
   getTypes = () => [...this.database.types]
 
-  getIssues = () =>
-    Object.keys(this.database.issues)
-      .map(issueId => this.database.issues[issueId])
-      .sort((eventA, eventB) =>
-        dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
-      )
+  getIssues = () => this.database.issues
 
   getPullRequests = () =>
     this.database.pullRequests.sort((prA, prB) =>

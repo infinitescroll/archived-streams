@@ -111,7 +111,8 @@ const UserAndIssueGroup = ({ title, endpoint, group, repoPath }) => {
 UserAndIssueGroup.propTypes = {
   title: PropTypes.string.isRequired,
   endpoint: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired
+  group: PropTypes.string.isRequired,
+  repoPath: PropTypes.array.isRequired
 }
 
 const GroupContainer = styled(EventObjectContainer)`
