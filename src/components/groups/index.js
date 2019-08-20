@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
 import PullRequestGroup from './PullRequestGroup'
-import BranchAndIssueGroup from './BranchAndIssueGroup'
+import UserBranchAndIssueGroup from './UserBranchAndIssueGroup'
 import { ViewContainer } from '../../styled/components'
-import UserGroup from './UserGroup'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => (
   <div style={{ padding: '.875rem', flex: '1', textAlign: 'center' }}>
@@ -41,7 +40,7 @@ export const IssueGroups = ({ issues }) => {
   return (
     <ViewContainer>
       {Object.keys(issues).map(issueId => (
-        <BranchAndIssueGroup
+        <UserBranchAndIssueGroup
           key={issueId}
           group="issue"
           events={issues[issueId].events}
@@ -56,16 +55,15 @@ IssueGroups.propTypes = {
   issues: PropTypes.object.isRequired
 }
 
-export const UserGroups = ({ users, repoPath }) => {
+export const UserGroups = ({ users }) => {
   return (
     <ViewContainer>
-      {users.map(user => (
-        <UserGroup
-          repoPath={repoPath}
-          key={user.id}
-          title={user.user}
-          endpoint={user.eventsUrl}
-          group="user"
+      {Object.keys(users).map(userId => (
+        <UserBranchAndIssueGroup
+          key={userId}
+          group="issue"
+          events={users[userId].events}
+          title={users[userId].title}
         />
       ))}
     </ViewContainer>
@@ -73,8 +71,7 @@ export const UserGroups = ({ users, repoPath }) => {
 }
 
 UserGroups.propTypes = {
-  repoPath: PropTypes.array.isRequired,
-  users: PropTypes.array.isRequired
+  users: PropTypes.object.isRequired
 }
 
 export const PullRequestGroups = ({ pulls }) => {
@@ -110,7 +107,7 @@ const BranchGroups = ({ branches }) => {
     <ViewContainer>
       {Object.keys(branches).map(branchName => {
         return (
-          <BranchAndIssueGroup
+          <UserBranchAndIssueGroup
             key={branchName}
             title={branchName}
             group="branch"
@@ -126,13 +123,11 @@ BranchGroups.propTypes = {
   branches: PropTypes.object.isRequired
 }
 
-export const GroupList = ({ group, repoPath }) => {
+export const GroupList = ({ group }) => {
   if (group === 'issue')
     return <IssueGroups issues={mockStreamsServer.getIssues()} />
   if (group === 'user')
-    return (
-      <UserGroups users={mockStreamsServer.getUsers()} repoPath={repoPath} />
-    )
+    return <UserGroups users={mockStreamsServer.getUsers()} />
   if (group === 'pullrequest')
     return <PullRequestGroups pulls={mockStreamsServer.getPullRequests()} />
   if (group === 'branch')

@@ -132,3 +132,15 @@ export const ViewContainer = styled.div`
 
   padding-left: 6rem;
 `
+
+export const ErrorMessage = styled.h1`
+  color: ${OWL_PURPLE};
+  font-family: Futura, Segoe UI, 'system-ui', sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  margin: 1.5em 0em;
+  width: 100%;
+  transform: scale(1, 1.125);
+`

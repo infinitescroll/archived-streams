@@ -44,8 +44,7 @@ class MockStreamsServer {
     return this.database.events
   }
 
-  getUsers = () =>
-    Object.keys(this.database.users).map(userId => this.database.users[userId])
+  getUsers = () => this.database.users
 
   getTypes = () => [...this.database.types]
 
@@ -81,99 +80,81 @@ class MockStreamsServer {
     )
 
   fetchGithubEvents = async repo => {
-    try {
-      const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
-      this.database.pullRequests = await Promise.all(
-        pulls.data.map(
-          async ({
+    const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=500`)
+    this.database.pullRequests = await Promise.all(
+      pulls.data.map(
+        async ({
+          title,
+          base: { label },
+          id,
+          number,
+          labels,
+          assignee,
+          assignees,
+          issue_url,
+          body,
+          user,
+          state,
+          updated_at,
+          html_url
+        }) => {
+          const {
+            data: { comments }
+          } = await axios.get(issue_url)
+
+          return {
             title,
-            base: { label },
             id,
             number,
             labels,
             assignee,
             assignees,
-            issue_url,
+            label,
+            comments,
             body,
-            user,
+            url: html_url,
+            user: user.login,
             state,
-            updated_at,
-            html_url
-          }) => {
-            const {
-              data: { comments }
-            } = await axios.get(issue_url)
-
-            return {
-              title,
-              id,
-              number,
-              labels,
-              assignee,
-              assignees,
-              label,
-              comments,
-              body,
-              url: html_url,
-              user: user.login,
-              state,
-              updatedAt: dayjs(updated_at).format(DATE_FORMAT)
-            }
+            updatedAt: dayjs(updated_at).format(DATE_FORMAT)
           }
-        )
-      )
-
-      const contributors = await axios.get(
-        `${repo.endpoint}/stats/contributors`
-      )
-
-      contributors.data.forEach(({ author }) => {
-        const { login, id, events_url } = author
-        this.database.users[id] = {
-          id,
-          eventsUrl: events_url.replace('{/privacy}', ''),
-          user: login
         }
-      })
+      )
+    )
 
-      const { data } = await axios.get(`${repo.endpoint}/events?per_page=500`)
+    const { data } = await axios.get(`${repo.endpoint}/events?per_page=500`)
 
-      const events = {
-        today: [],
-        yesterday: [],
-        lastWeek: [],
-        lastMonth: [],
-        catchAll: []
-      }
-      data.forEach(event => {
-        // mutates the database (bad practice)
-        groupify(this.database, event)
-        this.database.types.add(event.type)
-
-        const formattedEvent = {
-          app: GITHUB,
-          createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-          data: event,
-          type: event.type,
-          user: event.actor.display_login,
-          id: event.id
-        }
-
-        const timeAgo = dayjs().to(dayjs(event.created_at))
-        if (eventHappenedToday(timeAgo)) events.today.push(formattedEvent)
-        else if (eventHappenedYesterday(timeAgo))
-          events.yesterday.push(formattedEvent)
-        else if (eventHappenedLastWeek(timeAgo))
-          events.lastWeek.push(formattedEvent)
-        else if (eventHappenedLastMonth(timeAgo))
-          events.lastMonth.push(formattedEvent)
-        else events.catchAll.push(formattedEvent)
-      })
-      return events
-    } catch (error) {
-      console.error(error)
-      return []
+    const events = {
+      today: [],
+      yesterday: [],
+      lastWeek: [],
+      lastMonth: [],
+      catchAll: []
     }
+    data.forEach(event => {
+      // mutates the database (bad practice)
+      groupify(this.database, event)
+      this.database.types.add(event.type)
+
+      const formattedEvent = {
+        app: GITHUB,
+        createdAt: dayjs(event.created_at).format(DATE_FORMAT),
+        data: event,
+        type: event.type,
+        user: event.actor.display_login,
+        id: event.id
+      }
+
+      const timeAgo = dayjs().to(dayjs(event.created_at))
+      if (eventHappenedToday(timeAgo)) events.today.push(formattedEvent)
+      else if (eventHappenedYesterday(timeAgo))
+        events.yesterday.push(formattedEvent)
+      else if (eventHappenedLastWeek(timeAgo))
+        events.lastWeek.push(formattedEvent)
+      else if (eventHappenedLastMonth(timeAgo))
+        events.lastMonth.push(formattedEvent)
+      else events.catchAll.push(formattedEvent)
+    })
+    return events
   }
 
   fetchArenaEvents = async (page = '0') => {

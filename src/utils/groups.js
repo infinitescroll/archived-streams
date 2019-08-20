@@ -39,6 +39,7 @@ export const formatAndGroupByTime = (
       }
     }
   }
+
   const formattedEvent = {
     app: GITHUB,
     createdAt: dayjs(event.created_at).format(DATE_FORMAT),
@@ -61,17 +62,28 @@ export const formatAndGroupByTime = (
 }
 
 export const groupify = (database, event) => {
+  formatAndGroupByTime(
+    database,
+    'users',
+    event.actor.id,
+    event,
+    event.actor.display_login
+  )
   switch (event.type) {
     case ISSUES_EVENT:
       {
-        const { id, title } = event.payload.issue
-        formatAndGroupByTime(database, 'issues', id, event, title)
+        const { id, title, pull_request } = event.payload.issue
+        // only show issue if it wasn't part of a PR
+        if (!pull_request)
+          formatAndGroupByTime(database, 'issues', id, event, title)
       }
       break
     case ISSUE_COMMENT_EVENT:
       {
-        const { id, title } = event.payload.issue
-        formatAndGroupByTime(database, 'issues', id, event, title)
+        const { id, title, pull_request } = event.payload.issue
+        // only show issue if it wasn't part of a PR
+        if (!pull_request)
+          formatAndGroupByTime(database, 'issues', id, event, title)
       }
       break
 
