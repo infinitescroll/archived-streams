@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { BR_PINK } from '../../styled/themes'
 import { EventObjectContainer } from '../events/Event'
-import { Events } from '../events'
+import Group from './Group'
 import { filterEvents } from '../../utils'
 import { useFilters } from '../../hooks'
 
@@ -30,10 +30,7 @@ const BranchGroup = ({ title, events }) => {
   }, [events, filters])
   return (
     <GroupContainer onClick={() => setOpen(!open)}>
-      <h2>{title}</h2>
-      <div style={{ display: open ? 'block' : 'none' }}>
-        {open && <Events events={filteredEvents} />}
-      </div>
+      <Group title={title} events={filteredEvents} open={open} />
     </GroupContainer>
   )
 }

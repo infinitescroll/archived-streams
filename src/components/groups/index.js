@@ -3,10 +3,10 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
-import Group from './Group'
 import PullRequestGroup from './PullRequestGroup'
 import BranchGroup from './BranchGroup'
 import { ViewContainer } from '../../styled/components'
+import UserAndIssueGroup from './UserAndIssueGroup'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => {
   const currentGroup = useSelector(({ events }) => events.groupby)
@@ -50,7 +50,7 @@ export const IssueGroups = ({ issues }) => {
   return (
     <ViewContainer>
       {issues.map(issue => (
-        <Group
+        <UserAndIssueGroup
           key={issue.id}
           title={issue.title}
           endpoint={issue.eventsUrl}
@@ -69,7 +69,7 @@ export const UserGroups = ({ users, repoPath }) => {
   return (
     <ViewContainer>
       {users.map(user => (
-        <Group
+        <UserAndIssueGroup
           repoPath={repoPath}
           key={user.id}
           title={user.user}
