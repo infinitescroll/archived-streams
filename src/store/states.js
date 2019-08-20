@@ -9,7 +9,7 @@ export const initialState = {
       lastMonth: [],
       catchAll: []
     },
-    error: {},
+    error: '',
     filters: {},
     groupby: '',
     loading: false,
