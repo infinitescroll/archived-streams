@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { BR_PINK, BLUE, BLUE_TRANSP } from '../../styled/themes'
+import { GroupLabel } from './Group'
+import { BR_PINK, BLUE, BLUE_TRANSP, MID_BLUE } from '../../styled/themes'
 
 const PullRequestGroup = ({
   title,
@@ -48,6 +49,7 @@ const GroupContainer = styled.a`
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  text-decoration: none;
 `
 
 export default PullRequestGroup
