@@ -68,7 +68,7 @@ export const TimeLabel = styled(EventType)`
 const EventsTimeWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   width: 100%;
   justify-content: center;
 `

@@ -7,7 +7,6 @@ import { BR_PINK, BLUE, BLUE_TRANSP, MID_BLUE } from '../../styled/themes'
 const PullRequestGroup = ({
   title,
   number,
-  comments,
   labels,
   state,
   updatedAt,
@@ -18,21 +17,17 @@ const PullRequestGroup = ({
 }) => {
   return (
     <GroupContainer href={url} target="_blank" rel="noopener noreferrer">
-      <GroupLabel>
-        <div style={{ textDecoration: 'underline', color: MID_BLUE }}>
-          #{number} {title}
-        </div>
-        <p>Comment count: {comments}</p>
-        <p>updated at: {updatedAt}</p>
-        <p>User: {user}</p>
-      </GroupLabel>
+      <h2>
+        #{number} {title}
+      </h2>
+      <p>updated at: {updatedAt}</p>
+      <p>User: {user}</p>
     </GroupContainer>
   )
 }
 PullRequestGroup.propTypes = {
   title: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
-  comments: PropTypes.number.isRequired,
   labels: PropTypes.array.isRequired,
   state: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,

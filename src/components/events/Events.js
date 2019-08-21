@@ -5,11 +5,11 @@ import EventList, { EventListDemo } from './EventList'
 const Events = ({ events }) => (
   <Fragment>
     <EventListDemo />
-    <EventList timeLabel="Today" events={events.today} />
-    <EventList timeLabel="Yesterday" events={events.yesterday} />
-    <EventList timeLabel="Last Week" events={events.lastWeek} />
-    <EventList timeLabel="Last Month" events={events.lastMonth} />
-    <EventList timeLabel="Even Older" events={events.catchAll} />
+    <EventList timeLabel="in the past day" events={events.today} />
+    <EventList timeLabel="a day or two ago" events={events.yesterday} />
+    <EventList timeLabel="earlier this week" events={events.lastWeek} />
+    <EventList timeLabel="earlier this month" events={events.lastMonth} />
+    <EventList timeLabel="even older" events={events.catchAll} />
   </Fragment>
 )
 

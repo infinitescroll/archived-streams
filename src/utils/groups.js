@@ -20,9 +20,29 @@ export const formBranchNameFromRef = ref => {
   return `refs/heads/${ref}`
 }
 
-export const formatAndGroupByTime = (database, branchName, event) => {
-  if (!database.branches[branchName]) {
-    database.branches[branchName] = {
+const checkIfPartOfPR = (event, pulls) => {
+  let match = null
+
+  Object.keys(pulls).forEach(id => {
+    const pullBranch = formBranchNameFromRef(pulls[id].head.ref)
+    const eventBranch = formBranchNameFromRef(event.payload.ref)
+    if (pullBranch === eventBranch) {
+      match = id
+    }
+  })
+  return match
+}
+
+export const formatAndGroupByTime = (
+  database,
+  type,
+  identifier,
+  event,
+  title = ''
+) => {
+  if (!database[type][identifier]) {
+    database[type][identifier] = {
+      title,
       events: {
         today: [],
         yesterday: [],
@@ -32,6 +52,7 @@ export const formatAndGroupByTime = (database, branchName, event) => {
       }
     }
   }
+
   const formattedEvent = {
     app: GITHUB,
     createdAt: dayjs(event.created_at).format(DATE_FORMAT),
@@ -43,66 +64,76 @@ export const formatAndGroupByTime = (database, branchName, event) => {
 
   const timeAgo = dayjs().to(dayjs(event.created_at))
   if (eventHappenedToday(timeAgo))
-    database.branches[branchName].events.today.push(formattedEvent)
+    database[type][identifier].events.today.push(formattedEvent)
   else if (eventHappenedYesterday(timeAgo))
-    database.branches[branchName].events.yesterday.push(formattedEvent)
+    database[type][identifier].events.yesterday.push(formattedEvent)
   else if (eventHappenedLastWeek(timeAgo))
-    database.branches[branchName].events.lastWeek.push(formattedEvent)
+    database[type][identifier].events.lastWeek.push(formattedEvent)
   else if (eventHappenedLastMonth(timeAgo))
-    database.branches[branchName].events.lastMonth.push(formattedEvent)
-  else database.branches[branchName].events.catchAll.push(formattedEvent)
+    database[type][identifier].events.lastMonth.push(formattedEvent)
+  else database[type][identifier].events.catchAll.push(formattedEvent)
 }
 
-export const groupify = (database, event) => {
+export const groupify = (database, event, pulls) => {
+  formatAndGroupByTime(
+    database,
+    'users',
+    event.actor.id,
+    event,
+    event.actor.display_login
+  )
   switch (event.type) {
     case ISSUES_EVENT:
       {
-        const issue = event.payload.issue
-        if (!database.issues[issue.id]) {
-          database.issues[issue.id] = {
-            eventsUrl: issue.events_url,
-            createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-            title: issue.title,
-            labels: issue.labels,
-            id: issue.id
-          }
-        }
+        const { id, title, pull_request } = event.payload.issue
+        // only show issue if it wasn't part of a PR
+        if (!pull_request)
+          formatAndGroupByTime(database, 'issues', id, event, title)
       }
       break
     case ISSUE_COMMENT_EVENT:
       {
-        const issue = event.payload.issue
-
-        if (!database.issues[issue.id]) {
-          database.issues[issue.id] = {
-            eventsUrl: issue.events_url,
-            createdAt: dayjs(event.created_at).format(DATE_FORMAT),
-            title: issue.title,
-            labels: issue.labels,
-            id: issue.id
-          }
-        }
+        const { id, title, pull_request } = event.payload.issue
+        // only show issue if it wasn't part of a PR
+        if (!pull_request)
+          formatAndGroupByTime(database, 'issues', id, event, title)
       }
       break
 
     case PUSH_EVENT: {
       const { ref } = event.payload
       const branchName = formBranchNameFromRef(ref)
-      formatAndGroupByTime(database, branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event)
+      const prId = checkIfPartOfPR(event, database.pullRequestObj)
+      if (prId) {
+        formatAndGroupByTime(database, 'pullRequestObj', prId, event)
+      }
       break
     }
     case PULL_REQUEST_EVENT: {
       const branchName = formBranchNameFromRef(
         event.payload.pull_request.head.ref
       )
-      formatAndGroupByTime(database, branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(
+        database,
+        'pullRequestObj',
+        event.payload.pull_request.id,
+        event
+      )
       break
     }
     case PULL_REQUEST_REVIEW_COMMENT_EVENT: {
       const branchName = formBranchNameFromRef(
         event.payload.pull_request.head.ref
       )
-      formatAndGroupByTime(database, branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(
+        database,
+        'pullRequestObj',
+        event.payload.pull_request.id,
+        event
+      )
       break
     }
     case CREATE_EVENT:
@@ -110,7 +141,7 @@ export const groupify = (database, event) => {
       const { ref, ref_type } = event.payload
       if (ref_type === 'branch') {
         const branchName = formBranchNameFromRef(ref)
-        formatAndGroupByTime(database, branchName, event)
+        formatAndGroupByTime(database, 'branches', branchName, event)
       }
       break
     }

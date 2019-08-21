@@ -6,6 +6,7 @@
     "dayjs": "^1.8.15",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
+    "parse-link-header": "^1.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-html-parser": "^2.0.2",
