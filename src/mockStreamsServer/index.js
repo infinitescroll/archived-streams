@@ -81,7 +81,8 @@ class MockStreamsServer {
   recursivelyFetchAllGithubEvents = async endpoint => {
     const recurse = async (events, parsedLink, count) => {
       if (count === 3) return events
-      if (!parsedLink.last) return events
+      if (!parsedLink || !parsedLink.last) return events
+
       const {
         data,
         headers: { link }
