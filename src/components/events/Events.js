@@ -7,8 +7,8 @@ const Events = ({ events }) => (
     <EventListDemo />
     <EventList timeLabel="Today" events={events.today} />
     <EventList timeLabel="Yesterday" events={events.yesterday} />
-    <EventList timeLabel="Last Week" events={events.lastWeek} />
-    <EventList timeLabel="Last Month" events={events.lastMonth} />
+    <EventList timeLabel="Earlier This Week" events={events.lastWeek} />
+    <EventList timeLabel="Earlier This Month" events={events.lastMonth} />
     <EventList timeLabel="Even Older" events={events.catchAll} />
   </Fragment>
 )
