@@ -139,10 +139,7 @@ class MockStreamsServer {
       )
     )
 
-    console.log('pulls', pulls)
-    console.log('this.database.pullRequests', this.database.pullRequests)
     this.database.pullRequests.forEach(pr => {
-      console.log('pr', pr)
       pr.events = {
         today: [],
         yesterday: [],
@@ -154,7 +151,6 @@ class MockStreamsServer {
       this.database.pullRequestObj[pr.id] = pr
     })
 
-    console.log('this', this)
     const data = await this.recursivelyFetchAllGithubEvents(repo.endpoint)
     const events = {
       today: [],
@@ -188,7 +184,6 @@ class MockStreamsServer {
       else events.catchAll.push(formattedEvent)
     })
 
-    console.log('this.database', this.database)
     return events
   }
 
