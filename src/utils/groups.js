@@ -20,6 +20,19 @@ export const formBranchNameFromRef = ref => {
   return `refs/heads/${ref}`
 }
 
+const checkIfPartOfPR = (event, pulls) => {
+  let match = null
+
+  Object.keys(pulls).forEach(id => {
+    const pullBranch = formBranchNameFromRef(pulls[id].head.ref)
+    const eventBranch = formBranchNameFromRef(event.payload.ref)
+    if (pullBranch === eventBranch) {
+      match = id
+    }
+  })
+  return match
+}
+
 export const formatAndGroupByTime = (
   database,
   type,
@@ -61,7 +74,7 @@ export const formatAndGroupByTime = (
   else database[type][identifier].events.catchAll.push(formattedEvent)
 }
 
-export const groupify = (database, event) => {
+export const groupify = (database, event, pulls) => {
   formatAndGroupByTime(
     database,
     'users',
@@ -91,6 +104,10 @@ export const groupify = (database, event) => {
       const { ref } = event.payload
       const branchName = formBranchNameFromRef(ref)
       formatAndGroupByTime(database, 'branches', branchName, event)
+      const prId = checkIfPartOfPR(event, database.pullRequestObj)
+      if (prId) {
+        formatAndGroupByTime(database, 'pullRequestObj', prId, event)
+      }
       break
     }
     case PULL_REQUEST_EVENT: {
@@ -98,6 +115,12 @@ export const groupify = (database, event) => {
         event.payload.pull_request.head.ref
       )
       formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(
+        database,
+        'pullRequestObj',
+        event.payload.pull_request.id,
+        event
+      )
       break
     }
     case PULL_REQUEST_REVIEW_COMMENT_EVENT: {
@@ -105,6 +128,12 @@ export const groupify = (database, event) => {
         event.payload.pull_request.head.ref
       )
       formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(
+        database,
+        'pullRequestObj',
+        event.payload.pull_request.id,
+        event
+      )
       break
     }
     case CREATE_EVENT:

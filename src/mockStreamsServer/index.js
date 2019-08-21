@@ -37,6 +37,7 @@ class MockStreamsServer {
       types: new Set([]),
       issues: {},
       pullRequests: [],
+      pullRequestObj: {},
       branches: {}
     }
   }
@@ -51,10 +52,7 @@ class MockStreamsServer {
 
   getIssues = () => this.database.issues
 
-  getPullRequests = () =>
-    this.database.pullRequests.sort((prA, prB) =>
-      dayjs(prA.updatedAt).isAfter(dayjs(prB.updatedAt)) ? -1 : 1
-    )
+  getPullRequests = () => this.database.pullRequests
 
   getBranchGroups = () => this.database.branches
 
@@ -99,11 +97,13 @@ class MockStreamsServer {
   }
 
   fetchGithubEvents = async repo => {
-    const pulls = await axios.get(`${repo.endpoint}/pulls?per_page=5`)
+    const pulls = await axios.get(`${repo.endpoint}/pulls?state=all`)
     this.database.pullRequests = await Promise.all(
       pulls.data.map(
         async ({
           title,
+          created_at,
+          head,
           base: { label },
           id,
           number,
@@ -119,6 +119,9 @@ class MockStreamsServer {
         }) => {
           return {
             title,
+            created_at,
+            head,
+            base: { label },
             id,
             number,
             labels,
@@ -135,6 +138,22 @@ class MockStreamsServer {
       )
     )
 
+    console.log('pulls', pulls)
+    console.log('this.database.pullRequests', this.database.pullRequests)
+    this.database.pullRequests.forEach(pr => {
+      console.log('pr', pr)
+      pr.events = {
+        today: [],
+        yesterday: [],
+        lastWeek: [],
+        lastMonth: [],
+        catchAll: []
+      }
+
+      this.database.pullRequestObj[pr.id] = pr
+    })
+
+    console.log('this', this)
     const data = await this.recursivelyFetchAllGithubEvents(repo.endpoint)
     const events = {
       today: [],
@@ -167,6 +186,8 @@ class MockStreamsServer {
         events.lastMonth.push(formattedEvent)
       else events.catchAll.push(formattedEvent)
     })
+
+    console.log('this.database', this.database)
     return events
   }
 

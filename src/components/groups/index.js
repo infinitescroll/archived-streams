@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
-import PullRequestGroup from './PullRequestGroup'
 import UserBranchAndIssueGroup from './UserBranchAndIssueGroup'
 import { ViewContainer } from '../../styled/components'
 
@@ -77,20 +76,12 @@ UserGroups.propTypes = {
 export const PullRequestGroups = ({ pulls }) => {
   return (
     <ViewContainer>
-      {pulls.map(pull => (
-        <PullRequestGroup
-          key={pull.id}
-          assignees={pull.assignees}
-          body={pull.body}
-          group="pull"
-          labels={pull.labels}
-          number={pull.number}
-          state={pull.state}
-          stuff={pull}
-          title={pull.title}
-          url={pull.url}
-          user={pull.user}
-          updatedAt={pull.updatedAt}
+      {Object.keys(pulls).map(pullId => (
+        <UserBranchAndIssueGroup
+          key={pullId}
+          group="pulls"
+          events={pulls[pullId].events}
+          title={pulls[pullId].title}
         />
       ))}
     </ViewContainer>

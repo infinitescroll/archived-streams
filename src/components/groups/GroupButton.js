@@ -38,9 +38,9 @@ export const GroupButton = ({ type, groupEvents, ungroupEvents }) => {
 const Text = ({ isActive, type }) => {
   switch (type) {
     case 'pullrequest':
-      return `Group by Open Pull Requests ${isActive ? ' ✓' : ''}`
+      return `Group by Pull Requests ${isActive ? ' ✓' : ''}`
     case 'user':
-      return `Group by User ${isActive ? ' ✓' : ''}`
+      return `Group by Users ${isActive ? ' ✓' : ''}`
     case 'issue':
       return `Group by Issues ${isActive ? ' ✓' : ''}`
     case 'branch':
