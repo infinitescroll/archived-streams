@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useFilters } from '../../hooks'
+import mockStreamServer from '../../mockStreamsServer'
 import { AlignItemsColumn } from '../../styled/components'
 import { BLUE_TRANSP, DARK_BLUE, MID_BLUE, BR_CREAM } from '../../styled/themes'
 
@@ -39,31 +40,52 @@ const FilterList = styled.div`
 
 const Filters = ({ types }) => {
   const { filters, filterEvents, unfilterEvents } = useFilters()
+  const filterOptions = ['Pulls', 'Issues', 'Branches', 'Releases']
+  const users = mockStreamServer.getUsers()
+  const usernames = []
+  Object.keys(users).forEach(item => usernames.push(users[String(item)].title))
+  usernames.forEach(item => filterOptions.push(item))
 
   return (
     <AlignItemsColumn style={{ flex: '1' }}>
       <FilterDetails>
-        <Label>Filter By Activity Type:</Label>
+        <Label>Filter events:</Label>
         <FilterList>
-          {types.map(type => {
+          {filterOptions.map(option => {
             return (
               <FilterButton
-                key={type}
+                key={option}
                 style={{
-                  color: filters.types.indexOf(type) > -1 ? BR_CREAM : MID_BLUE,
+                  color:
+                    filters.types.indexOf(option) > -1 ||
+                    filters.users.indexOf(option) > -1
+                      ? BR_CREAM
+                      : MID_BLUE,
                   backgroundColor:
-                    filters.types.indexOf(type) > -1 ? MID_BLUE : BR_CREAM
+                    filters.types.indexOf(option) > -1 ||
+                    filters.users.indexOf(option) > -1
+                      ? MID_BLUE
+                      : BR_CREAM
                 }}
                 onClick={() => {
-                  if (filters.types.indexOf(type) > -1) {
-                    unfilterEvents('type', type)
-                  } else {
-                    filterEvents('type', type)
+                  const getType = () => {
+                    if (usernames.indexOf(option) > -1) return 'user'
+                    return 'type'
                   }
+
+                  if (
+                    filters.users.indexOf(option) > -1 ||
+                    filters.types.indexOf(option) > -1
+                  )
+                    unfilterEvents(getType(), option)
+                  else filterEvents(getType(), option)
                 }}
               >
-                {type}
-                {filters.types.indexOf(type) > -1 ? ' ✓' : ''}
+                {option}
+                {filters.users.indexOf(option) > -1 ||
+                filters.types.indexOf(option) > -1
+                  ? ' ✓'
+                  : ''}
               </FilterButton>
             )
           })}
