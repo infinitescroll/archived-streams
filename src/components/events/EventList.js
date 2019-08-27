@@ -3,17 +3,27 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Event, EventColumns, EventType } from './Event'
 import { BLUE, BLUE_TRANSP } from '../../styled/themes'
-import { PUSH_EVENT, ISSUE_COMMENT_EVENT, ISSUES_EVENT } from '../../constants'
+import {
+  PUSH_EVENT,
+  ISSUE_COMMENT_EVENT,
+  ISSUES_EVENT,
+  CREATE_EVENT
+} from '../../constants'
 
 const Summary = ({ events }) => {
   // could batch these into one setState or useReducer but as long as the `useMemo` is syncronous it shouldnt cause unecessary rerenders https://github.com/facebook/react/issues/14259
   const [commitCount, setCommitCount] = useState(0)
   const [commentCount, setCommentCount] = useState(0)
+  const [branchesCreatedCount, setBranchesCreatedCount] = useState(0)
 
   useMemo(() => {
     let commitCount = 0
     let commentCount = 0
+    let branchesCreatedCount = 0
     events.forEach(event => {
+      console.log(event.type)
+
+      if (event.type === CREATE_EVENT) branchesCreatedCount++
       if (event.type === PUSH_EVENT)
         commitCount += event.data.payload.commits.length
       if (event.type === ISSUE_COMMENT_EVENT) commentCount += 1
@@ -21,12 +31,14 @@ const Summary = ({ events }) => {
     })
     setCommitCount(commitCount)
     setCommentCount(commentCount)
+    setBranchesCreatedCount(branchesCreatedCount)
   }, [events])
 
   return (
     <div>
       <p>{commitCount} commits</p>
       <p>{commentCount} comments</p>
+      <p>{branchesCreatedCount} branches created</p>
     </div>
   )
 }
