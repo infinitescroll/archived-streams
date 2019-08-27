@@ -10,7 +10,7 @@ import {
   ErrorMessage
 } from '../styled/components'
 import { Events } from '../components/events'
-import { GroupSelection, GroupList } from '../components/groups'
+import { GroupSelection } from '../components/groups'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
 import { TimeLabel } from '../components/events/EventList'
@@ -31,10 +31,11 @@ export default () => {
     loadedEvents,
     loadedEventsSuccess,
     types,
-    repoPath
+    repoPath,
+    summaries
   } = useGitHubEvents()
 
-  const { groupbyIsActive, group, groupEvents, ungroupEvents } = useGroup()
+  const { groupEvents, ungroupEvents } = useGroup()
 
   return (
     <Fragment>
@@ -63,10 +64,8 @@ export default () => {
                 </FiltersContainer>
               </ViewContainer>
             )}
-            {loadedEvents && loadedEventsSuccess && groupbyIsActive ? (
-              <GroupList group={group} />
-            ) : (
-              <Events events={events} />
+            {loadedEvents && loadedEventsSuccess && (
+              <Events events={events} summaries={summaries} />
             )}
           </Fragment>
         )}

@@ -36,6 +36,36 @@ const checkIfPartOfPR = (event, pulls) => {
   return match
 }
 
+const createMetadataByType = (type, title, event) => {
+  let associatedGitHubEndpoint = ''
+  // we never have type pullRequestObj in here bc we already created metadata for each PR when fetching directly from the PR endpoint on github
+  switch (type) {
+    case 'branches':
+      if (event.payload.ref_type === 'branch')
+        associatedGitHubEndpoint = `https://github.com/openworklabs/streams/tree/${event.payload.ref}`
+      break
+    case 'issues':
+      associatedGitHubEndpoint = event.payload.issue.html_url
+      break
+    default:
+      associatedGitHubEndpoint = ''
+      break
+  }
+
+  return {
+    title,
+    type,
+    url: associatedGitHubEndpoint,
+    events: {
+      today: [],
+      yesterday: [],
+      lastWeek: [],
+      lastMonth: [],
+      catchAll: []
+    }
+  }
+}
+
 export const formatAndGroupByTime = (
   database,
   type,
@@ -44,16 +74,7 @@ export const formatAndGroupByTime = (
   title = ''
 ) => {
   if (!database[type][identifier]) {
-    database[type][identifier] = {
-      title,
-      events: {
-        today: [],
-        yesterday: [],
-        lastWeek: [],
-        lastMonth: [],
-        catchAll: []
-      }
-    }
+    database[type][identifier] = createMetadataByType(type, title, event)
   }
 
   const formattedEvent = {
@@ -106,7 +127,7 @@ export const groupify = (database, event, pulls) => {
     case PUSH_EVENT: {
       const { ref } = event.payload
       const branchName = formBranchNameFromRef(ref)
-      formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event, branchName)
       const prId = checkIfPartOfPR(event, database.pullRequestObj)
       if (prId) {
         formatAndGroupByTime(database, 'pullRequestObj', prId, event)
@@ -117,7 +138,7 @@ export const groupify = (database, event, pulls) => {
       const branchName = formBranchNameFromRef(
         event.payload.pull_request.head.ref
       )
-      formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event, branchName)
       formatAndGroupByTime(
         database,
         'pullRequestObj',
@@ -130,7 +151,7 @@ export const groupify = (database, event, pulls) => {
       const branchName = formBranchNameFromRef(
         event.payload.pull_request.head.ref
       )
-      formatAndGroupByTime(database, 'branches', branchName, event)
+      formatAndGroupByTime(database, 'branches', branchName, event, branchName)
       formatAndGroupByTime(
         database,
         'pullRequestObj',
@@ -144,7 +165,13 @@ export const groupify = (database, event, pulls) => {
       const { ref, ref_type } = event.payload
       if (ref_type === 'branch') {
         const branchName = formBranchNameFromRef(ref)
-        formatAndGroupByTime(database, 'branches', branchName, event)
+        formatAndGroupByTime(
+          database,
+          'branches',
+          branchName,
+          event,
+          branchName
+        )
       }
       break
     }

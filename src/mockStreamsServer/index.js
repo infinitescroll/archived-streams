@@ -45,6 +45,43 @@ class MockStreamsServer {
     return this.database.events
   }
 
+  getResourcesTouchedDuringTimePeriod = timePeriod => {
+    const issuesInTimePeriod = Object.keys(this.database.issues)
+      .filter(
+        issueId => this.database.issues[issueId].events[timePeriod].length > 0
+      )
+      .map(issueId => ({
+        ...this.database.issues[issueId],
+        events: this.database.issues[issueId].events[timePeriod]
+      }))
+
+    const pullRequestsInTimePeriod = Object.keys(this.database.pullRequestObj)
+      .filter(
+        pullId =>
+          this.database.pullRequestObj[pullId].events[timePeriod].length > 0
+      )
+      .map(pullId => ({
+        ...this.database.pullRequestObj[pullId],
+        events: this.database.pullRequestObj[pullId].events[timePeriod]
+      }))
+
+    const branchesInTimePeriod = Object.keys(this.database.branches)
+      .filter(
+        branchName =>
+          this.database.branches[branchName].events[timePeriod].length > 0
+      )
+      .map(branchName => ({
+        ...this.database.branches[branchName],
+        events: this.database.branches[branchName].events[timePeriod]
+      }))
+
+    return {
+      issues: issuesInTimePeriod,
+      pullRequests: pullRequestsInTimePeriod,
+      branches: branchesInTimePeriod
+    }
+  }
+
   getUsers = () => this.database.users
 
   getTypes = () => [...this.database.types]
@@ -139,6 +176,7 @@ class MockStreamsServer {
     )
 
     pullRequests.forEach(pr => {
+      pr.type = 'pullRequest'
       pr.events = {
         today: [],
         yesterday: [],

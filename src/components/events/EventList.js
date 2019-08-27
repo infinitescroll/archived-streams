@@ -1,46 +1,47 @@
-import React, { Fragment, useState, useMemo } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Event, EventColumns, EventType } from './Event'
 import { BLUE, BLUE_TRANSP } from '../../styled/themes'
-import { PUSH_EVENT, ISSUE_COMMENT_EVENT, CREATE_EVENT } from '../../constants'
+// import { PUSH_EVENT, ISSUE_COMMENT_EVENT, CREATE_EVENT } from '../../constants'
 
-const Summary = ({ events }) => {
+const Summary = ({ summary }) => {
+  // console.log('SUMMARY', summary)
   // could batch these into one setState or useReducer but as long as the `useMemo` is syncronous it shouldnt cause unecessary rerenders https://github.com/facebook/react/issues/14259
-  const [commitCount, setCommitCount] = useState(0)
-  const [commentCount, setCommentCount] = useState(0)
-  const [branchesCreatedCount, setBranchesCreatedCount] = useState(0)
+  // const [commitCount, setCommitCount] = useState(0)
+  // const [commentCount, setCommentCount] = useState(0)
+  // const [branchesCreatedCount, setBranchesCreatedCount] = useState(0)
 
-  useMemo(() => {
-    let commitCount = 0
-    let commentCount = 0
-    let branchesCreatedCount = 0
-    events.forEach(event => {
-      if (event.type === CREATE_EVENT) branchesCreatedCount++
-      if (event.type === PUSH_EVENT)
-        commitCount += event.data.payload.commits.length
-      if (event.type === ISSUE_COMMENT_EVENT) commentCount += 1
-      // if (event.type === ISSUES_EVENT) console.log('issue event', event.data)
-    })
-    setCommitCount(commitCount)
-    setCommentCount(commentCount)
-    setBranchesCreatedCount(branchesCreatedCount)
-  }, [events])
+  // useMemo(() => {
+  //   let commitCount = 0
+  //   let commentCount = 0
+  //   let branchesCreatedCount = 0
+  //   events.forEach(event => {
+  //     if (event.type === CREATE_EVENT) branchesCreatedCount++
+  //     if (event.type === PUSH_EVENT)
+  //       commitCount += event.data.payload.commits.length
+  //     if (event.type === ISSUE_COMMENT_EVENT) commentCount += 1
+  //     // if (event.type === ISSUES_EVENT) console.log('issue event', event.data)
+  //   })
+  //   setCommitCount(commitCount)
+  //   setCommentCount(commentCount)
+  //   setBranchesCreatedCount(branchesCreatedCount)
+  // }, [events])
 
   return (
     <div>
-      <p>{commitCount} commits</p>
-      <p>{commentCount} comments</p>
-      <p>{branchesCreatedCount} branches created</p>
+      <p>summary</p>
+      {/* <p>{commentCount} comments</p>
+      <p>{branchesCreatedCount} branches created</p> */}
     </div>
   )
 }
 
 Summary.propTypes = {
-  events: PropTypes.array.isRequired
+  summary: PropTypes.object.isRequired
 }
 
-const EventList = ({ events, timeLabel }) => {
+const EventList = ({ events, summary, timeLabel }) => {
   const [summaryViewActive, setSummaryViewActive] = useState(true)
   return (
     <Fragment>
@@ -59,7 +60,7 @@ const EventList = ({ events, timeLabel }) => {
               <p>No events fetched for this time period</p>
             </NoEvents>
           ) : summaryViewActive ? (
-            <Summary events={events} />
+            <Summary summary={summary} />
           ) : (
             events.map(event => (
               <Event
@@ -88,6 +89,7 @@ export const EventListDemo = () => (
 
 EventList.propTypes = {
   events: PropTypes.array.isRequired,
+  summary: PropTypes.object.isRequired,
   timeLabel: PropTypes.string
 }
 
