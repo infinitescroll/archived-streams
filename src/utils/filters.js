@@ -24,7 +24,8 @@ export const filterEvents = filters => event => {
       'pullrequestreviewcommentevent'
     ],
     Issues: ['issuesevent', 'issuecommentevent'],
-    Branches: ['pushevent']
+    Branches: ['pushevent'],
+    Releases: ['releaseevent']
   }
 
   const eventIsOfSpecificType =

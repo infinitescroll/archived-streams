@@ -40,7 +40,7 @@ const FilterList = styled.div`
 
 const Filters = ({ types }) => {
   const { filters, filterEvents, unfilterEvents } = useFilters()
-  const filterOptions = ['Pulls', 'Issues', 'Branches']
+  const filterOptions = ['Pulls', 'Issues', 'Branches', 'Releases']
   const users = mockStreamServer.getUsers()
   const usernames = []
   Object.keys(users).forEach(item => usernames.push(users[String(item)].title))
