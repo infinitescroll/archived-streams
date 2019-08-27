@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { GroupButton } from './GroupButton'
 import mockStreamsServer from '../../mockStreamsServer'
-import UserBranchAndIssueGroup from './UserBranchAndIssueGroup'
+import Grouping from './Grouping'
 import { ViewContainer } from '../../styled/components'
 
 export const GroupSelection = ({ groupEvents, ungroupEvents }) => (
@@ -39,7 +39,7 @@ export const IssueGroups = ({ issues }) => {
   return (
     <ViewContainer>
       {Object.keys(issues).map(issueId => (
-        <UserBranchAndIssueGroup
+        <Grouping
           key={issueId}
           group="issue"
           events={issues[issueId].events}
@@ -58,7 +58,7 @@ export const UserGroups = ({ users }) => {
   return (
     <ViewContainer>
       {Object.keys(users).map(userId => (
-        <UserBranchAndIssueGroup
+        <Grouping
           key={userId}
           group="issue"
           events={users[userId].events}
@@ -77,7 +77,7 @@ export const PullRequestGroups = ({ pulls }) => {
   return (
     <ViewContainer>
       {Object.keys(pulls).map(pullId => (
-        <UserBranchAndIssueGroup
+        <Grouping
           key={pullId}
           group="pulls"
           events={pulls[pullId].events}
@@ -97,7 +97,7 @@ const BranchGroups = ({ branches }) => {
     <ViewContainer>
       {Object.keys(branches).map(branchName => {
         return (
-          <UserBranchAndIssueGroup
+          <Grouping
             key={branchName}
             title={branchName}
             group="branch"

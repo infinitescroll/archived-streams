@@ -28,6 +28,7 @@ const UserBranchAndIssueGroup = ({ title, events }) => {
     })
     setFilteredEvents(filteredEvents)
   }, [events, filters])
+
   return (
     <GroupContainer onClick={() => setOpen(!open)}>
       <Group title={title} events={filteredEvents} open={open} />
