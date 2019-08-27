@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import calendar from 'dayjs/plugin/calendar'
 import {
   DATE_FORMAT,
   ISSUES_EVENT,
@@ -10,6 +11,8 @@ import {
   DELETE_EVENT,
   GITHUB
 } from '../constants'
+
+dayjs.extend(calendar)
 
 export const getGroupFromUrlBar = params => {
   return params.get('groupby') || ''
@@ -86,14 +89,14 @@ export const formatAndGroupByTime = (
     id: event.id
   }
 
-  const timeAgo = dayjs().to(dayjs(event.created_at))
-  if (eventHappenedToday(timeAgo))
+  const calendarTime = dayjs(event.created_at).calendar(dayjs())
+  if (eventHappenedToday(calendarTime))
     database[type][identifier].events.today.push(formattedEvent)
-  else if (eventHappenedYesterday(timeAgo))
+  else if (eventHappenedYesterday(calendarTime))
     database[type][identifier].events.yesterday.push(formattedEvent)
-  else if (eventHappenedLastWeek(timeAgo))
+  else if (eventHappenedLastWeek(calendarTime))
     database[type][identifier].events.lastWeek.push(formattedEvent)
-  else if (eventHappenedLastMonth(timeAgo))
+  else if (eventHappenedLastMonth(calendarTime))
     database[type][identifier].events.lastMonth.push(formattedEvent)
   else database[type][identifier].events.catchAll.push(formattedEvent)
 }
@@ -181,18 +184,12 @@ export const groupify = (database, event, pulls) => {
   }
 }
 
-export const eventHappenedToday = timeAgo =>
-  timeAgo.indexOf('hour') > -1 || timeAgo.indexOf('minute') > -1
+export const eventHappenedToday = timeAgo => timeAgo.indexOf('Today') > -1
 
 export const eventHappenedYesterday = timeAgo =>
-  timeAgo.indexOf('a day ago') > -1
+  timeAgo.indexOf('Yesterday') > -1
 
-export const eventHappenedLastWeek = timeAgo =>
-  timeAgo.indexOf('2 days ago') > -1 ||
-  timeAgo.indexOf('3 days ago') > -1 ||
-  timeAgo.indexOf('4 days ago') > -1 ||
-  timeAgo.indexOf('5 days ago') > -1 ||
-  timeAgo.indexOf('6 days ago') > -1 ||
-  timeAgo.indexOf('7 days ago') > -1
+export const eventHappenedLastWeek = timeAgo => timeAgo.indexOf('Last') > -1
 
-export const eventHappenedLastMonth = timeAgo => timeAgo.indexOf('days ago')
+export const eventHappenedLastMonth = timeAgo =>
+  timeAgo.split('/')[0] === dayjs().format('MM')

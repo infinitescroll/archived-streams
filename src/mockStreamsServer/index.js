@@ -1,6 +1,6 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import calendar from 'dayjs/plugin/calendar'
 import parse from 'parse-link-header'
 
 import {
@@ -27,7 +27,7 @@ import {
   eventHappenedLastMonth
 } from '../utils'
 
-dayjs.extend(relativeTime)
+dayjs.extend(calendar)
 
 class MockStreamsServer {
   constructor() {
@@ -210,13 +210,13 @@ class MockStreamsServer {
         id: event.id
       }
 
-      const timeAgo = dayjs().to(dayjs(event.created_at))
-      if (eventHappenedToday(timeAgo)) events.today.push(formattedEvent)
-      else if (eventHappenedYesterday(timeAgo))
+      const calendarTime = dayjs(event.created_at).calendar(dayjs())
+      if (eventHappenedToday(calendarTime)) events.today.push(formattedEvent)
+      else if (eventHappenedYesterday(calendarTime))
         events.yesterday.push(formattedEvent)
-      else if (eventHappenedLastWeek(timeAgo))
+      else if (eventHappenedLastWeek(calendarTime))
         events.lastWeek.push(formattedEvent)
-      else if (eventHappenedLastMonth(timeAgo))
+      else if (eventHappenedLastMonth(calendarTime))
         events.lastMonth.push(formattedEvent)
       else events.catchAll.push(formattedEvent)
     })
