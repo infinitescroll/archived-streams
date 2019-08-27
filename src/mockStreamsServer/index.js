@@ -36,7 +36,6 @@ class MockStreamsServer {
       users: {},
       types: new Set([]),
       issues: {},
-      pullRequests: [],
       pullRequestObj: {},
       branches: {}
     }
@@ -52,7 +51,7 @@ class MockStreamsServer {
 
   getIssues = () => this.database.issues
 
-  getPullRequests = () => this.database.pullRequests
+  getPullRequests = () => this.database.pullRequestObj
 
   getBranchGroups = () => this.database.branches
 
@@ -99,7 +98,7 @@ class MockStreamsServer {
 
   fetchGithubEvents = async repo => {
     const pulls = await axios.get(`${repo.endpoint}/pulls?state=all`)
-    this.database.pullRequests = await Promise.all(
+    const pullRequests = await Promise.all(
       pulls.data.map(
         async ({
           title,
@@ -139,7 +138,7 @@ class MockStreamsServer {
       )
     )
 
-    this.database.pullRequests.forEach(pr => {
+    pullRequests.forEach(pr => {
       pr.events = {
         today: [],
         yesterday: [],
