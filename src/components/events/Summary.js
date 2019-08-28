@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import uuidv1 from 'uuid/v1'
 import Octicon from 'react-octicon'
 import dayjs from 'dayjs'
 import { Event, EventObjectContainer } from '../events/Event'
@@ -17,16 +18,27 @@ const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
   return (
     <SummariesList>
-      {resources.map(resource => ResourceDisplay(resource))}
+      {resources.map(resource => {
+        if (
+          resource.events.length === 1 &&
+          resource.events[0].type === 'DeleteEvent'
+        )
+          return
+        return <ResourceDisplay resource={resource} />
+      })}
     </SummariesList>
   )
 }
+TimeSummary.propTypes = {
+  summary: PropTypes.object.isRequired
+}
 
-const ResourceDisplay = resource => {
+const ResourceDisplay = ({ resource }) => {
   const [expanded, setExpanded] = useState(false)
 
   return expanded ? (
     <ResourceEventLog
+      key={uuidv1()}
       resource={resource}
       click={e => {
         e.stopPropagation()
@@ -35,6 +47,7 @@ const ResourceDisplay = resource => {
     />
   ) : (
     <EventListWrapper
+      key={uuidv1()}
       onClick={e => {
         e.stopPropagation()
         setExpanded(true)
@@ -44,9 +57,8 @@ const ResourceDisplay = resource => {
     </EventListWrapper>
   )
 }
-
-TimeSummary.propTypes = {
-  summary: PropTypes.object.isRequired
+ResourceDisplay.propTypes = {
+  resource: PropTypes.object.isRequired
 }
 
 const ResourceEventLog = ({ resource, click }) => {
@@ -236,10 +248,11 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
     null: 'grey'
   }
   const typeToName = {
-    pullRequest: () => 'git-pull-request',
+    pullRequestObj: () => 'git-pull-request',
     issues: state => `issue${state.toLowerCase()}`,
     branches: () => 'git-branch'
   }
+
   const stateToName = {
     Open: '-opened',
     Closed: '-closed',
