@@ -49,10 +49,10 @@ export const EventListWrapper = styled.section`
   max-width: 900px;
   width: 100%;
 
-  & :last-of-type {
+  & :last-child {
     margin-bottom: 3px;
   }
-  & > :first-of-type {
+  & > :first-child {
     margin-top: 0;
   }
 `

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import uuidv1 from 'uuid/v1'
 import Octicon from 'react-octicon'
 import dayjs from 'dayjs'
-import { Event, EventObjectContainer } from '../events/Event'
+import { Event } from '../events/Event'
 import {
   PUSH_EVENT,
   ISSUE_COMMENT_EVENT,
@@ -13,6 +12,13 @@ import {
 } from '../../constants'
 import { switchCases } from '../../utils'
 import { EventListWrapper } from './EventList'
+import {
+  BR_PINK,
+  BR_LILAC,
+  BLUE,
+  DARK_PURP,
+  DARK_BLUE
+} from '../../styled/themes'
 
 const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
@@ -24,7 +30,7 @@ const TimeSummary = ({ summary }) => {
           resource.events[0].type === 'DeleteEvent'
         )
           return
-        return <ResourceDisplay resource={resource} />
+        return <ResourceSummary resource={resource} />
       })}
     </EventListWrapper>
   )
@@ -33,118 +39,11 @@ TimeSummary.propTypes = {
   summary: PropTypes.object.isRequired
 }
 
-const ResourceDisplay = ({ resource }) => {
-  const [expanded, setExpanded] = useState(false)
-
-  return expanded ? (
-    <ResourceEventLog
-      key={uuidv1()}
-      resource={resource}
-      click={e => {
-        e.stopPropagation()
-        setExpanded(false)
-      }}
-    />
-  ) : (
-    <SummariesList
-      key={uuidv1()}
-      onClick={e => {
-        e.stopPropagation()
-        setExpanded(true)
-      }}
-    >
-      <ResourceSummary resource={resource} />
-    </SummariesList>
-  )
-}
-ResourceDisplay.propTypes = {
-  resource: PropTypes.object.isRequired
-}
-
-const ResourceEventLog = ({ resource, click }) => {
-  const [openClosedOrMerged, setOCM] = useState(null)
-
-  useEffect(() => {
-    let localIsOpen = null
-    let alreadyChecked = false
-
-    const routeEvents = {
-      [ISSUE_COMMENT_EVENT]: event => {
-        if (!alreadyChecked) {
-          event.data.payload.issue.state === 'open'
-            ? (localIsOpen = 'Open')
-            : (localIsOpen = 'Closed')
-          alreadyChecked = true
-        }
-      },
-      [ISSUES_EVENT]: event => {
-        if (!alreadyChecked) {
-          event.data.payload.issue.state === 'open'
-            ? (localIsOpen = 'Open')
-            : (localIsOpen = 'Closed')
-          alreadyChecked = true
-        }
-      },
-      [PULL_REQUEST_EVENT]: event => {
-        if (!alreadyChecked) {
-          if (event.data.payload.action === 'closed') {
-            event.data.payload.pull_request.merged
-              ? (localIsOpen = 'Merged')
-              : (localIsOpen = 'Closed')
-          } else if (event.data.payload.action === 'opened')
-            localIsOpen = 'Open'
-
-          alreadyChecked = true
-        }
-      }
-    }
-    const getSummaryOfEvents = switchCases(routeEvents)(() => {})
-
-    const sortedEvents = sortResourceEvents(resource.events)
-    sortedEvents.forEach(event => {
-      getSummaryOfEvents(event.type)(event)
-    })
-
-    setOCM(localIsOpen)
-  }, [resource, resource.events])
-
-  return (
-    <SummaryList>
-      <SummaryHeader onClick={click}>
-        <div>
-          <TypeIcon
-            type={resource.type}
-            openClosedOrMerged={openClosedOrMerged}
-          />
-        </div>
-        <div style={{ textDecoration: 'underline' }}>
-          {typeToHumanReadable[resource.type](openClosedOrMerged)}
-          {resource.title.indexOf('refs/head') > -1
-            ? resource.title.substr(11, resource.title.length)
-            : resource.title}
-        </div>
-      </SummaryHeader>
-      {resource.events.map(event => (
-        <Event
-          key={event.id}
-          createdAt={event.createdAt}
-          data={event.data}
-          type={event.type}
-          user={event.user}
-        />
-      ))}
-    </SummaryList>
-  )
-}
-ResourceEventLog.propTypes = {
-  resource: PropTypes.object.isRequired,
-  click: PropTypes.func.isRequired
-}
-
 const ResourceSummary = ({ resource }) => {
   const [commentCount, setCommentCount] = useState(0)
   const [commitCount, setCommitCount] = useState(0)
   const [openClosedOrMerged, setOCM] = useState(null)
+  const [isExpanded, setExpanded] = useState(false)
 
   useEffect(() => {
     let localCommitCount = 0
@@ -201,32 +100,49 @@ const ResourceSummary = ({ resource }) => {
   if (resource.type === 'branches' && openClosedOrMerged !== null) return null
 
   return (
-    <SummaryContainer>
-      <Type>
-        <TypeIcon
-          type={resource.type}
-          openClosedOrMerged={openClosedOrMerged}
-        />
-      </Type>
-      <Title>
-        {typeToHumanReadable[resource.type](openClosedOrMerged)}
-        {resource.title.indexOf('refs/head') > -1
-          ? resource.title.substr(11, resource.title.length)
-          : resource.title}
-      </Title>
-      <Summaries>
-        {commitCount > 0 ? (
-          <p>
-            {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
-          </p>
-        ) : null}
-        {commentCount > 0 ? (
-          <p>
-            {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
-          </p>
-        ) : null}
-      </Summaries>
-    </SummaryContainer>
+    <React.Fragment>
+      <SummaryContainer
+        onClick={() => setExpanded(!isExpanded)}
+        style={{ backgroundColor: isExpanded ? BR_PINK : BR_LILAC }}
+      >
+        <SummaryIcon>
+          <TypeIcon
+            type={resource.type}
+            openClosedOrMerged={openClosedOrMerged}
+          />
+        </SummaryIcon>
+        <SummaryTitle>
+          {typeToHumanReadable[resource.type](openClosedOrMerged)}
+          {resource.title.indexOf('refs/head') > -1
+            ? resource.title.substr(11, resource.title.length)
+            : resource.title}
+        </SummaryTitle>
+        <SummaryItem>
+          {commitCount > 0
+            ? `${commitCount} ${commitCount > 1 ? 'Commits' : 'Commit'}`
+            : ''}
+          {commentCount > 0
+            ? `${commentCount} ${commentCount > 1 ? 'Comments' : 'Comment'}`
+            : ''}
+        </SummaryItem>
+        <DownArrow>{isExpanded ? '▼' : '►'}</DownArrow>
+      </SummaryContainer>
+      {isExpanded ? (
+        <SummaryEvents>
+          {resource.events.map(event => (
+            <Event
+              key={event.id}
+              createdAt={event.createdAt}
+              data={event.data}
+              type={event.type}
+              user={event.user}
+            />
+          ))}
+        </SummaryEvents>
+      ) : (
+        ``
+      )}
+    </React.Fragment>
   )
 }
 ResourceSummary.propTypes = {
@@ -257,7 +173,7 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
   color = stateToColor[openClosedOrMerged]
   name = typeToName[type](stateToName[openClosedOrMerged] || '')
 
-  return <Octicon style={{ color }} mega name={name} />
+  return <Octicon style={{ color, margin: 'auto' }} mega name={name} />
 }
 
 TypeIcon.propTypes = {
@@ -288,52 +204,48 @@ const sortResources = resources => {
   )
 }
 
-export const SummaryContainer = styled(EventObjectContainer)`
-  cursor: pointer;
-  display: block;
-  margin: 0 0 0.875rem 0.875rem;
-  font-family: 'Lucida Console', Monaco, monospace;
-`
-
-const Type = styled.div`
-  position: absolute;
-  left: 90px;
-`
-
-const Title = styled.div`
+export const SummaryContainer = styled.div`
   position: relative;
-  left: 140px;
-  font-weight: bold;
-`
-
-const Summaries = styled.div`
-  position: relative;
-  left: 140px;
-`
-
-const SummaryHeader = styled.div`
-  position: relative;
-  margin: 0 0.875rem;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns:
+    9rem 24rem auto
+    10%;
+  grid-gap: 1.5rem;
+  align-items: center;
+  max-width: 960px;
+  background: ${BR_LILAC};
+  margin: 0.875rem;
+  padding: 0.875rem;
+  border-radius: 4px;
+  border: solid 2px ${BLUE};
+  box-shadow: -3px 3px ${DARK_BLUE};
+  grid-template-areas: 'icon resource summary arrow';
   font-size: 1rem;
-  font-family: 'Lucida Console', Monaco, monospace;
-  display: flex;
-  text-align: center;
   cursor: pointer;
+  font-family: 'Lucida Console', Monaco, monospace;
+  font-weight: bold;
+  color: ${DARK_PURP};
 `
-const SummariesList = styled.div`
-  margin: 0.875rem 0;
-  min-width: 320px;
-  max-width: 900px;
-  width: 100%;
 
-  & :last-of-type {
-    margin-bottom: 3px;
-  }
+const SummaryTitle = styled.div`
+  grid-area: resource;
 `
-const SummaryList = styled.div`
-  min-width: 320px;
-  max-width: 900px;
-  width: 100%;
-  margin: 4.5rem 0;
+
+const SummaryItem = styled.div`
+  grid-area: summary;
+`
+
+const SummaryIcon = styled.div`
+  grid-area: icon;
+`
+const DownArrow = styled.span`
+  font-size: 1.5rem;
+  grid-area: arrow;
+  position: absolute;
+  right: 0;
+`
+const SummaryEvents = styled.div`
+  margin-bottom: 3rem;
 `
 export default TimeSummary

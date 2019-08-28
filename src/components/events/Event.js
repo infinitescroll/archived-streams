@@ -90,7 +90,7 @@ export const EventObjectContainer = styled.div`
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns:
-    minmax(5rem, max-content) 3rem auto
+    9rem auto
     10%;
   grid-gap: 1.5rem;
   align-items: center;
@@ -101,23 +101,11 @@ export const EventObjectContainer = styled.div`
   border-radius: 4px;
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
-  grid-template-areas: 'eventauthor eventauthor eventtype eventtype eventtype eventtime';
+  grid-template-areas: 'eventauthor eventtype eventtime';
   font-size: 1rem;
   cursor: pointer;
 `
-// Icon for the EventSource e.g. GitHub, Slack, etc.
-// const EventSourceIcon = styled.div`
-//   grid-area: eventsourceicon;
-//   display: flex;
-//   justify-items: center;
-//   align-items: center;
-//   width: 24px;
-//   height: 24px;
-//   background: ${BR_LILAC};
-//   border-radius: 100px;
-// `
 
-// Is it a bird? a plane? A commit message?
 export const EventType = styled.div`
   grid-area: eventtype;
   color: ${DARK_PURP};
