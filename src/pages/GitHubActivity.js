@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
-import { useGitHubEvents, useGroup } from '../hooks'
+import { useGitHubEvents } from '../hooks'
 
 import {
   Title,
@@ -10,7 +10,6 @@ import {
   ErrorMessage
 } from '../styled/components'
 import { Events } from '../components/events'
-import { GroupSelection } from '../components/groups'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
 import { TimeLabel } from '../components/events/EventList'
@@ -35,8 +34,6 @@ export default () => {
     summaries
   } = useGitHubEvents()
 
-  const { groupEvents, ungroupEvents } = useGroup()
-
   return (
     <Fragment>
       <GlobalStyle />
@@ -56,10 +53,6 @@ export default () => {
               <ViewContainer>
                 <TimeLabel style={{ padding: '0' }}> </TimeLabel>
                 <FiltersContainer>
-                  <GroupSelection
-                    groupEvents={groupEvents}
-                    ungroupEvents={ungroupEvents}
-                  />
                   <Filters types={types} />
                 </FiltersContainer>
               </ViewContainer>

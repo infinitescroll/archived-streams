@@ -69,6 +69,14 @@ const createMetadataByType = (type, title, event) => {
   }
 }
 
+const isNotANoteworthyEvent = type => {
+  if (type === 'ForkEvent') return true
+  if (type === 'WatchEvent') return true
+  if (type === 'StarEvent') return true
+  if (type === 'MembershipEvent') return true
+  return false
+}
+
 export const formatAndGroupByTime = (
   database,
   type,
@@ -77,6 +85,7 @@ export const formatAndGroupByTime = (
   title = ''
 ) => {
   if (!database[type][identifier]) {
+    if (type === 'users' && isNotANoteworthyEvent(event.type)) return
     database[type][identifier] = createMetadataByType(type, title, event)
   }
 
@@ -89,16 +98,18 @@ export const formatAndGroupByTime = (
     id: event.id
   }
 
-  const calendarTime = dayjs(event.created_at).calendar(dayjs())
-  if (eventHappenedToday(calendarTime))
-    database[type][identifier].events.today.push(formattedEvent)
-  else if (eventHappenedYesterday(calendarTime))
-    database[type][identifier].events.yesterday.push(formattedEvent)
-  else if (eventHappenedLastWeek(calendarTime))
-    database[type][identifier].events.lastWeek.push(formattedEvent)
-  else if (eventHappenedLastMonth(calendarTime))
-    database[type][identifier].events.lastMonth.push(formattedEvent)
-  else database[type][identifier].events.catchAll.push(formattedEvent)
+  if (type !== 'users') {
+    const calendarTime = dayjs(event.created_at).calendar(dayjs())
+    if (eventHappenedToday(calendarTime))
+      database[type][identifier].events.today.push(formattedEvent)
+    else if (eventHappenedYesterday(calendarTime))
+      database[type][identifier].events.yesterday.push(formattedEvent)
+    else if (eventHappenedLastWeek(calendarTime))
+      database[type][identifier].events.lastWeek.push(formattedEvent)
+    else if (eventHappenedLastMonth(calendarTime))
+      database[type][identifier].events.lastMonth.push(formattedEvent)
+    else database[type][identifier].events.catchAll.push(formattedEvent)
+  }
 }
 
 export const groupify = (database, event, pulls) => {

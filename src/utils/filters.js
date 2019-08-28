@@ -16,10 +16,22 @@ export const filterEvents = filters => event => {
           userFilter => event.user.toLowerCase() === userFilter.toLowerCase()
         )
       : true
+
+  const types = {
+    Pulls: [
+      'pullrequestevent',
+      'pullrequestreviewevent',
+      'pullrequestreviewcommentevent'
+    ],
+    Issues: ['issuesevent', 'issuecommentevent'],
+    Branches: ['pushevent'],
+    Releases: ['releaseevent']
+  }
+
   const eventIsOfSpecificType =
     filters.types.length > 0
       ? filters.types.some(
-          typeFilter => event.type.toLowerCase() === typeFilter.toLowerCase()
+          typeFilter => types[typeFilter].indexOf(event.type.toLowerCase()) > -1
         )
       : true
 
