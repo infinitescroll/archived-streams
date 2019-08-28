@@ -6,17 +6,17 @@ const Events = ({ events, summaries }) => (
   <Fragment>
     <EventListDemo />
     <EventList
-      timeLabel="in the past day"
+      timeLabel="today"
       events={events.today}
       summary={summaries.today}
     />
     <EventList
-      timeLabel="a day or two ago"
+      timeLabel="yesterday"
       events={events.yesterday}
       summary={summaries.yesterday}
     />
     <EventList
-      timeLabel="earlier this week"
+      timeLabel="in the past week"
       events={events.lastWeek}
       summary={summaries.lastWeek}
     />
