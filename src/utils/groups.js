@@ -157,7 +157,8 @@ export const groupify = (database, event, pulls) => {
         database,
         'pullRequestObj',
         event.payload.pull_request.id,
-        event
+        event,
+        event.payload.pull_request.title
       )
       break
     }
@@ -170,7 +171,8 @@ export const groupify = (database, event, pulls) => {
         database,
         'pullRequestObj',
         event.payload.pull_request.id,
-        event
+        event,
+        event.payload.pull_request.title
       )
       break
     }
