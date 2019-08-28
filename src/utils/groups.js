@@ -46,9 +46,14 @@ const createMetadataByType = (type, title, event) => {
     case 'branches':
       if (event.payload.ref_type === 'branch')
         associatedGitHubEndpoint = `https://github.com/openworklabs/streams/tree/${event.payload.ref}`
+      if (event.payload.pull_request)
+        associatedGitHubEndpoint = `https://github.com/openworklabs/streams/tree/${event.payload.pull_request.head.ref}`
       break
     case 'issues':
       associatedGitHubEndpoint = event.payload.issue.html_url
+      break
+    case 'users':
+      associatedGitHubEndpoint = `https://github.com/${event.actor.display_login}`
       break
     default:
       associatedGitHubEndpoint = ''
