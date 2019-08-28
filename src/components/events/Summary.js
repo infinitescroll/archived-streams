@@ -34,7 +34,7 @@ const TimeSummary = ({ summary }) => {
           </Type>
           <Title>#12 Dates are off</Title>
           <Summaries>
-            <p>* Close</p>
+            <p>* Closed</p>
             <p>* 3 comments</p>
           </Summaries>
         </Summary>
@@ -45,39 +45,6 @@ const TimeSummary = ({ summary }) => {
     </div>
   )
 }
-
-export const SummaryContainer = styled.div`
-  position: relative;
-  max-width: 960px;
-  background: ${BR_LILAC};
-  margin: 0.875rem;
-  padding: 0.875rem;
-  border-radius: 4px;
-  border: solid 1px ${BLUE_TRANSP};
-  box-shadow: -3px 3px ${BLUE};
-  font-size: 1rem;
-  cursor: pointer;
-`
-
-const Summary = styled.div`
-  margin: 30px 0px;
-`
-
-const Type = styled.div`
-  position: absolute;
-  left: 90px;
-`
-
-const Title = styled.div`
-  position: relative;
-  left: 140px;
-  font-weight: bold;
-`
-
-const Summaries = styled.div`
-  position: relative;
-  left: 140px;
-`
 
 TimeSummary.propTypes = {
   summary: PropTypes.object.isRequired
@@ -164,4 +131,39 @@ const sortResources = resources => {
       : 1
   )
 }
+
+const SummaryContainer = styled.div`
+  position: relative;
+  max-width: 960px;
+  background: ${BR_LILAC};
+  margin: 0.875rem;
+  padding: 0.875rem;
+  border-radius: 4px;
+  border: solid 1px ${BLUE_TRANSP};
+  box-shadow: -3px 3px ${BLUE};
+  font-size: 1rem;
+  cursor: pointer;
+`
+
+const Summary = styled.div`
+  margin: 30px 0px;
+`
+
+const Type = styled.div`
+  position: absolute;
+  left: 90px;
+`
+
+const Title = styled.div`
+  position: relative;
+  left: 140px;
+  font-weight: bold;
+  font-size: 18px;
+`
+
+const Summaries = styled.div`
+  position: relative;
+  left: 140px;
+`
+
 export default TimeSummary
