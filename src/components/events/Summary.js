@@ -19,15 +19,21 @@ const TimeSummary = ({ summary, isExpanded }) => {
   const resources = sortResources(summary.resources)
   return (
     <EventListWrapper>
-      {resources.map(resource =>
-        isExpanded ? (
+      {resources.map(resource => {
+        if (
+          resource.events.length === 1 &&
+          resource.events[0].type === 'DeleteEvent'
+        )
+          return
+
+        return isExpanded ? (
           <ResourceEventLog key={uuidv1()} resource={resource} />
         ) : (
           <SummaryContainer key={uuidv1()}>
             <ResourceSummary resource={resource} />
           </SummaryContainer>
         )
-      )}
+      })}
     </EventListWrapper>
   )
 }
