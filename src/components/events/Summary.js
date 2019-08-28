@@ -109,7 +109,7 @@ const ResourceEventLog = ({ resource, click }) => {
   }, [resource, resource.events])
 
   return (
-    <React.Fragment>
+    <EventListWrapper style={{ marginBottom: '1.75rem' }}>
       <SummaryHeader onClick={click}>
         <div>
           <TypeIcon
@@ -124,18 +124,16 @@ const ResourceEventLog = ({ resource, click }) => {
             : resource.title}
         </div>
       </SummaryHeader>
-      <EventListWrapper style={{ marginBottom: '1.75rem' }}>
-        {resource.events.map(event => (
-          <Event
-            key={event.id}
-            createdAt={event.createdAt}
-            data={event.data}
-            type={event.type}
-            user={event.user}
-          />
-        ))}
-      </EventListWrapper>
-    </React.Fragment>
+      {resource.events.map(event => (
+        <Event
+          key={event.id}
+          createdAt={event.createdAt}
+          data={event.data}
+          type={event.type}
+          user={event.user}
+        />
+      ))}
+    </EventListWrapper>
   )
 }
 ResourceEventLog.propTypes = {
@@ -321,11 +319,11 @@ const Summaries = styled.div`
 
 const SummaryHeader = styled.div`
   position: relative;
-  margin-top: 3rem;
-  margin-bottom: 0.875rem;
+  margin: 3rem 0.875rem 0 0.875rem;
   font-size: 1rem;
   font-family: 'Lucida Console', Monaco, monospace;
   display: flex;
+  text-align: center;
   cursor: pointer;
 `
 const SummariesList = styled.div`
