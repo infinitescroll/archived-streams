@@ -117,7 +117,8 @@ const ResourceEventLog = ({ resource, click }) => {
             openClosedOrMerged={openClosedOrMerged}
           />
         </div>
-        <div>
+        <div style={{ textDecoration: 'underline' }}>
+          {typeToHumanReadable[resource.type](openClosedOrMerged)}
           {resource.title.indexOf('refs/head') > -1
             ? resource.title.substr(11, resource.title.length)
             : resource.title}
@@ -211,14 +212,12 @@ const ResourceSummary = ({ resource }) => {
           />
         </Type>
         <Title>
+          {typeToHumanReadable[resource.type](openClosedOrMerged)}
           {resource.title.indexOf('refs/head') > -1
             ? resource.title.substr(11, resource.title.length)
             : resource.title}
         </Title>
         <Summaries>
-          <p>
-            {openClosedOrMerged} {resource.type}
-          </p>
           {commitCount > 0 ? (
             <p>
               {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
@@ -274,6 +273,12 @@ TypeIcon.defaultProps = {
   openClosedOrMerged: null
 }
 
+const typeToHumanReadable = {
+  pullRequestObj: state => `${state} Pull Request: `,
+  issues: state => `${state} Issue: `,
+  branches: _state => 'New Branch: '
+}
+
 const sortResourceEvents = events => {
   return events.sort((eventA, eventB) =>
     dayjs(eventA.createdAt).isAfter(dayjs(eventB.createdAt)) ? -1 : 1
@@ -307,7 +312,6 @@ const Title = styled.div`
   position: relative;
   left: 140px;
   font-weight: bold;
-  text-decoration: underline;
 `
 
 const Summaries = styled.div`
