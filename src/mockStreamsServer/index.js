@@ -178,7 +178,7 @@ class MockStreamsServer {
     )
 
     pullRequests.forEach(pr => {
-      pr.type = 'pullRequest'
+      pr.type = 'pullRequestObj'
       pr.events = {
         today: [],
         yesterday: [],

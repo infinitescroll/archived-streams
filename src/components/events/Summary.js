@@ -20,9 +20,9 @@ const TimeSummary = ({ summary, isExpanded }) => {
     <EventListWrapper>
       {resources.map(resource =>
         isExpanded ? (
-          <ResourceEventLog resource={resource} />
+          <ResourceEventLog key={resource.title} resource={resource} />
         ) : (
-          <SummaryContainer>
+          <SummaryContainer key={resource.title}>
             <ResourceSummary resource={resource} />
           </SummaryContainer>
         )
@@ -218,10 +218,11 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
     null: 'grey'
   }
   const typeToName = {
-    pullRequest: () => 'git-pull-request',
+    pullRequestObj: () => 'git-pull-request',
     issues: state => `issue${state.toLowerCase()}`,
     branches: () => 'git-branch'
   }
+
   const stateToName = {
     Open: '-opened',
     Closed: '-closed',
