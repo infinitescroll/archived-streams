@@ -14,7 +14,6 @@ import Octicon from 'react-octicon'
 
 const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
-
   return (
     <SummaryContainer>
       {resources.map(resource => (
@@ -105,11 +104,10 @@ const ResourceSummary = ({ resource }) => {
     sortedEvents.forEach(event => {
       getSummaryOfEvents(event.type)(event)
     })
-
     setOCM(localIsOpen)
     setCommitCount(localCommitCount)
     setCommentCount(localCommentCount)
-  }, [resource.events])
+  }, [resource, resource.events])
 
   return (
     <Summary>
@@ -131,7 +129,7 @@ const ResourceSummary = ({ resource }) => {
         ) : null}
         {commentCount > 0 ? (
           <p>
-            {commitCount} {commentCount > 1 ? 'Comments' : 'Comment'}
+            {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
           </p>
         ) : null}
       </Summaries>
@@ -140,57 +138,38 @@ const ResourceSummary = ({ resource }) => {
 }
 
 const TypeIcon = ({ type, openClosedOrMerged }) => {
-  console.log('open', type, openClosedOrMerged)
   let color
   let name
   if (type === 'pullRequest' && openClosedOrMerged === 'Merged') {
     name = 'git-pull-request'
     color = 'green'
+  } else if (type === 'pullRequest') {
+    name = 'git-pull-request'
+    color = 'purple'
   }
 
   if (type === 'issues' && openClosedOrMerged === 'Closed') {
     name = 'issue-closed'
     color = 'red'
-  }
-
-  if (type === 'issues' && openClosedOrMerged === 'Open') {
-    name = 'issue-closed'
+  } else if (type === 'issues' && openClosedOrMerged === 'Open') {
+    name = 'issue-opened'
     color = 'green'
+  } else if (type === 'issues') {
+    name = 'comment-discussion'
+    color = 'grey'
   }
 
   return <Octicon style={{ color }} mega name={name} />
 }
 
 TypeIcon.propTypes = {
+  openClosedOrMerged: PropTypes.string,
   type: PropTypes.string.isRequired
 }
 
-// const SampleResourceStuff = () => {
-//   return (
-//     <SummaryContainer>
-//       <Summary>
-//         <Type>
-//           <Octicon style={{ color: 'green' }} mega name="git-pull-request" />
-//         </Type>
-//         <Title>#14 Feat/auth</Title>
-//         <Summaries>
-//           <p>* 1 commit</p>
-//           <p>* 3 comments</p>
-//         </Summaries>
-//       </Summary>
-//       <Summary>
-//         <Type>
-//           <Octicon style={{ color: 'red' }} mega name="issue-closed" />
-//         </Type>
-//         <Title>#12 Dates are off</Title>
-//         <Summaries>
-//           <p>* Close</p>
-//           <p>* 3 comments</p>
-//         </Summaries>
-//       </Summary>
-//     </SummaryContainer>
-//   )
-// }
+TypeIcon.defaultProps = {
+  openClosedOrMerged: ''
+}
 
 ResourceSummary.propTypes = {
   resource: PropTypes.object.isRequired
