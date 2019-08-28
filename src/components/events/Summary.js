@@ -52,10 +52,10 @@ const Title = styled.div`
   font-weight: bold;
 `
 
-// const Summaries = styled.div`
-//   position: relative;
-//   left: 140px;
-// `
+const Summaries = styled.div`
+  position: relative;
+  left: 140px;
+`
 
 TimeSummary.propTypes = {
   summary: PropTypes.object.isRequired
@@ -120,19 +120,21 @@ const ResourceSummary = ({ resource }) => {
           openClosedOrMerged={openClosedOrMerged}
         />
       </Type>
-      <p>
-        {openClosedOrMerged} {resource.type}
-      </p>
-      {commitCount > 0 ? (
+      <Summaries>
         <p>
-          {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
+          {openClosedOrMerged} {resource.type}
         </p>
-      ) : null}
-      {commentCount > 0 ? (
-        <p>
-          {commitCount} {commentCount > 1 ? 'Comments' : 'Comment'}
-        </p>
-      ) : null}
+        {commitCount > 0 ? (
+          <p>
+            {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
+          </p>
+        ) : null}
+        {commentCount > 0 ? (
+          <p>
+            {commitCount} {commentCount > 1 ? 'Comments' : 'Comment'}
+          </p>
+        ) : null}
+      </Summaries>
     </Summary>
   )
 }
@@ -206,4 +208,5 @@ const sortResources = resources => {
       : 1
   )
 }
+
 export default TimeSummary
