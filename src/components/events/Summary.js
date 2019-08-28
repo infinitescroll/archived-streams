@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import {
@@ -7,19 +8,54 @@ import {
   ISSUES_EVENT,
   PULL_REQUEST_EVENT
 } from '../../constants'
+import { BLUE_TRANSP, BR_LILAC, BLUE } from '../../styled/themes'
 import { switchCases } from '../../utils'
+import Octicon from 'react-octicon'
 
 const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
 
   return (
-    <div>
+    <SummaryContainer>
       {resources.map(resource => (
         <ResourceSummary resource={resource} />
       ))}
-    </div>
+    </SummaryContainer>
   )
 }
+
+export const SummaryContainer = styled.div`
+  position: relative;
+  max-width: 960px;
+  background: ${BR_LILAC};
+  margin: 0.875rem;
+  padding: 0.875rem;
+  border-radius: 4px;
+  border: solid 1px ${BLUE_TRANSP};
+  box-shadow: -3px 3px ${BLUE};
+  font-size: 1rem;
+  cursor: pointer;
+`
+
+const Summary = styled.div`
+  margin: 30px 0px;
+`
+
+const Type = styled.div`
+  position: absolute;
+  left: 90px;
+`
+
+const Title = styled.div`
+  position: relative;
+  left: 140px;
+  font-weight: bold;
+`
+
+// const Summaries = styled.div`
+//   position: relative;
+//   left: 140px;
+// `
 
 TimeSummary.propTypes = {
   summary: PropTypes.object.isRequired
@@ -76,7 +112,14 @@ const ResourceSummary = ({ resource }) => {
   }, [resource.events])
 
   return (
-    <div>
+    <Summary>
+      <Title>{resource.title}</Title>
+      <Type>
+        <TypeIcon
+          type={resource.type}
+          openClosedOrMerged={openClosedOrMerged}
+        />
+      </Type>
       <p>
         {openClosedOrMerged} {resource.type}
       </p>
@@ -90,9 +133,62 @@ const ResourceSummary = ({ resource }) => {
           {commitCount} {commentCount > 1 ? 'Comments' : 'Comment'}
         </p>
       ) : null}
-    </div>
+    </Summary>
   )
 }
+
+const TypeIcon = ({ type, openClosedOrMerged }) => {
+  console.log('open', type, openClosedOrMerged)
+  let color
+  let name
+  if (type === 'pullRequest' && openClosedOrMerged === 'Merged') {
+    name = 'git-pull-request'
+    color = 'green'
+  }
+
+  if (type === 'issues' && openClosedOrMerged === 'Closed') {
+    name = 'issue-closed'
+    color = 'red'
+  }
+
+  if (type === 'issues' && openClosedOrMerged === 'Open') {
+    name = 'issue-closed'
+    color = 'green'
+  }
+
+  return <Octicon style={{ color }} mega name={name} />
+}
+
+TypeIcon.propTypes = {
+  type: PropTypes.string.isRequired
+}
+
+// const SampleResourceStuff = () => {
+//   return (
+//     <SummaryContainer>
+//       <Summary>
+//         <Type>
+//           <Octicon style={{ color: 'green' }} mega name="git-pull-request" />
+//         </Type>
+//         <Title>#14 Feat/auth</Title>
+//         <Summaries>
+//           <p>* 1 commit</p>
+//           <p>* 3 comments</p>
+//         </Summaries>
+//       </Summary>
+//       <Summary>
+//         <Type>
+//           <Octicon style={{ color: 'red' }} mega name="issue-closed" />
+//         </Type>
+//         <Title>#12 Dates are off</Title>
+//         <Summaries>
+//           <p>* Close</p>
+//           <p>* 3 comments</p>
+//         </Summaries>
+//       </Summary>
+//     </SummaryContainer>
+//   )
+// }
 
 ResourceSummary.propTypes = {
   resource: PropTypes.object.isRequired
