@@ -12,7 +12,6 @@ import {
 import { Events } from '../components/events'
 import Filters from '../components/filters'
 import { BR_PINK, DARK_LILAC } from '../styled/themes'
-import { TimeLabel } from '../components/events/EventList'
 
 const StreamContainer = styled.section`
   display: grid;
@@ -51,7 +50,6 @@ export default () => {
             {loadingEvents && <Link>Loading your events.....</Link>}
             {loadedEvents && loadedEventsSuccess && (
               <ViewContainer>
-                <TimeLabel style={{ padding: '0' }}> </TimeLabel>
                 <FiltersContainer>
                   <Filters types={types} />
                 </FiltersContainer>
@@ -73,9 +71,9 @@ const FiltersContainer = styled.div`
   justify-content: space-evenly;
 
   min-width: 320px;
-  max-width: calc(900px - 0.875rem);
-  width: 100%;
+  max-width: calc(900px);
 
+  margin: 0.5rem;
   background: ${BR_PINK};
   border: solid 2px ${DARK_LILAC};
   border-radius: 4px;

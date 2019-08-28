@@ -19,6 +19,7 @@ const EventList = ({ events, summary, timeLabel }) => {
         ) : (
           <Summary summary={summary} />
         )}
+        <TimeLabel />
       </EventsTimeWrapper>
     </Fragment>
   )
@@ -30,6 +31,7 @@ export const EventListDemo = () => (
     <EventListWrapper style={{ border: 'none' }}>
       <EventColumns />
     </EventListWrapper>
+    <TimeLabel />
   </EventsTimeWrapper>
 )
 

@@ -129,8 +129,6 @@ export const ViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  padding-left: 6rem;
 `
 
 export const ErrorMessage = styled.h1`

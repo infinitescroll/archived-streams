@@ -47,7 +47,7 @@ const Filters = ({ types }) => {
   usernames.forEach(item => filterOptions.push(item))
 
   return (
-    <AlignItemsColumn style={{ flex: '1' }}>
+    <AlignItemsColumn>
       <FilterDetails>
         <Label>Filter events:</Label>
         <FilterList>
