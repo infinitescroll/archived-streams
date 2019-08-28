@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import uuidv1 from 'uuid/v1'
 import Octicon from 'react-octicon'
 import dayjs from 'dayjs'
 import { Event, EventObjectContainer } from '../events/Event'
@@ -20,9 +21,9 @@ const TimeSummary = ({ summary, isExpanded }) => {
     <EventListWrapper>
       {resources.map(resource =>
         isExpanded ? (
-          <ResourceEventLog key={resource.title} resource={resource} />
+          <ResourceEventLog key={uuidv1()} resource={resource} />
         ) : (
-          <SummaryContainer key={resource.title}>
+          <SummaryContainer key={uuidv1()}>
             <ResourceSummary resource={resource} />
           </SummaryContainer>
         )
