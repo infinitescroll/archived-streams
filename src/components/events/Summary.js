@@ -12,22 +12,21 @@ import {
 } from '../../constants'
 import { switchCases } from '../../utils'
 import { EventListWrapper } from './EventList'
-import { BLUE_TRANSP, BLUE, BR_LILAC } from '../../styled/themes'
 
 const TimeSummary = ({ summary, isExpanded }) => {
   const resources = sortResources(summary.resources)
   return (
-    <EventListWrapper>
+    <SummariesList>
       {resources.map(resource =>
         isExpanded ? (
           <ResourceEventLog resource={resource} />
         ) : (
-          <SummaryContainer>
+          <EventListWrapper>
             <ResourceSummary resource={resource} />
-          </SummaryContainer>
+          </EventListWrapper>
         )
       )}
-    </EventListWrapper>
+    </SummariesList>
   )
 }
 
@@ -84,30 +83,32 @@ const ResourceEventLog = ({ resource }) => {
   }, [resource, resource.events])
 
   return (
-    <EventListWrapper>
+    <React.Fragment>
       <SummaryHeader>
-        <Type>
+        <div>
           <TypeIcon
             type={resource.type}
             openClosedOrMerged={openClosedOrMerged}
           />
-        </Type>
-        <Title>
+        </div>
+        <div>
           {resource.title.indexOf('refs/head') > -1
             ? resource.title.substr(11, resource.title.length)
             : resource.title}
-        </Title>
+        </div>
       </SummaryHeader>
-      {resource.events.map(event => (
-        <Event
-          key={event.id}
-          createdAt={event.createdAt}
-          data={event.data}
-          type={event.type}
-          user={event.user}
-        />
-      ))}
-    </EventListWrapper>
+      <EventListWrapper>
+        {resource.events.map(event => (
+          <Event
+            key={event.id}
+            createdAt={event.createdAt}
+            data={event.data}
+            type={event.type}
+            user={event.user}
+          />
+        ))}
+      </EventListWrapper>
+    </React.Fragment>
   )
 }
 ResourceEventLog.propTypes = {
@@ -174,34 +175,36 @@ const ResourceSummary = ({ resource }) => {
   if (resource.type === 'branches' && openClosedOrMerged !== null) return null
 
   return (
-    <Summary>
-      <Type>
-        <TypeIcon
-          type={resource.type}
-          openClosedOrMerged={openClosedOrMerged}
-        />
-      </Type>
-      <Title>
-        {resource.title.indexOf('refs/head') > -1
-          ? resource.title.substr(11, resource.title.length)
-          : resource.title}
-      </Title>
-      <Summaries>
-        <p>
-          {openClosedOrMerged} {resource.type}
-        </p>
-        {commitCount > 0 ? (
+    <SummaryContainer>
+      <Summary>
+        <Type>
+          <TypeIcon
+            type={resource.type}
+            openClosedOrMerged={openClosedOrMerged}
+          />
+        </Type>
+        <Title>
+          {resource.title.indexOf('refs/head') > -1
+            ? resource.title.substr(11, resource.title.length)
+            : resource.title}
+        </Title>
+        <Summaries>
           <p>
-            {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
+            {openClosedOrMerged} {resource.type}
           </p>
-        ) : null}
-        {commentCount > 0 ? (
-          <p>
-            {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
-          </p>
-        ) : null}
-      </Summaries>
-    </Summary>
+          {commitCount > 0 ? (
+            <p>
+              {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
+            </p>
+          ) : null}
+          {commentCount > 0 ? (
+            <p>
+              {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
+            </p>
+          ) : null}
+        </Summaries>
+      </Summary>
+    </SummaryContainer>
   )
 }
 ResourceSummary.propTypes = {
@@ -256,23 +259,15 @@ const sortResources = resources => {
   )
 }
 
-export const SummaryContainer = styled.div`
-  position: relative;
-  max-width: 960px;
-  width: 100%;
-  background: ${BR_LILAC};
-  margin: 0.875rem;
-  padding: 0.875rem;
-  border-radius: 4px;
-  border: solid 1px ${BLUE_TRANSP};
-  box-shadow: -3px 3px ${BLUE};
-  font-size: 1rem;
-  font-family: 'Lucida Console', Monaco, monospace;
+export const SummaryContainer = styled(EventObjectContainer)`
   cursor: pointer;
+  display: block;
+  margin-bottom: 0.875rem !important;
 `
 
 const Summary = styled.div`
-  margin: 40px 0px;
+  margin: 0.875rem 0;
+  font-family: 'Lucida Console', Monaco, monospace;
 `
 
 const Type = styled.div`
@@ -292,13 +287,21 @@ const Summaries = styled.div`
   left: 140px;
 `
 
-const SummaryHeader = styled(EventObjectContainer)`
-  border: none;
-  background: none;
-  box-shadow: none;
-  margin-top: 0.875rem;
+const SummaryHeader = styled.div`
+  position: relative;
+  margin-top: 3rem;
+  margin-bottom: 0.875rem;
   font-size: 1rem;
   font-family: 'Lucida Console', Monaco, monospace;
+  display: flex;
 `
+const SummariesList = styled.div`
+  min-width: 320px;
+  max-width: 900px;
+  width: 100%;
 
+  & > :first-of-type {
+    margin-top: 0;
+  }
+`
 export default TimeSummary
