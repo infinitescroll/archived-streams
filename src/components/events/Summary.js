@@ -75,8 +75,10 @@ const ResourceSummary = ({ resource }) => {
       [PUSH_EVENT]: event => {
         localCommitCount = localCommitCount + event.data.payload.commits.length
       },
-      [ISSUE_COMMENT_EVENT]: () => {
+      [ISSUE_COMMENT_EVENT]: event => {
         localCommentCount += 1
+        if (event.data.payload.issue.state === 'closed') localIsOpen = 'Closed'
+        else if (event.data.payload.issue.state === 'open') localIsOpen = 'Open'
       },
       [ISSUES_EVENT]: event => {
         if (!alreadyChecked) {
@@ -154,9 +156,6 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
   } else if (type === 'issues' && openClosedOrMerged === 'Open') {
     name = 'issue-opened'
     color = 'green'
-  } else if (type === 'issues') {
-    name = 'comment-discussion'
-    color = 'grey'
   }
 
   return <Octicon style={{ color }} mega name={name} />
