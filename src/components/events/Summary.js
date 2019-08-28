@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import Octicon from 'react-octicon'
 import dayjs from 'dayjs'
+import { Event } from '../events/Event'
 import {
   PUSH_EVENT,
   ISSUE_COMMENT_EVENT,
   ISSUES_EVENT,
   PULL_REQUEST_EVENT
 } from '../../constants'
-import { BLUE_TRANSP, BR_LILAC, BLUE } from '../../styled/themes'
 import { switchCases } from '../../utils'
-import Octicon from 'react-octicon'
+import { EventListWrapper } from './EventList'
 
-const TimeSummary = ({ summary }) => {
+const TimeSummary = ({ summary, isExpanded }) => {
   const resources = sortResources(summary.resources)
   return (
     <SummaryContainer>
       {resources.map(resource => (
-        <ResourceSummary resource={resource} />
+        <ResourceSummary resource={resource} isExpanded={isExpanded} />
       ))}
     </SummaryContainer>
   )
 }
 
 TimeSummary.propTypes = {
-  summary: PropTypes.object.isRequired
+  summary: PropTypes.object.isRequired,
+  isExpanded: PropTypes.bool.isRequired
 }
 
-const ResourceSummary = ({ resource }) => {
+const ResourceSummary = ({ resource, isExpanded }) => {
   const [commentCount, setCommentCount] = useState(0)
   const [commitCount, setCommitCount] = useState(0)
   const [openClosedOrMerged, setOCM] = useState(null)
@@ -85,6 +87,34 @@ const ResourceSummary = ({ resource }) => {
   }, [resource, resource.events])
 
   if (resource.type === 'branches' && openClosedOrMerged !== null) return null
+  if (isExpanded) {
+    return (
+      <EventListWrapper>
+        <Summary>
+          <Type>
+            <TypeIcon
+              type={resource.type}
+              openClosedOrMerged={openClosedOrMerged}
+            />
+          </Type>
+          <Title>
+            {resource.title.indexOf('refs/head') > -1
+              ? resource.title.substr(11, resource.title.length)
+              : resource.title}
+          </Title>
+        </Summary>
+        {resource.events.map(event => (
+          <Event
+            key={event.id}
+            createdAt={event.createdAt}
+            data={event.data}
+            type={event.type}
+            user={event.user}
+          />
+        ))}
+      </EventListWrapper>
+    )
+  }
   return (
     <Summary>
       <Type>
@@ -152,7 +182,8 @@ TypeIcon.defaultProps = {
 }
 
 ResourceSummary.propTypes = {
-  resource: PropTypes.object.isRequired
+  resource: PropTypes.object.isRequired,
+  isExpanded: PropTypes.bool.isRequired
 }
 
 const sortResourceEvents = events => {
@@ -171,12 +202,8 @@ const sortResources = resources => {
 export const SummaryContainer = styled.div`
   position: relative;
   max-width: 960px;
-  background: ${BR_LILAC};
   margin: 0.875rem;
   padding: 0.875rem;
-  border-radius: 4px;
-  border: solid 1px ${BLUE_TRANSP};
-  box-shadow: -3px 3px ${BLUE};
   font-size: 1rem;
   font-family: 'Lucida Console', Monaco, monospace;
   cursor: pointer;
