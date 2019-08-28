@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import dayjs from 'dayjs'
 import {
@@ -14,9 +14,9 @@ const TimeSummary = ({ summary }) => {
 
   return (
     <div>
-      {resources.map(resource => ResourceSummary(resource))}
-      {/* <p>{commitCount} commits</p>
-      <p>{commentCount} comments</p> */}
+      {resources.map(resource => (
+        <ResourceSummary resource={resource} />
+      ))}
     </div>
   )
 }
@@ -25,12 +25,12 @@ TimeSummary.propTypes = {
   summary: PropTypes.object.isRequired
 }
 
-const ResourceSummary = resource => {
+const ResourceSummary = ({ resource }) => {
   const [commentCount, setCommentCount] = useState(0)
   const [commitCount, setCommitCount] = useState(0)
   const [openClosedOrMerged, setOCM] = useState(null)
 
-  useMemo(() => {
+  useEffect(() => {
     let localCommitCount = 0
     let localCommentCount = 0
     let localIsOpen
@@ -92,6 +92,10 @@ const ResourceSummary = resource => {
       ) : null}
     </div>
   )
+}
+
+ResourceSummary.propTypes = {
+  resource: PropTypes.object.isRequired
 }
 
 const sortResourceEvents = events => {
