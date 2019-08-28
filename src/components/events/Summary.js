@@ -17,7 +17,7 @@ import { EventListWrapper } from './EventList'
 const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
   return (
-    <SummariesList>
+    <EventListWrapper>
       {resources.map(resource => {
         if (
           resource.events.length === 1 &&
@@ -26,7 +26,7 @@ const TimeSummary = ({ summary }) => {
           return
         return <ResourceDisplay resource={resource} />
       })}
-    </SummariesList>
+    </EventListWrapper>
   )
 }
 TimeSummary.propTypes = {
@@ -46,7 +46,7 @@ const ResourceDisplay = ({ resource }) => {
       }}
     />
   ) : (
-    <EventListWrapper
+    <SummariesList
       key={uuidv1()}
       onClick={e => {
         e.stopPropagation()
@@ -54,7 +54,7 @@ const ResourceDisplay = ({ resource }) => {
       }}
     >
       <ResourceSummary resource={resource} />
-    </EventListWrapper>
+    </SummariesList>
   )
 }
 ResourceDisplay.propTypes = {
@@ -109,7 +109,7 @@ const ResourceEventLog = ({ resource, click }) => {
   }, [resource, resource.events])
 
   return (
-    <EventListWrapper style={{ marginBottom: '1.75rem' }}>
+    <SummaryList>
       <SummaryHeader onClick={click}>
         <div>
           <TypeIcon
@@ -133,7 +133,7 @@ const ResourceEventLog = ({ resource, click }) => {
           user={event.user}
         />
       ))}
-    </EventListWrapper>
+    </SummaryList>
   )
 }
 ResourceEventLog.propTypes = {
@@ -202,32 +202,30 @@ const ResourceSummary = ({ resource }) => {
 
   return (
     <SummaryContainer>
-      <Summary>
-        <Type>
-          <TypeIcon
-            type={resource.type}
-            openClosedOrMerged={openClosedOrMerged}
-          />
-        </Type>
-        <Title>
-          {typeToHumanReadable[resource.type](openClosedOrMerged)}
-          {resource.title.indexOf('refs/head') > -1
-            ? resource.title.substr(11, resource.title.length)
-            : resource.title}
-        </Title>
-        <Summaries>
-          {commitCount > 0 ? (
-            <p>
-              {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
-            </p>
-          ) : null}
-          {commentCount > 0 ? (
-            <p>
-              {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
-            </p>
-          ) : null}
-        </Summaries>
-      </Summary>
+      <Type>
+        <TypeIcon
+          type={resource.type}
+          openClosedOrMerged={openClosedOrMerged}
+        />
+      </Type>
+      <Title>
+        {typeToHumanReadable[resource.type](openClosedOrMerged)}
+        {resource.title.indexOf('refs/head') > -1
+          ? resource.title.substr(11, resource.title.length)
+          : resource.title}
+      </Title>
+      <Summaries>
+        {commitCount > 0 ? (
+          <p>
+            {commitCount} {commitCount > 1 ? 'Commits' : 'Commit'}{' '}
+          </p>
+        ) : null}
+        {commentCount > 0 ? (
+          <p>
+            {commentCount} {commentCount > 1 ? 'Comments' : 'Comment'}
+          </p>
+        ) : null}
+      </Summaries>
     </SummaryContainer>
   )
 }
@@ -293,11 +291,7 @@ const sortResources = resources => {
 export const SummaryContainer = styled(EventObjectContainer)`
   cursor: pointer;
   display: block;
-  margin-bottom: 0.875rem !important;
-`
-
-const Summary = styled.div`
-  margin: 0.875rem 0;
+  margin: 0 0 0.875rem 0.875rem;
   font-family: 'Lucida Console', Monaco, monospace;
 `
 
@@ -319,7 +313,7 @@ const Summaries = styled.div`
 
 const SummaryHeader = styled.div`
   position: relative;
-  margin: 3rem 0.875rem 0 0.875rem;
+  margin: 0 0.875rem;
   font-size: 1rem;
   font-family: 'Lucida Console', Monaco, monospace;
   display: flex;
@@ -327,12 +321,19 @@ const SummaryHeader = styled.div`
   cursor: pointer;
 `
 const SummariesList = styled.div`
+  margin: 0.875rem 0;
   min-width: 320px;
   max-width: 900px;
   width: 100%;
 
-  & > :first-child {
-    margin-top: 0;
+  & :last-of-type {
+    margin-bottom: 3px;
   }
+`
+const SummaryList = styled.div`
+  min-width: 320px;
+  max-width: 900px;
+  width: 100%;
+  margin: 4.5rem 0;
 `
 export default TimeSummary
