@@ -76,9 +76,11 @@ class MockStreamsServer {
       }))
 
     return {
-      issues: issuesInTimePeriod,
-      pullRequests: pullRequestsInTimePeriod,
-      branches: branchesInTimePeriod
+      resources: [
+        ...issuesInTimePeriod,
+        ...pullRequestsInTimePeriod,
+        ...branchesInTimePeriod
+      ]
     }
   }
 
