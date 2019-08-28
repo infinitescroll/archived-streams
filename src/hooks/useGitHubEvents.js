@@ -60,22 +60,19 @@ export default () => {
     filteredEvents[timeLabel] = events[timeLabel].filter(filterEvents(filters))
   })
 
-  const filterSummaryEvents = summary => {
-    const filteredEvents = {}
-    Object.keys(summary).forEach(type => {
-      filteredEvents[type] = []
-      summary[type].forEach(resource => {
-        const events = resource.events.filter(filterEvents(filters))
-        if (events.length > 0) {
-          filteredEvents[type].push({
-            ...summary[type][resource],
-            events
-          })
-        }
-      })
+  const filterSummaryEvents = ({ resources }) => {
+    const filteredSummary = []
+    resources.forEach(resource => {
+      const events = resource.events.filter(filterEvents(filters))
+      if (events.length > 0) {
+        filteredSummary.push({
+          ...resource,
+          events
+        })
+      }
     })
 
-    return summary
+    return { resources: filteredSummary }
   }
 
   const summaries = {
