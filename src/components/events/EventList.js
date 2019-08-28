@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { EventColumns, EventType } from './Event'
@@ -6,18 +6,10 @@ import Summary from './Summary'
 import { BLUE, BLUE_TRANSP } from '../../styled/themes'
 
 const EventList = ({ events, summary, timeLabel }) => {
-  const [summaryViewActive, setSummaryViewActive] = useState(true)
   return (
     <Fragment>
       <EventsTimeWrapper>
-        <TimeLabel
-          onClick={e => {
-            e.stopPropagation()
-            setSummaryViewActive(!summaryViewActive)
-          }}
-        >
-          {timeLabel}
-        </TimeLabel>
+        <TimeLabel>{timeLabel}</TimeLabel>
         {events.length === 0 ? (
           <EventListWrapper>
             <NoEvents>
@@ -25,7 +17,7 @@ const EventList = ({ events, summary, timeLabel }) => {
             </NoEvents>
           </EventListWrapper>
         ) : (
-          <Summary summary={summary} isExpanded={!summaryViewActive} />
+          <Summary summary={summary} />
         )}
       </EventsTimeWrapper>
     </Fragment>

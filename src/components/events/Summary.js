@@ -13,29 +13,43 @@ import {
 import { switchCases } from '../../utils'
 import { EventListWrapper } from './EventList'
 
-const TimeSummary = ({ summary, isExpanded }) => {
+const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
   return (
     <SummariesList>
-      {resources.map(resource =>
-        isExpanded ? (
-          <ResourceEventLog resource={resource} />
-        ) : (
-          <EventListWrapper>
-            <ResourceSummary resource={resource} />
-          </EventListWrapper>
-        )
-      )}
+      {resources.map(resource => ResourceDisplay(resource))}
     </SummariesList>
   )
 }
 
-TimeSummary.propTypes = {
-  summary: PropTypes.object.isRequired,
-  isExpanded: PropTypes.bool.isRequired
+const ResourceDisplay = resource => {
+  const [expanded, setExpanded] = useState(false)
+
+  return expanded ? (
+    <ResourceEventLog
+      resource={resource}
+      click={e => {
+        e.stopPropagation()
+        setExpanded(false)
+      }}
+    />
+  ) : (
+    <EventListWrapper
+      onClick={e => {
+        e.stopPropagation()
+        setExpanded(true)
+      }}
+    >
+      <ResourceSummary resource={resource} />
+    </EventListWrapper>
+  )
 }
 
-const ResourceEventLog = ({ resource }) => {
+TimeSummary.propTypes = {
+  summary: PropTypes.object.isRequired
+}
+
+const ResourceEventLog = ({ resource, click }) => {
   const [openClosedOrMerged, setOCM] = useState(null)
 
   useEffect(() => {
@@ -84,7 +98,7 @@ const ResourceEventLog = ({ resource }) => {
 
   return (
     <React.Fragment>
-      <SummaryHeader>
+      <SummaryHeader onClick={click}>
         <div>
           <TypeIcon
             type={resource.type}
@@ -97,7 +111,7 @@ const ResourceEventLog = ({ resource }) => {
             : resource.title}
         </div>
       </SummaryHeader>
-      <EventListWrapper>
+      <EventListWrapper style={{ marginBottom: '1.75rem' }}>
         {resource.events.map(event => (
           <Event
             key={event.id}
@@ -112,7 +126,8 @@ const ResourceEventLog = ({ resource }) => {
   )
 }
 ResourceEventLog.propTypes = {
-  resource: PropTypes.object.isRequired
+  resource: PropTypes.object.isRequired,
+  click: PropTypes.func.isRequired
 }
 
 const ResourceSummary = ({ resource }) => {
@@ -294,13 +309,14 @@ const SummaryHeader = styled.div`
   font-size: 1rem;
   font-family: 'Lucida Console', Monaco, monospace;
   display: flex;
+  cursor: pointer;
 `
 const SummariesList = styled.div`
   min-width: 320px;
   max-width: 900px;
   width: 100%;
 
-  & > :first-of-type {
+  & > :first-child {
     margin-top: 0;
   }
 `
