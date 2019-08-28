@@ -37,7 +37,7 @@ export const SummaryContainer = styled.div`
 `
 
 const Summary = styled.div`
-  margin: 30px 0px;
+  margin: 40px 0px;
 `
 
 const Type = styled.div`
@@ -113,13 +113,17 @@ const ResourceSummary = ({ resource }) => {
 
   return (
     <Summary>
-      <Title>{resource.title}</Title>
       <Type>
         <TypeIcon
           type={resource.type}
           openClosedOrMerged={openClosedOrMerged}
         />
       </Type>
+      <Title>
+        {resource.title.indexOf('refs/head') > -1
+          ? resource.title.substr(11, resource.title.length)
+          : resource.title}
+      </Title>
       <Summaries>
         <p>
           {openClosedOrMerged} {resource.type}
