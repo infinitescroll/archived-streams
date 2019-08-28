@@ -33,6 +33,7 @@ export const SummaryContainer = styled.div`
   border: solid 1px ${BLUE_TRANSP};
   box-shadow: -3px 3px ${BLUE};
   font-size: 1rem;
+  font-family: 'Lucida Console', Monaco, monospace;
   cursor: pointer;
 `
 
@@ -49,6 +50,7 @@ const Title = styled.div`
   position: relative;
   left: 140px;
   font-weight: bold;
+  text-decoration: underline;
 `
 
 const Summaries = styled.div`
@@ -68,7 +70,7 @@ const ResourceSummary = ({ resource }) => {
   useEffect(() => {
     let localCommitCount = 0
     let localCommentCount = 0
-    let localIsOpen
+    let localIsOpen = null
     let alreadyChecked = false
 
     const routeEvents = {
@@ -77,13 +79,18 @@ const ResourceSummary = ({ resource }) => {
       },
       [ISSUE_COMMENT_EVENT]: event => {
         localCommentCount += 1
-        if (event.data.payload.issue.state === 'closed') localIsOpen = 'Closed'
-        else if (event.data.payload.issue.state === 'open') localIsOpen = 'Open'
+        if (!alreadyChecked) {
+          event.data.payload.issue.state === 'open'
+            ? (localIsOpen = 'Open')
+            : (localIsOpen = 'Closed')
+          alreadyChecked = true
+        }
       },
       [ISSUES_EVENT]: event => {
         if (!alreadyChecked) {
-          if (event.data.payload.action === 'closed') localIsOpen = 'Closed'
-          else if (event.data.payload.action === 'opened') localIsOpen = 'Open'
+          event.data.payload.issue.state === 'open'
+            ? (localIsOpen = 'Open')
+            : (localIsOpen = 'Closed')
           alreadyChecked = true
         }
       },
@@ -106,6 +113,7 @@ const ResourceSummary = ({ resource }) => {
     sortedEvents.forEach(event => {
       getSummaryOfEvents(event.type)(event)
     })
+
     setOCM(localIsOpen)
     setCommitCount(localCommitCount)
     setCommentCount(localCommentCount)
@@ -142,35 +150,24 @@ const ResourceSummary = ({ resource }) => {
 const TypeIcon = ({ type, openClosedOrMerged }) => {
   let color
   let name
-  if (type === 'pullRequest' && openClosedOrMerged === 'Merged') {
-    name = 'git-pull-request'
-    color = 'green'
-  } else if (type === 'pullRequest') {
-    name = 'git-pull-request'
-    color = 'purple'
+  const stateToColor = {
+    Closed: 'red',
+    Open: 'green',
+    Merged: 'purple',
+    null: 'grey'
   }
-
-  if (type === 'issues' && openClosedOrMerged === 'Closed') {
-    name = 'issue-closed'
-    color = 'red'
-  } else if (type === 'issues' && openClosedOrMerged === 'Open') {
-    name = 'issue-opened'
-    color = 'green'
+  const typeToName = {
+    pullRequest: () => 'git-pull-request',
+    issues: state => `issue${state.toLowerCase()}`,
+    branches: () => 'git-branch'
   }
-
-  if (type === 'branches' && openClosedOrMerged === 'Open') {
-    name = 'git-branch'
-    color = 'green'
-  } else if (type === 'branches' && openClosedOrMerged === 'Merged') {
-    name = 'git-branch'
-    color = 'purple'
-  } else if (type === 'branches' && openClosedOrMerged === 'Closed') {
-    name = 'git-branch'
-    color = 'red'
-  } else if (type === 'branches') {
-    name = 'git-branch'
-    color = 'grey'
+  const stateToName = {
+    Open: '-opened',
+    Closed: '-closed',
+    null: '-opened'
   }
+  color = stateToColor[openClosedOrMerged]
+  name = typeToName[type](stateToName[openClosedOrMerged])
 
   return <Octicon style={{ color }} mega name={name} />
 }
