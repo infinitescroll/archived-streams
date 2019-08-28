@@ -23,7 +23,7 @@ export const Event = ({ data, type, user, createdAt }) => {
     return `${day} ${hour}:${minute}`
   }
   const [dataActive, setActive] = useState(false)
-
+  const metaData = getEventData(data)
   return (
     <EventObjectContainer
       onClick={e => {
@@ -42,14 +42,18 @@ export const Event = ({ data, type, user, createdAt }) => {
       </EventAuthor>
       <div>
         <EventType>{ReactHtmlParser(getEventMessage(data))}</EventType>
-        <EventData
-          style={{
-            display: dataActive ? 'block' : 'none',
-            marginTop: '1.25rem'
-          }}
-        >
-          {getEventData(data)}
-        </EventData>
+        {metaData ? (
+          <EventData
+            style={{
+              display: dataActive ? 'block' : 'none',
+              marginTop: '1.25rem'
+            }}
+          >
+            {metaData}
+          </EventData>
+        ) : (
+          ``
+        )}
       </div>
       <EventTime>
         {timeToEmoji(createdAt)}
