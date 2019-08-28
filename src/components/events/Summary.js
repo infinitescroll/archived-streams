@@ -170,8 +170,9 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
     Closed: '-closed',
     null: '-opened'
   }
+
   color = stateToColor[openClosedOrMerged]
-  name = typeToName[type](stateToName[openClosedOrMerged])
+  name = typeToName[type](stateToName[openClosedOrMerged] || '')
 
   return <Octicon style={{ color }} mega name={name} />
 }
