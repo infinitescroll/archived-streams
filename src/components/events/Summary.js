@@ -158,6 +158,20 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
     color = 'green'
   }
 
+  if (type === 'branches' && openClosedOrMerged === 'Open') {
+    name = 'git-branch'
+    color = 'green'
+  } else if (type === 'branches' && openClosedOrMerged === 'Merged') {
+    name = 'git-branch'
+    color = 'purple'
+  } else if (type === 'branches' && openClosedOrMerged === 'Closed') {
+    name = 'git-branch'
+    color = 'red'
+  } else if (type === 'branches') {
+    name = 'git-branch'
+    color = 'grey'
+  }
+
   return <Octicon style={{ color }} mega name={name} />
 }
 
