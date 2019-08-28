@@ -27,7 +27,7 @@ export const FilterButton = styled.button`
   font-family: 'Lucida Console', Monaco, monospace;
   cursor: pointer;
 `
-const FilterDetails = styled.details`
+const FilterDetails = styled.div`
   & :focus {
     outline: none;
   }
