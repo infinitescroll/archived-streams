@@ -9,6 +9,7 @@ import {
   PULL_REQUEST_REVIEW_COMMENT_EVENT,
   CREATE_EVENT,
   DELETE_EVENT,
+  RELEASE_EVENT,
   GITHUB
 } from '../constants'
 
@@ -126,6 +127,16 @@ export const groupify = (database, event, pulls) => {
     event.actor.display_login
   )
   switch (event.type) {
+    case RELEASE_EVENT: {
+      formatAndGroupByTime(
+        database,
+        'releases',
+        event.id,
+        event,
+        event.payload.release.name
+      )
+      break
+    }
     case ISSUES_EVENT:
       {
         const { id, title, pull_request } = event.payload.issue
