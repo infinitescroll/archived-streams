@@ -37,7 +37,8 @@ class MockStreamsServer {
       types: new Set([]),
       issues: {},
       pullRequestObj: {},
-      branches: {}
+      branches: {},
+      releases: {}
     }
   }
 
@@ -75,11 +76,22 @@ class MockStreamsServer {
         events: this.database.branches[branchName].events[timePeriod]
       }))
 
+    const releasesInTimePeriod = Object.keys(this.database.releases)
+      .filter(
+        releaseId =>
+          this.database.releases[releaseId].events[timePeriod].length > 0
+      )
+      .map(releaseId => ({
+        ...this.database.releases[releaseId],
+        events: this.database.releases[releaseId].events[timePeriod]
+      }))
+
     return {
       resources: [
         ...issuesInTimePeriod,
         ...pullRequestsInTimePeriod,
-        ...branchesInTimePeriod
+        ...branchesInTimePeriod,
+        ...releasesInTimePeriod
       ]
     }
   }

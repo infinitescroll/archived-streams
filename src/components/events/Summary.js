@@ -19,6 +19,7 @@ import {
   DARK_PURP,
   DARK_BLUE
 } from '../../styled/themes'
+import uuidv1 from 'uuid'
 
 const TimeSummary = ({ summary }) => {
   const resources = sortResources(summary.resources)
@@ -30,7 +31,7 @@ const TimeSummary = ({ summary }) => {
           resource.events[0].type === 'DeleteEvent'
         )
           return
-        return <ResourceSummary resource={resource} />
+        return <ResourceSummary key={uuidv1()} resource={resource} />
       })}
     </EventListWrapper>
   )
@@ -112,7 +113,7 @@ const ResourceSummary = ({ resource }) => {
           />
         </SummaryIcon>
         <SummaryTitle>
-          {typeToHumanReadable[resource.type](openClosedOrMerged)}
+          {typeToHumanReadable[resource.type](openClosedOrMerged, resource)}
           {resource.title.indexOf('refs/head') > -1
             ? resource.title.substr(11, resource.title.length)
             : resource.title}
@@ -161,7 +162,8 @@ const TypeIcon = ({ type, openClosedOrMerged }) => {
   const typeToName = {
     pullRequestObj: () => 'git-pull-request',
     issues: state => `issue${state.toLowerCase()}`,
-    branches: () => 'git-branch'
+    branches: () => 'git-branch',
+    releases: () => 'tag'
   }
 
   const stateToName = {
@@ -186,9 +188,11 @@ TypeIcon.defaultProps = {
 }
 
 const typeToHumanReadable = {
-  pullRequestObj: state => `${state} Pull Request: `,
+  pullRequestObj: state =>
+    state ? `${state} Pull Request: ` : 'Pull Request Review Comments: ',
   issues: state => `${state} Issue: `,
-  branches: _state => 'New Branch: '
+  branches: _state => 'New Branch: ',
+  releases: () => 'New Release: '
 }
 
 const sortResourceEvents = events => {
