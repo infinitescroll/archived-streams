@@ -113,7 +113,7 @@ const ResourceSummary = ({ resource }) => {
           />
         </SummaryIcon>
         <SummaryTitle>
-          {typeToHumanReadable[resource.type](openClosedOrMerged)}
+          {typeToHumanReadable[resource.type](openClosedOrMerged, resource)}
           {resource.title.indexOf('refs/head') > -1
             ? resource.title.substr(11, resource.title.length)
             : resource.title}
@@ -188,7 +188,8 @@ TypeIcon.defaultProps = {
 }
 
 const typeToHumanReadable = {
-  pullRequestObj: state => `${state} Pull Request: `,
+  pullRequestObj: state =>
+    state ? `${state} Pull Request: ` : 'Pull Request Review Comments: ',
   issues: state => `${state} Issue: `,
   branches: _state => 'New Branch: ',
   releases: () => 'New Release: '
