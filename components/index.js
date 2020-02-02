@@ -29,6 +29,18 @@ export const MenuItem = styled.li(
   space,
   color,
   layout,
-  flexbox,
-  border
+  flexbox
 )
+
+
+export const Icon = styled.span({
+  space,
+  color,
+  layout,
+  flexbox
+})
+
+export const Text = styled.p({
+  color,
+  typography
+})
