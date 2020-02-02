@@ -29,5 +29,6 @@ export const MenuItem = styled.li(
   space,
   color,
   layout,
-  flexbox
+  flexbox,
+  border
 )
