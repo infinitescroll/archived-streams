@@ -9,11 +9,13 @@
   "dependencies": {
     "next": "latest",
     "react": "^16.9.0",
-    "redux-devtools-extension": "^2.13.8",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.0.0",
+    "styled-system": "^5.1.4"
   },
   "license": "ISC"
 }
