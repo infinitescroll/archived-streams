@@ -5,11 +5,14 @@ import { Provider } from 'react-redux'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 
 import { Box, Menu, MenuItem } from '../components/index.js'
+import { ButtonPrimary } from '../components/Button.js'
 import ActivityItem from '../components/ActivityItem.js'
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  * {
     font-family: 'system-ui', sans-serif;
+  }
+  body {
     margin: 0;
   }
 `
@@ -18,8 +21,12 @@ const theme = {
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
   space: [0, 4, 8, 16, 32, 64, 128, 256],
   colors: {
+    text: '#0f0f0f',
+    background: '#f7f7f7',
+    primary: '#',
+    secondary: '#',
     blue: '#2659FF',
-    green: '#16CA64',
+    green: '#4FD494',
     red: '#FF2626',
     lightGrey: '#E0E0E0',
   },
@@ -36,8 +43,6 @@ const StreamObject = styled(MenuItem)(
 )
 
 const ActivityWrapper = styled(Box)({
-
-
 })
 
 class MyApp extends App {
@@ -46,6 +51,7 @@ class MyApp extends App {
     return (
       <Provider store={reduxStore}>
       <ThemeProvider theme={theme}>
+      <GlobalStyle />
         <Box
         display={'block'}
         minHeight={'100vh'}
@@ -64,7 +70,7 @@ class MyApp extends App {
         mx={2}
         >Stream</StreamObject>
         </StreamMenu>
-
+        <ButtonPrimary>Submit</ButtonPrimary>
         <ActivityWrapper>
         <ActivityItem>
 
