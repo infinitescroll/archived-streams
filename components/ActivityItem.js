@@ -4,29 +4,62 @@ import { Menu, MenuItem, Icon, Text } from '../components/index.js'
 
 
 
-const ActivityRowContainer = styled(Menu)({
-  space,
-  color,
-  layout,
-  flexbox
-})
+const ActivityRowContainer = styled(Menu)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
+const ActivityRowParent = styled(Menu)`
+  {
+    li {
+      margin: 0rem 1rem;
+    }
+  },
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
+const Author = styled(MenuItem)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
 
-const ActivityRowParent = styled(Menu)({
-  space,
-  color,
-  layout,
-  flexbox
-})
-const Author = styled(MenuItem)({
-  space,
-  color,
-  layout,
-  flexbox
-})
+const Action = styled(MenuItem)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
+
+const ActivitySource = styled(MenuItem)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
+
+const Message = styled(MenuItem)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
+
+const Time = styled(MenuItem)`
+  ${space},
+  ${color},
+  ${layout},
+  ${flexbox}
+`
 
 export default (props) => (
   <ActivityRowContainer
   display={'flex'}
+  justifyContent={'space-between'}
   px={2}
   py={1}
   backgroundColor={'#f5f5f5'}
@@ -34,16 +67,23 @@ export default (props) => (
     <ActivityRowParent
     display={'flex'}
     justifyItems={'space-between'}
+    alignItems={'center'}
     backgroundColor={'#999'}
+    p={3}
     >
       <Author>Author.img</Author>
       <Icon>App Icon</Icon>
-      <Text>Action Type</Text>
+      <Action>Action Type</Action>
     </ActivityRowParent>
     <ActivityRowParent
-      display={'flex'}>
-      <Author>Activity Message</Author>
-      <Text>Time</Text>
+      display={'flex'}
+      flex={'1'}
+      justifyContent={'space-between'}
+      alignItems={'center'}
+      >
+      <ActivitySource>Activity Source (for GitHub, that means the repo/branch)</ActivitySource>
+      <Message>Activity Message</Message>
+      <Time>Time</Time>
     </ActivityRowParent>
   </ActivityRowContainer>
 )
