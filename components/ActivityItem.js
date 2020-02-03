@@ -5,9 +5,9 @@ import { Menu, MenuItem, Icon, Text } from '../components/index.js'
 
 
 const ActivityRowContainer = styled(Menu)`
-  ${space},
-  ${color},
-  ${layout},
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 const ActivityRowParent = styled(Menu)`
@@ -15,44 +15,48 @@ const ActivityRowParent = styled(Menu)`
     li {
       margin: 0rem 1rem;
     }
-  },
-  ${space},
-  ${color},
-  ${layout},
+  }
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 const Author = styled(MenuItem)`
-  ${space},
-  ${color},
-  ${layout},
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 
 const Action = styled(MenuItem)`
-  ${space},
-  ${color},
-  ${layout},
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 
 const ActivitySource = styled(MenuItem)`
-  ${space},
-  ${color},
-  ${layout},
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 
 const Message = styled(MenuItem)`
-  ${space},
-  ${color},
-  ${layout},
+  text-overflow: ellipsis;
+  word-wrap: nowrap;
+  overflow: hidden;
+
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 
 const Time = styled(MenuItem)`
-  ${space},
-  ${color},
-  ${layout},
+  ${space}
+  ${color}
+  ${layout}
   ${flexbox}
 `
 
@@ -78,11 +82,14 @@ export default (props) => (
     <ActivityRowParent
       display={'flex'}
       flex={'1'}
-      justifyContent={'space-between'}
+      justifyContent={'flex-start'}
       alignItems={'center'}
+      pl={0}
       >
-      <ActivitySource>Activity Source (for GitHub, that means the repo/branch)</ActivitySource>
-      <Message>Activity Message</Message>
+      <ActivitySource>Repo/Branch</ActivitySource>
+      <Message
+      flex={1}
+      >Activity Message</Message>
       <Time>Time</Time>
     </ActivityRowParent>
   </ActivityRowContainer>
