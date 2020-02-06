@@ -11,6 +11,5 @@ export const Button = styled.button`
     ${props =>
       props.primary ? props.theme.colors.green : props.theme.colors.grey};
   border-radius: 100px;
+  cursor: pointer;
 `;
-
-export const ButtonPrimary = () => <Button primary />;
