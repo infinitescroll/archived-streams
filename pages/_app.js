@@ -2,20 +2,11 @@ import App from "next/app";
 import React from "react";
 import withReduxStore from "../lib/with-redux-store";
 import { Provider } from "react-redux";
-import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 
 import { Box, Menu, MenuItem } from "../components/index.js";
-import { ButtonPrimary } from "../components/Button.js";
+import { Button } from "../components/Button.js";
 import ActivityItem from "../components/ActivityItem.js";
-
-const GlobalStyle = createGlobalStyle`
-  * {
-    font-family: 'system-ui', sans-serif;
-  }
-  body {
-    margin: 0;
-  }
-`;
 
 const theme = {
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
@@ -45,10 +36,9 @@ class MyApp extends App {
   render() {
     const { Component, pageProps, reduxStore } = this.props;
     return (
-      <Provider store={reduxStore}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          <Box display={"block"} minHeight={"100vh"} p={3}>
+      <ThemeProvider theme={theme}>
+        <Provider store={reduxStore}>
+          <Box display="block" minHeight="100vh" p={3}>
             <StreamMenu display={"inline-block"} py={2} pl={0}>
               <StreamObject
                 display={"inline-block"}
@@ -60,13 +50,13 @@ class MyApp extends App {
                 Stream
               </StreamObject>
             </StreamMenu>
-            <ButtonPrimary>Submit</ButtonPrimary>
+            <Button primary>Submit</Button>
             <ActivityWrapper>
               <ActivityItem></ActivityItem>
             </ActivityWrapper>
           </Box>
-        </ThemeProvider>
-      </Provider>
+        </Provider>
+      </ThemeProvider>
     );
   }
 }
