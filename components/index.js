@@ -1,34 +1,41 @@
-import styled from 'styled-components'
-import { color, typography, border, layout, position, space, flexbox, grid } from 'styled-system'
+import styled from "styled-components";
+import {
+  color,
+  typography,
+  border,
+  layout,
+  position,
+  space,
+  flexbox,
+  grid
+} from "styled-system";
 
-export const Box = styled.div`
+export const Box = styled.div(
   {
-    list-style: 'border-box';
-    list-style: 0;
-  }
-  ${space}
-  ${color}
-  ${layout}
-  ${flexbox}
-`
+    listStyle: "border-box"
+  },
+  space,
+  color,
+  layout,
+  flexbox
+);
 
-export const Menu = styled.ul`
+export const Menu = styled.ul(
   {
-    list-style: none;
-  }
-  ${space}
-  ${color}
-  ${layout}
-  ${flexbox}
-`
+    listStyle: "none"
+  },
+  space,
+  color,
+  layout,
+  flexbox
+);
 
 export const MenuItem = styled.li`
   ${space}
   ${color}
   ${layout}
   ${flexbox}
-`
-
+`;
 
 export const Icon = styled.span`
   ${space}
@@ -36,9 +43,9 @@ export const Icon = styled.span`
   ${layout}
   ${flexbox}
   ${border}
-`
+`;
 
 export const Text = styled.p`
   ${color}
   ${typography}
-`
+`;
