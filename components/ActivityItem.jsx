@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   color,
   typography,
@@ -7,17 +7,17 @@ import {
   position,
   space,
   flexbox,
-  grid
-} from "styled-system";
-import { Menu, MenuItem, Icon, Text } from "../components/index.js";
+  grid,
+} from 'styled-system'
+import { Menu, MenuItem, Icon, Text } from '.'
 import {
   IcoGitHub,
   IcoGitHubCommit,
   IcoGitHubMerge,
   IcoGitHubCompare,
   IcoGitHubPullRequest,
-  IcoGitHubBranch
-} from "../components/icons.js";
+  IcoGitHubBranch,
+} from './icons'
 
 const ActivityRowContainer = styled(Menu)`
   li {
@@ -28,7 +28,7 @@ const ActivityRowContainer = styled(Menu)`
   ${layout}
   ${flexbox}
   ${border}
-`;
+`
 const ActivityRowParent = styled(Menu)`
   span {
     margin: 0rem 0.25rem;
@@ -38,35 +38,35 @@ const ActivityRowParent = styled(Menu)`
   ${layout}
   ${flexbox}
   ${border}
-`;
+`
 const Author = styled(MenuItem)`
   ${space}
   ${color}
   ${layout}
   ${border}
-`;
+`
 
 const AppIcon = styled(Icon)`
   ${border}
-`;
+`
 
 const ActionIcon = styled(Icon)`
   ${border}
-`;
+`
 
 const Action = styled(MenuItem)`
   ${space}
   ${color}
   ${layout}
   ${flexbox}
-`;
+`
 
 const ActivitySource = styled(MenuItem)`
   ${space}
   ${color}
   ${layout}
   ${flexbox}
-`;
+`
 
 const Message = styled(MenuItem)`
   text-overflow: ellipsis;
@@ -76,63 +76,63 @@ const Message = styled(MenuItem)`
   ${color}
   ${layout}
   ${flexbox}
-`;
+`
 
 const Time = styled(MenuItem)`
   ${space}
   ${color}
   ${layout}
   ${flexbox}
-`;
+`
 
-export default props => (
+export default () => (
   <ActivityRowContainer
-    display={"flex"}
-    justifyContent={"space-between"}
-    alignItems={"center"}
+    display="flex"
+    justifyContent="space-between"
+    alignItems="center"
     p={2}
-    backgroundColor={"#f5f5f5"}
-    borderRadius={"4px"}
+    backgroundColor="#f5f5f5"
+    borderRadius="4px"
   >
     <Author
-      display={"inline-block"}
-      width={"32px"}
-      height={"32px"}
-      backgroundColor={"#000"}
-      borderRadius={"100px"}
-    ></Author>
+      display="inline-block"
+      width="32px"
+      height="32px"
+      backgroundColor="#000"
+      borderRadius="100px"
+    />
     <ActivityRowParent
-      display={"flex"}
-      justifyContent={"space-between"}
-      alignItems={"center"}
-      backgroundColor={"#ccc"}
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      backgroundColor="#ccc"
       p={1}
-      borderRadius={"100px"}
+      borderRadius="100px"
     >
       <AppIcon
-        display={"inline-block"}
-        width={"32px"}
-        height={"32px"}
-        borderRadius={"100px"}
+        display="inline-block"
+        width="32px"
+        height="32px"
+        borderRadius="100px"
       >
         <IcoGitHub />
       </AppIcon>
       <ActionIcon
-        display={"inline-block"}
-        width={"32px"}
-        height={"32px"}
-        backgroundColor={"#dbdbdb"}
-        borderRadius={"100px"}
+        display="inline-block"
+        width="32px"
+        height="32px"
+        backgroundColor="#dbdbdb"
+        borderRadius="100px"
       >
         <IcoGitHubCommit />
       </ActionIcon>
       <Action>Commit</Action>
     </ActivityRowParent>
     <ActivityRowParent
-      display={"flex"}
-      flex={"1"}
-      justifyContent={"flex-start"}
-      alignItems={"center"}
+      display="flex"
+      flex="1"
+      justifyContent="flex-start"
+      alignItems="center"
       pl={0}
     >
       <ActivitySource>Repo/Branch</ActivitySource>
@@ -140,4 +140,4 @@ export default props => (
       <Time>Time</Time>
     </ActivityRowParent>
   </ActivityRowContainer>
-);
+)

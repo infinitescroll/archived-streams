@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import {
   color,
   typography,
@@ -7,35 +7,35 @@ import {
   position,
   space,
   flexbox,
-  grid
-} from "styled-system";
+  grid,
+} from 'styled-system'
 
 export const Box = styled.div(
   {
-    listStyle: "border-box"
+    listStyle: 'border-box',
   },
   space,
   color,
   layout,
-  flexbox
-);
+  flexbox,
+)
 
 export const Menu = styled.ul(
   {
-    listStyle: "none"
+    listStyle: 'none',
   },
   space,
   color,
   layout,
-  flexbox
-);
+  flexbox,
+)
 
 export const MenuItem = styled.li`
   ${space}
   ${color}
   ${layout}
   ${flexbox}
-`;
+`
 
 export const Icon = styled.span`
   ${space}
@@ -43,9 +43,9 @@ export const Icon = styled.span`
   ${layout}
   ${flexbox}
   ${border}
-`;
+`
 
 export const Text = styled.p`
   ${color}
   ${typography}
-`;
+`
