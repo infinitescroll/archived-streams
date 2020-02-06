@@ -12,4 +12,9 @@ export default styled.button`
       props.primary ? props.theme.colors.green : props.theme.colors.grey};
   border-radius: 100px;
   cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `
