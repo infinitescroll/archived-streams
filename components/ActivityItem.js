@@ -20,7 +20,7 @@ import {
 } from "../components/icons.js";
 
 const ActivityRowContainer = styled(Menu)`
-  & > li {
+  li {
     margin: 0rem 1rem;
   }
   ${space}
@@ -29,7 +29,7 @@ const ActivityRowContainer = styled(Menu)`
   ${flexbox}
   ${border}
 `;
-const ActivityRowParent = styled.div`
+const ActivityRowParent = styled(Menu)`
   span {
     margin: 0rem 0.25rem;
   },
