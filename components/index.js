@@ -7,27 +7,27 @@ import {
   position,
   space,
   flexbox,
-  grid,
+  grid
 } from 'styled-system'
 
 export const Box = styled.div(
   {
-    listStyle: 'border-box',
+    listStyle: 'border-box'
   },
   space,
   color,
   layout,
-  flexbox,
+  flexbox
 )
 
 export const Menu = styled.ul(
   {
-    listStyle: 'none',
+    listStyle: 'none'
   },
   space,
   color,
   layout,
-  flexbox,
+  flexbox
 )
 
 export const MenuItem = styled.li`

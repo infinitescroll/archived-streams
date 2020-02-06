@@ -19,15 +19,15 @@ const theme = {
     blue: '#2659FF',
     green: '#4FD494',
     red: '#FF2626',
-    lightGrey: '#E0E0E0',
-  },
+    lightGrey: '#E0E0E0'
+  }
 }
 
 const StreamMenu = styled(Menu)({})
 
 const StreamObject = styled(MenuItem)({
   border: '1px solid #999',
-  borderRadius: '100px',
+  borderRadius: '100px'
 })
 
 const ActivityWrapper = styled(Box)({})

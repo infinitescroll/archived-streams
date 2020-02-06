@@ -6,6 +6,7 @@ module.exports = {
   extends: [
     'plugin:prettier/recommended',
     'plugin:react/recommended',
+    'plugin:jsx-a11y/recommended',
     'airbnb',
     'prettier',
     'prettier/react',
@@ -21,7 +22,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['prettier', 'react'],
+  plugins: ['prettier', 'react', 'jsx-a11y'],
   rules: {
     'prettier/prettier': 'error',
     'react/react-in-jsx-scope': 0,
@@ -30,6 +31,7 @@ module.exports = {
     'arrow-parens': 0,
     'implicit-arrow-linebreak': 0,
     'no-unused-vars': 1,
+    'react/jsx-props-no-spreading': 0,
     semi: 0,
   },
 }

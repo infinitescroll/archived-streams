@@ -7,7 +7,7 @@ import {
   position,
   space,
   flexbox,
-  grid,
+  grid
 } from 'styled-system'
 import { Menu, MenuItem, Icon, Text } from '.'
 import {
@@ -16,7 +16,7 @@ import {
   IcoGitHubMerge,
   IcoGitHubCompare,
   IcoGitHubPullRequest,
-  IcoGitHubBranch,
+  IcoGitHubBranch
 } from './icons'
 
 const ActivityRowContainer = styled(Menu)`
