@@ -52,6 +52,7 @@ export const Input = styled.input`
   ${layout}
   ${flexbox}
   ${border}
+  ${typography}
 
   &:focus {
     outline: none;

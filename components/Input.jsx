@@ -4,19 +4,19 @@ import Button from './Button'
 
 export default () => (
   <Box
-    display={'flex'}
-    justifyContent={'space-between'}
+    display="flex"
+    justifyContent="space-between"
     border="1px solid #999"
-    borderRadius={'4px'}
+    borderRadius="4px"
     pr={3}
   >
     <Input
-      flexGrow={'1'}
+      flexGrow="1"
       height="48px"
       pl={3}
-      fontSize={16}
-      border={'0px'}
-      borderRadius={'4px'}
+      fontSize={2}
+      border="0px"
+      borderRadius="4px"
       placeholder="Placeholder"
     />
     <Button primary m={1}>
