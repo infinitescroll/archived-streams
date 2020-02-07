@@ -17,7 +17,8 @@ export const Box = styled.div(
   space,
   color,
   layout,
-  flexbox
+  flexbox,
+  border
 )
 
 export const Menu = styled.ul(
@@ -43,6 +44,18 @@ export const Icon = styled.span`
   ${layout}
   ${flexbox}
   ${border}
+`
+
+export const Input = styled.input`
+  ${space}
+  ${color}
+  ${layout}
+  ${flexbox}
+  ${border}
+
+  &:focus {
+    outline: none;
+  }
 `
 
 export const Text = styled.p`
