@@ -62,4 +62,5 @@ export const Input = styled.input`
 export const Text = styled.p`
   ${color}
   ${typography}
+  ${layout}
 `
