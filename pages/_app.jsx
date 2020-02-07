@@ -6,16 +6,17 @@ import withReduxStore from '../lib/with-redux-store'
 import { Box, Menu, MenuItem } from '../components'
 import Button from '../components/Button'
 import ActivityItem from '../components/ActivityItem'
+import Input from '../components/Input'
 
 const GlobalStyle = createGlobalStyle`
   body {
-    font-family: 'system-ui', sans-serif;
+    font-family: ${props => props.theme.font};
     margin: 0;
   }
 `
 
 const theme = {
-  fontFamily: ['system-ui', 'sans-serif'],
+  font: 'system-ui, sans-serif',
   fontSizes: [12, 14, 16, 24, 32, 48, 64, 96, 128],
   space: [0, 4, 8, 16, 32, 64, 128, 256],
   colors: {
