@@ -1,12 +1,8 @@
 import App from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
-import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
+import { ThemeProvider, createGlobalStyle } from 'styled-components'
 import withReduxStore from '../lib/with-redux-store'
-import { Box } from '../components'
-import StreamMenu from '../components/StreamMenu'
-import ActivityItem from '../components/ActivityItem'
-import StreamEditor from '../components/StreamEditor'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -31,9 +27,6 @@ const theme = {
   }
 }
 
-
-const ActivityWrapper = styled(Box)({})
-
 class MyApp extends App {
   render() {
     const { Component, pageProps, reduxStore } = this.props
@@ -41,13 +34,7 @@ class MyApp extends App {
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <Provider store={reduxStore}>
-          <Box display="block" minHeight="100vh" p={3}>
-            <StreamMenu />
-            <ActivityWrapper>
-              <StreamEditor />
-              <ActivityItem />
-            </ActivityWrapper>
-          </Box>
+          <Component {...pageProps} />
         </Provider>
       </ThemeProvider>
     )
