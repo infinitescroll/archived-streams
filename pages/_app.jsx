@@ -3,8 +3,8 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import withReduxStore from '../lib/with-redux-store'
-import { Box, Menu, MenuItem } from '../components'
-import Button from '../components/Button'
+import { Box } from '../components'
+import StreamMenu from '../components/StreamMenu'
 import ActivityItem from '../components/ActivityItem'
 
 const GlobalStyle = createGlobalStyle`
@@ -30,12 +30,6 @@ const theme = {
   }
 }
 
-const StreamMenu = styled(Menu)({})
-
-const StreamObject = styled(MenuItem)({
-  border: '1px solid #999',
-  borderRadius: '100px'
-})
 
 const ActivityWrapper = styled(Box)({})
 
@@ -47,18 +41,7 @@ class MyApp extends App {
         <GlobalStyle />
         <Provider store={reduxStore}>
           <Box display="block" minHeight="100vh" p={3}>
-            <StreamMenu display="inline-block" py={2} pl={0}>
-              <StreamObject
-                display="inline-block"
-                backgroundColor="#f5f5f5"
-                px={3}
-                py={2}
-                mx={2}
-              >
-                Stream
-              </StreamObject>
-            </StreamMenu>
-            <Button primary>New Stream</Button>
+            <StreamMenu />
             <ActivityWrapper>
               <ActivityItem />
             </ActivityWrapper>
