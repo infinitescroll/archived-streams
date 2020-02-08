@@ -6,30 +6,27 @@ import {
   layout,
   position,
   space,
-  flexbox,
-  grid
+  flexbox
 } from 'styled-system'
 
-export const Box = styled.div(
-  {
-    listStyle: 'border-box'
-  },
-  space,
-  color,
-  layout,
-  flexbox,
-  border
-)
+export const Box = styled.div`
+  list-style: border-box;
+  ${space}
+  ${color}
+  ${layout}
+  ${flexbox}
+  ${border}
+`
 
-export const Menu = styled.ul(
-  {
-    listStyle: 'none'
-  },
-  space,
-  color,
-  layout,
-  flexbox
-)
+export const Menu = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  ${space}
+  ${color}
+  ${layout}
+  ${flexbox}
+`
 
 export const MenuItem = styled.li`
   ${space}
