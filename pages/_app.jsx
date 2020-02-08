@@ -6,7 +6,7 @@ import withReduxStore from '../lib/with-redux-store'
 import { Box, Menu, MenuItem } from '../components'
 import Button from '../components/Button'
 import ActivityItem from '../components/ActivityItem'
-import Input from '../components/Input'
+import StreamEditor from '../components/StreamEditor'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -61,6 +61,7 @@ class MyApp extends App {
             </StreamMenu>
             <Button primary>New Stream</Button>
             <ActivityWrapper>
+              <StreamEditor />
               <ActivityItem />
             </ActivityWrapper>
           </Box>
