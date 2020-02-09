@@ -12,7 +12,6 @@ const Index = () => (
   <Box display="block" minHeight="100vh" p={3}>
     <StreamMenu />
     <ActivityWrapper>
-      <StreamEditor />
       <ActivityItem />
     </ActivityWrapper>
   </Box>

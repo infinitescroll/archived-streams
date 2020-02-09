@@ -10,12 +10,14 @@ import {
 } from 'styled-system'
 
 export const Box = styled.div`
-  list-style: border-box;
+  box-sizing: border-box;
+  min-width: 0;
   ${space}
   ${color}
   ${layout}
   ${flexbox}
   ${border}
+  ${typography}
 `
 
 export const Menu = styled.ul`
