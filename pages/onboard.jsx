@@ -57,7 +57,7 @@ export default () => (
           <Text>You’ll have to authorize Streams to access your repo data</Text>
         </Box>
         <Box textAlign="center">
-          <Button primary>
+          <Button display="flex" primary>
             <Box width="32px" display="inline-block">
               <IcoGitHub maxWidth="48px" opacity="0.4" />
             </Box>
@@ -80,47 +80,58 @@ export default () => (
         display="flex"
         flexDirection="column"
         justifyContent="space-around"
-        height="100%"
+        alignContent="center"
+        alignItems="center"
+        minHeight="100%"
         flexGrow="1"
-        maxWidth="480px"
       >
         <Box textAlign="center">
           <h1>Step 3</h1>
           <Text>Lastly, let's add a repo or two to your new stream</Text>
         </Box>
-        <Box textAlign="left">
-          <Input />
-          <Menu>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          textAlign="left"
+          maxWidth="800px"
+        >
+          <Menu display="block" width="100%" flexDirection="column">
             <MenuItem display="block">
-              <Text>You own</Text>
+              <Input />
             </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Hangtime</Button>
-            </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Streams</Button>
-            </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Filament</Button>
-            </MenuItem>
-          </Menu>
-          <Menu>
-            <MenuItem display="block">
-              <Text>You're collaborating on</Text>
-            </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Hangtime</Button>
-            </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Streams</Button>
-            </MenuItem>
-            <MenuItem display="inline-block" mr={3} my={2}>
-              <Button>Filament</Button>
-            </MenuItem>
+            <Menu>
+              <MenuItem display="block">
+                <Text>You own</Text>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Hangtime</Button>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Streams</Button>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Filament</Button>
+              </MenuItem>
+            </Menu>
+            <Menu>
+              <MenuItem display="block">
+                <Text>You're collaborating on</Text>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Hangtime</Button>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Streams</Button>
+              </MenuItem>
+              <MenuItem display="inline-block" mr={3} my={2}>
+                <Button>Filament</Button>
+              </MenuItem>
+            </Menu>
           </Menu>
           <StreamEditor />
         </Box>
-        <Box textAlign="center">
+        <Box my={3} textAlign="center">
           <Button>Cancel</Button>
         </Box>
       </Box>
