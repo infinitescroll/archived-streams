@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Input, Box } from '.'
 import Button from './Button'
 
-export default () => (
+export default ({ disabled, id, label, placeholder, required }) => (
   <Box
     display="flex"
     justifyContent="space-between"
@@ -10,6 +10,7 @@ export default () => (
     borderRadius="4px"
     pr={3}
   >
+    {props => (props.required === true ? 'Required' : '')}
     <Input
       flexGrow="1"
       height="48px"
@@ -17,10 +18,14 @@ export default () => (
       fontSize={2}
       border="0px"
       borderRadius="4px"
-      placeholder="Placeholder"
+      aria-label={label}
+      aria-required={required}
+      disabled={disabled}
+      id={id}
+      placeholder={placeholder}
     />
     <Button primary m={1}>
-      button.name
+      {props => props.text}
     </Button>
   </Box>
 )

@@ -27,6 +27,7 @@ export const Menu = styled.ul`
   ${space}
   ${color}
   ${layout}
+  ${border}
   ${flexbox}
 `
 
@@ -46,6 +47,7 @@ export const Icon = styled.span`
 `
 
 export const Input = styled.input`
+  
   ${space}
   ${color}
   ${layout}
