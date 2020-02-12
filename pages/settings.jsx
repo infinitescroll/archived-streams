@@ -6,6 +6,8 @@ import { IcoGitHub } from '../components/icons'
 import StreamEditor from '../components/StreamEditor'
 import Avatar from '../components/Avatar'
 
+import { IcoClose } from '../components/Icons'
+
 const PageWrapper = styled(Box)``
 
 export default () => (
@@ -28,10 +30,11 @@ export default () => (
           alignItems="center"
           justifyContent="space-between"
           border="1px solid grey"
+          borderRadius={4}
           p={2}
           my={3}
         >
-          <MenuItem>
+          <MenuItem display="flex">
             <Avatar />
           </MenuItem>
           <MenuItem>"user.name" can</MenuItem>
@@ -48,6 +51,7 @@ export default () => (
               </MenuItem>
             </Menu>
           </MenuItem>
+          <IcoClose />
         </Menu>
       </Box>
     </Box>
