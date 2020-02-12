@@ -18,6 +18,7 @@ import {
   IcoGitHubPullRequest,
   IcoGitHubBranch
 } from './icons'
+import Avatar from '../components/Avatar'
 
 const ActivityRowContainer = styled(Menu)`
   li {
@@ -37,12 +38,6 @@ const ActivityRowParent = styled(Menu)`
   ${color}
   ${layout}
   ${flexbox}
-  ${border}
-`
-const Author = styled(MenuItem)`
-  ${space}
-  ${color}
-  ${layout}
   ${border}
 `
 
@@ -94,13 +89,9 @@ export default () => (
     backgroundColor="#f5f5f5"
     borderRadius="4px"
   >
-    <Author
-      display="inline-block"
-      width="32px"
-      height="32px"
-      backgroundColor="#000"
-      borderRadius="100px"
-    />
+    <MenuItem display="flex" alignContent="center">
+      <Avatar />
+    </MenuItem>
     <ActivityRowParent
       display="flex"
       justifyContent="space-between"
