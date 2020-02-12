@@ -39,6 +39,7 @@ export const MenuItem = styled.li`
 `
 
 export const Icon = styled.span`
+  display: inline-block;
   ${space}
   ${color}
   ${layout}
@@ -61,6 +62,15 @@ export const Input = styled.input`
 `
 
 export const Text = styled.p`
+  ${color}
+  ${typography}
+  ${layout}
+`
+export const Label = styled.h5`
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #444;
   ${color}
   ${typography}
   ${layout}
