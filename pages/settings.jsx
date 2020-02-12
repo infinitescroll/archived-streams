@@ -4,6 +4,7 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { IcoGitHub } from '../components/icons'
 import StreamEditor from '../components/StreamEditor'
+import Avatar from '../components/Avatar'
 
 const PageWrapper = styled(Box)``
 
@@ -30,6 +31,9 @@ export default () => (
           p={2}
           my={3}
         >
+          <MenuItem>
+            <Avatar />
+          </MenuItem>
           <MenuItem>"user.name" can</MenuItem>
           <MenuItem>
             <Menu display="flex">
