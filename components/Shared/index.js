@@ -46,19 +46,6 @@ export const Icon = styled.span`
   ${border}
 `
 
-export const Input = styled.input`
-  ${space}
-  ${color}
-  ${layout}
-  ${flexbox}
-  ${border}
-  ${typography}
-
-  &:focus {
-    outline: none;
-  }
-`
-
 export const Text = styled.p`
   ${color}
   ${typography}

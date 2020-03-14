@@ -1,5 +1,27 @@
-import { Input, Box } from '.'
-import Button from '../Button'
+import styled from 'styled-components'
+import {
+  color,
+  typography,
+  border,
+  layout,
+  space,
+  flexbox
+} from 'styled-system'
+import Box from './Box'
+import Button from './Button'
+
+export const Input = styled.input`
+  ${space}
+  ${color}
+  ${layout}
+  ${flexbox}
+  ${border}
+  ${typography}
+
+  &:focus {
+    outline: none;
+  }
+`
 
 export default () => (
   <Box
