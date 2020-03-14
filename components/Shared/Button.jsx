@@ -1,8 +1,9 @@
 import styled from 'styled-components'
-import { space } from 'styled-system'
+import { color, space } from 'styled-system'
 
 export default styled.button`
   ${space}
+  ${color}
   font-size: ${props => props.theme.fontSizes[2]}px;
   background: ${props =>
     props.primary ? props.theme.colors.green : props.theme.colors.background};

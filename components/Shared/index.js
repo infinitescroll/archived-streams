@@ -4,10 +4,11 @@ import {
   typography,
   border,
   layout,
-  position,
   space,
   flexbox
 } from 'styled-system'
+
+export { default as Button } from './Button'
 
 export const Box = styled.div`
   box-sizing: border-box;
@@ -43,19 +44,6 @@ export const Icon = styled.span`
   ${layout}
   ${flexbox}
   ${border}
-`
-
-export const Input = styled.input`
-  ${space}
-  ${color}
-  ${layout}
-  ${flexbox}
-  ${border}
-  ${typography}
-
-  &:focus {
-    outline: none;
-  }
 `
 
 export const Text = styled.p`
