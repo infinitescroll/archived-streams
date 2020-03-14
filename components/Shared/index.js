@@ -4,10 +4,11 @@ import {
   typography,
   border,
   layout,
-  position,
   space,
   flexbox
 } from 'styled-system'
+
+export { default as Button } from './Button'
 
 export const Box = styled.div`
   box-sizing: border-box;
