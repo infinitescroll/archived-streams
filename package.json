@@ -8,13 +8,15 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "bent": "^7.1.1",
+    "axios": "^0.19.2",
+    "lodash.clonedeep": "^4.5.0",
     "next": "latest",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.0",
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.0",
     "styled-system": "^5.1.4"

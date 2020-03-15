@@ -8,18 +8,9 @@ import {
   flexbox
 } from 'styled-system'
 
+export { default as Box } from './Box'
 export { default as Button } from './Button'
-
-export const Box = styled.div`
-  box-sizing: border-box;
-  min-width: 0;
-  ${space}
-  ${color}
-  ${layout}
-  ${flexbox}
-  ${border}
-  ${typography}
-`
+export { default as Input } from './Input'
 
 export const Menu = styled.ul`
   list-style: none;

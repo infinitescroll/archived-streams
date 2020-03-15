@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Box, Text, Menu, MenuItem } from '.'
-import Button from './Button'
+import { Button, Box, Text, Menu, MenuItem } from './Shared'
 
 const StreamEditorHeader = styled(Menu)``
 
@@ -15,11 +14,11 @@ const StreamEditorRow = styled(Menu)`
 `
 
 export default () => (
-  <Box border="1px solid" borderColor="lightGrey">
-    <StreamEditorHeader p={3} bg="blue" color="nearWhite">
+  <Box border='1px solid' borderColor='lightGrey'>
+    <StreamEditorHeader p={3} bg='blue' color='nearWhite'>
       <StreamEditorRow>
         <MenuItem>
-          <Text display="inline">Repo</Text>
+          <Text display='inline'>Repo</Text>
         </MenuItem>
         <MenuItem>
           <Button>selected.repo.name</Button>
@@ -28,7 +27,7 @@ export default () => (
     </StreamEditorHeader>
     <StreamEditorRow p={2}>
       <MenuItem width={1}>
-        <Text display="inline">Show Me</Text>
+        <Text display='inline'>Show Me</Text>
       </MenuItem>
       <MenuItem>
         <Button>All Activity</Button>
@@ -45,7 +44,7 @@ export default () => (
     </StreamEditorRow>
     <StreamEditorRow p={2}>
       <MenuItem width={1}>
-        <Text display="inline">Of</Text>
+        <Text display='inline'>Of</Text>
       </MenuItem>
       <MenuItem>
         <Button>All Activity</Button>
@@ -62,7 +61,7 @@ export default () => (
     </StreamEditorRow>
     <StreamEditorRow p={2}>
       <MenuItem width={1}>
-        <Text display="inline">By</Text>
+        <Text display='inline'>By</Text>
       </MenuItem>
       <MenuItem>
         <Button>All Activity</Button>
@@ -79,7 +78,7 @@ export default () => (
     </StreamEditorRow>
     <StreamEditorRow p={2}>
       <MenuItem width={1}>
-        <Text display="inline">On Branch</Text>
+        <Text display='inline'>On Branch</Text>
       </MenuItem>
       <MenuItem>
         <Button>All Activity</Button>
